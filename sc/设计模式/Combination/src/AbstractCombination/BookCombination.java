@@ -16,9 +16,12 @@ public abstract class BookCombination {
         list.remove(bc);
     }
 
+    public static int time = 0;
     public void description(){
         for(BookCombination l : list){
+            time++;
             l.description();
+            time--;
         }
     }
 }

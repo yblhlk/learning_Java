@@ -18,6 +18,9 @@ public class Book extends BookCombination{
 
 
     public void description() {
-        System.out.println("    【书籍】 ： " + name);
+        for (int i = 0; i < BookCombination.time; i++) {
+            System.out.print("    ");
+        }
+        System.out.println("【书籍】 ： " + name);
     }
 }

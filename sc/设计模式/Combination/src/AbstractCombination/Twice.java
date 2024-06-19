@@ -25,7 +25,10 @@ public class Twice extends BookCombination{
 
     @Override
     public void description() {
-        System.out.println("  【二级目录】 ： " + name);
+        for (int i = 0; i < BookCombination.time; i++) {
+            System.out.print("    ");
+        }
+        System.out.println("【二级目录】 ： " + name);
         super.description();
     }
 }
