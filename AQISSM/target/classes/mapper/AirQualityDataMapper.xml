@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sc.mapper.AirQualityDataMapper">
+    <select id="show" resultType="com.sc.pojo.AirQualityData">
+        select * from AirQualityData
+    </select>
+    <insert id="add">
+        insert into AirQualityData values
+        (#{date},#{lv},#{AQI},#{sort},#{PM25},#{PM10},#{so2},#{no2},#{co},#{o3})
+    </insert>
+    <delete id="delete">
+        delete from AirQualityData where `日期` = #{date}
+    </delete>
+</mapper>

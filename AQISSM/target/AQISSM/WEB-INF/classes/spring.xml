@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 最难配置的 -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+    <!--1.配置扫描包：为了让@Service注解生效 扫描到注解后会自动创建该类的对象 -->
+    <context:component-scan base-package="com.sc.service"/>
+    <!--2.1加载jdbc配置文件（url driver username password），这四个属性不固定，经常会改动，所以不在下面写 -->
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+    <!--2.2配置数据源（连接池： 读取上面的四个属性即可） -->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+          init-method="init" destroy-method="close">
+        <!--必选属性-->
+        <property name="url" value="${jdbc.url}"/>
+        <property name="driverClassName" value="${jdbc.driver}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+        <!--可选属性-->
+        <!--初始链接大小  最大链接大小 最小...-->
+    </bean>
+    <!--3.创建事物管理类（负责帮我们做事务的 提交和回滚） -->
+    <bean id="tm" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <!--关联数据源-->
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+    <!--4.开启事务注解（通过注解快捷的做事务） -->
+    <tx:annotation-driven  transaction-manager="tm" />
+    <!--5.整合mybatis(关联好mybatis配置文件和映射文件）-->
+    <!-- 在resources目录下创建一个mapper包，里面放映射文件 -->
+    <bean id="sf" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!--关联数据源-->
+        <property name="dataSource" ref="dataSource"/>
+        <!--关联核心配置文件-->
+        <property name="configLocation" value="classpath:mybatis.xml"/>
+        <!--关联映射配置文件-->
+        <property name="mapperLocations" value="classpath:mapper/*.xml"/>
+    </bean>
+    <!--6.整合Mapper接口（通过动态代理的方式创建Mapper接口的实现类）-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!--关联mapper接口的包-->
+        <property name="basePackage" value="com.sc.mapper"/>
+        <!--关联sqlsession工厂-->
+        <property name="sqlSessionFactoryBeanName" value="sf"/>
+    </bean>
+</beans>

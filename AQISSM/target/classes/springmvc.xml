@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 第二步成功才会有下面中的mvc包 -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+    <!--1. 配置扫描包：为了让@Controller注解生效 扫描到注解后会自动创建该类的对象    -->
+    <context:component-scan base-package="com.sc.controller"/>
+    <!--2. 开启注解驱动 -->
+    <!-- 选以mvc结尾的报 -->
+    <mvc:annotation-driven/>
+    <!--3. 放行静态资源 才能访问img js css html    -->
+    <mvc:default-servlet-handler/>
+<!--    上面是必开的，下面看需求，要就开-->
+    <!--4. 配置上传组件 : 实现上传功能-->
+    <!--5. 配置视图解析器 WEB-INF-->
+    <!--6. 配置springmvc拦截器-->
+    <!--7. 配置静态资源规则， 如果把静态资源放在WEB-INF -->
+</beans>
