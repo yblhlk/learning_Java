@@ -5,17 +5,19 @@
 ![img.png](img/img_1.png)
 
 ### 3. GC标记算法(重点)
-####3.1 引用计数法
+#### 3.1 引用计数法
 ![img.png](img/img_2.png)
+
 * 缺点：无法处理循环引用问题，如果多个对象之间相互引用，计数器永远不为0，除非有外力介入，不然永远不会回收，会造成内存泄漏。
-![img.png](img/img_3.png)
-####3.2 可达性分析法
-![img.png](img/img_4.png)
-![img.png](img/img_5.png)
-####3.3 三色标记法
-![img.png](img/img_6.png)
-![img.png](img/img_7.png)
-![img.png](img/img_8.png)
+  ![img.png](img/img_3.png)
+
+  #### 3.2 可达性分析法
+  ![img.png](img/img_4.png)
+  ![img.png](img/img_5.png)
+  #### 3.3 三色标记法
+  ![img.png](img/img_6.png)
+  ![img.png](img/img_7.png)
+  ![img.png](img/img_8.png)
 * 三色标记法的执行原理
   ![img.png](img/img_9.png)
   
@@ -28,6 +30,7 @@
 ![img.png](img/gif1.gif)
 ![img.png](img/img_12.png)
 ![img.png](img/img_13.png)
+
 * 缺点：![img.png](img/img_14.png)
 #### 4.3 标记压缩法（标记整理法）
 ![img.png](img/gif3.gif)
