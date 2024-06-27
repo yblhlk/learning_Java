@@ -1,6 +1,7 @@
-###day8
+### day8
 
-####7. 序列化和反序列化
+#### 7. 序列化和反序列化
+
 > a.概念
 > >&emsp;&emsp;`序列化`是将`对象`转换为`字节序列`的过程，以便可以将对象写入文件、传输到网络上的另一个位置或存储在内存中的数据库等。`反序列化`则是将字节序列恢复为Java对象的过程。
 > 
@@ -21,7 +22,7 @@
 > 
 > c.反序列化<br>
 > >1. 获取包含序列化对象信息的`文件对象`。<br>
-> >2. 使用`FileInputStream对象`创建一个`ObjectInputStream对象`，并用`ObjectInput引用`来接收（ObjectInput / ObjectInputStream / FileInputStream)【使用输入输出流对象要抛出IOExceptiony异常】<br>
+> >2. 使用`FileInputStream对象`创建一个`ObjectInputStream对象`，并用`ObjectInput引用`来接收（ObjectInput / ObjectInputStream / FileInputStream)【使用输入输出流对象要抛出IOException异常】<br>
 > >3. 使用`ObjectInputStream对象`的`readObject()方法`来反序列化：`该方法返回一个Object对象`，强转后用目标对象的引用来接收，从而完成反序列化。
 > >4. 使用`close()方法`关闭所有输入输出流的链接
 > >
