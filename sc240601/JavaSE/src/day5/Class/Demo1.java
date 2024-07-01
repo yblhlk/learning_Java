@@ -19,8 +19,8 @@ public class Demo1 {
         System.out.println("++++++++++++++获取变量名Name++++++++++++++++");
         String name = c1.getName();
         System.out.println("全类名:" + name);
-        String simpleName = c1.getSimpleName();
-        System.out.println("全类名:" + simpleName);
+        String simpleName = c1.getSimpleName(); //只获取类名
+        System.out.println("类名:" + simpleName);
         String superName = c1.getSuperclass().getName();
         System.out.println("父类的全类名:" + superName);
 
@@ -49,6 +49,7 @@ public class Demo1 {
         // 设置某个对象的属性值和获取某个对象的属性值
         // f2.set(对象, 属性值) ： 设置某个对象的属性值
         // f2.get(对象) ： 获取某个对象的属性值
+        // 没有走访问器和修改器，不然私有属性就不需要开权限了
         // * 公有成员
         f2.set(p, new Date()); //等价于p.time = new Date(), 是它的底层
         Object v = f2.get(p);  //等价于 p.time, 也是这句话的底层
