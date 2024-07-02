@@ -1,0 +1,10 @@
+方法有：
+void main [class [Ljava.lang.String;]
+void test1 []
+int test2 [int]
+属性有：
+java.lang.String name
+int age
+构造方法有：
+day6.Work.B []
+day6.Work.B [class java.lang.String, int]
