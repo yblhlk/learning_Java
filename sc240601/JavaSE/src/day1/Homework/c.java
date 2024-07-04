@@ -26,7 +26,7 @@ public class c {
             }
         });
 
-        Thread t3 = new Thread(()->{
+        new Thread(()->{
             while(true){
                 double humidity = Math.random()*60 + 20;
                 System.out.println(humidity + "Lux");
@@ -36,10 +36,10 @@ public class c {
                     e.printStackTrace();
                 }
             }
-        });
+        }).start();
 
         t1.start();
         t2.start();
-        t3.start();
+
     }
 }

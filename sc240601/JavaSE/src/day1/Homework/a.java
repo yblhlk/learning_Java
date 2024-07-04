@@ -2,7 +2,7 @@ package day1.Homework;
 
 public class a {
     public static void main(String[] args) {
-        Thread a = new Thread(()->{
+        new Thread(()->{
             double H = 100.0;
             double sum = 0;
             int flag = 0;
@@ -17,7 +17,6 @@ public class a {
                     break;
                 }
             }
-        });
-        a.start();
+        }).start();
     }
 }
