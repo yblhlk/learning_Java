@@ -29,30 +29,20 @@ class A implements Cloneable {
     int id;
     String name;
     B b;
-    //浅拷贝
-    protected Object clone() throws CloneNotSupportedException {
-        return super.clone(); //最后是Object调用native本地方法来进行克隆。
+
+//深拷贝
+    protected  Object clone() throws  CloneNotSupportedException {
+        A a = (A) super.clone();
+        a.b = (B) b.clone();
+        return a;
     }
 }
 
-class B {
+class B implements Cloneable {
     int id;
     String name;
+
+    protected Object clone() throws CloneNotSupportedException{
+        return  super.clone();
+    }
 }
-
-//深拷贝
-//    protected  Object clone() throws  CloneNotSupportedException {
-//        A a = (A) super.clone();
-//        a.b = (B) b.clone();
-//        return a;
-//    }
-// }
-
-//class B implements Cloneable {
-//    int id;
-//    String name;
-//
-//    protected Object clone() throws CloneNotSupportedException{
-//        return  super.clone();
-//    }
-//}
