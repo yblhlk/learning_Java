@@ -15,15 +15,15 @@ public class T3B {
         //文件输入流
         FileReader fr = new FileReader(file);
         //处理流
-        BufferedReader br = new BufferedReader(fr);
+        //BufferedReader br = new BufferedReader(fr);
+        BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
         StringBuilder sb = new StringBuilder();
         String str = null;
         while ((str = br.readLine()) != null)
             sb.append(str);
         System.out.println(sb);
-        //关闭流省略...
 
-        //2. stringbuilder转换字符串  在通过空格隔开  进行分割
+        //2. stringbuilder转换字符串  在通过空格隔开  进行分割（split)
         String[] strs=sb.toString().split(" ");
         //统计 单词（key）  次数(value)
         Map<String,Integer> map=new HashMap<>();
@@ -41,9 +41,7 @@ public class T3B {
         //map集合中的key和value  统称可以叫entry
         //map通过entrySet()
         // 可以把map集合每组键值队 都封装成entry对象返回
-        Set<Map.Entry<String,Integer>> set=map.entrySet();
-        //Set==>list
-        List<Map.Entry<String,Integer>> list=new ArrayList<>(set);
+        List<Map.Entry<String,Integer>> list=new ArrayList<>(map.entrySet());
         Collections.sort(list,(o1,o2)-> o2.getValue()-o1.getValue());
         System.out.println(list);
 
@@ -89,7 +87,7 @@ public class T3B {
 //
 //        // 打印排序后的Map
 //        for (Map.Entry<String, Integer> entry : sortedMap.entrySet()) {
-//            System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
+//            DDSystem.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
 //        }
     }
 }

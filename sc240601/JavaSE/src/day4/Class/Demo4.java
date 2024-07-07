@@ -13,7 +13,7 @@ public class Demo4 {
         // 和普通的定长线程池一样，也是限定了线程池的长度
 //        for (int i = 0; i < 100; i++) {
 //            ex.execute(()-> {
-//                System.out.println(Thread.currentThread().getName());
+//                DDSystem.out.println(Thread.currentThread().getName());
 //            });
 //        }
         ex.shutdown();
