@@ -1,0 +1,87 @@
+-- 如果原来有dept和emp表 先删除原来的表
+drop table emp;
+drop table dept;
+
+create table DEPT
+(
+  deptno int not null,
+  dname  VARCHAR(14),
+  loc    VARCHAR(13)
+);
+alter table DEPT
+  add constraint PK_DEPT primary key (DEPTNO);
+create table EMP
+(
+  empno    int,
+  ename    VARCHAR(10),
+  job      VARCHAR(9),
+  mgr      int,
+  hiredate DATE,
+  sal      double(7,2),
+  comm     double(7,2),
+  deptno   int
+);
+
+
+insert into DEPT (deptno, dname, loc)
+values (10, 'ACCOUNTING', 'NEW YORK');
+insert into DEPT (deptno, dname, loc)
+values (20, 'RESEARCH', 'DALLAS');
+insert into DEPT (deptno, dname, loc)
+values (30, 'SALES', 'CHICAGO');
+insert into DEPT (deptno, dname, loc)
+values (40, 'OPERATIONS', 'BOSTON');
+commit;
+
+
+insert into EMP (empno, ename, job, mgr, hiredate, sal, comm, deptno)
+values (1, 'dog', 'code', 7369, date_format('2018-06-05', '%Y-%m-%d'), 5000, 5000, 10);
+insert into EMP (empno, ename, job, mgr, hiredate, sal, comm, deptno)
+values (7369, 'SMITH', 'CLERK', 7902, date_format('1980-12-17', '%Y-%m-%d'), 800, null, 20);
+insert into EMP (empno, ename, job, mgr, hiredate, sal, comm, deptno)
+values (7499, 'ALLEN', 'SALESMAN', 7698, date_format('1981-02-20', '%Y-%m-%d'), 1600, 300, 30);
+insert into EMP (empno, ename, job, mgr, hiredate, sal, comm, deptno)
+values (7521, 'WARD', 'SALESMAN', 7698, date_format('1981-02-22', '%Y-%m-%d'), 1250, 500, 30);
+insert into EMP (empno, ename, job, mgr, hiredate, sal, comm, deptno)
+values (7566, 'JONES', 'MANAGER', 7839, date_format('1981-04-02', '%Y-%m-%d'), 2975, null, 20);
+insert into EMP (empno, ename, job, mgr, hiredate, sal, comm, deptno)
+values (7654, 'MARTIN', 'SALESMAN', 7698, date_format('1981-09-28', '%Y-%m-%d'), 1250, 1400, 30);
+insert into EMP (empno, ename, job, mgr, hiredate, sal, comm, deptno)
+values (7698, 'BLAKE', 'MANAGER', 7839, date_format('1981-05-01', '%Y-%m-%d'), 2850, null, 30);
+insert into EMP (empno, ename, job, mgr, hiredate, sal, comm, deptno)
+values (7788, 'SCOTT', 'ANALYST', 7566, date_format('1987-04-19', '%Y-%m-%d'), 3000, null, 20);
+insert into EMP (empno, ename, job, mgr, hiredate, sal, comm, deptno)
+values (7839, 'KING', 'PRESIDENT', null, date_format('1981-11-17', '%Y-%m-%d'), 5000, null, 10);
+insert into EMP (empno, ename, job, mgr, hiredate, sal, comm, deptno)
+values (7844, 'TURNER', 'SALESMAN', 7698, date_format('1981-09-08', '%Y-%m-%d'), 1500, 0, 30);
+insert into EMP (empno, ename, job, mgr, hiredate, sal, comm, deptno)
+values (7876, 'ADAMS', 'CLERK', 7788, date_format('1987-05-23', '%Y-%m-%d'), 1100, null, 20);
+insert into EMP (empno, ename, job, mgr, hiredate, sal, comm, deptno)
+values (7900, 'JAMES', 'CLERK', 7698, date_format('1981-12-03', '%Y-%m-%d'), 950, null, 30);
+insert into EMP (empno, ename, job, mgr, hiredate, sal, comm, deptno)
+values (7902, 'FORD', 'ANALYST', 7566, date_format('1981-12-03', '%Y-%m-%d'), 3000, null, 20);
+insert into EMP (empno, ename, job, mgr, hiredate, sal, comm, deptno)
+values (7934, 'MILLER', 'CLERK', 7782, date_format('1982-01-23', '%Y-%m-%d'), 1300, null, 10);
+commit;
+
+1.查询student表中的所有记录的sname、ssex和class列。
+2.查询student表的所有记录
+3.查询score表中成绩在60到80之间的所有记录
+4. 查询score表中成绩为85，86或88的记录
+5.查询student表中“95031”班或性别为“女”的同学记录
+6.以class降序查询student表的所有记录
+7.以cno升序、degree降序查询score表的所有记录
+8.查询“95031”班的学生人数
+9.查询score表中的最高分的学生学号和课程号
+10.查询‘3-105’号课程的平均分
+
+11.查询score表中至少有5名学生选修的并以3开头的课程的平均分数
+12.查询最低分大于70，最高分小于90的sno列
+13.查询成绩高于学号为“109”、课程号为“3-105”的成绩的所有记录
+14.查询“张旭“教师任课的学生成绩
+15.查询选修某课程的同学人数多于5人的教师姓名
+16.查询成绩比该课程平均成绩低的同学的成绩表
+17.查询student表中不姓“王”的同学记录
+18.查询student表中每个学生的姓名和年龄
+19.查询所有选修“计算机导论”课程的“男”同学的成绩表
+20.查询出选修课程号为3-245和6-166的课程的学生学号与姓名
