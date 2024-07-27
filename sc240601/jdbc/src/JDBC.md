@@ -146,21 +146,29 @@ public class TestBatch {
         // 添加完成后使用stmt.executeBatch();来执行批中所有语句。
 ```
 > 关于jdbc的查询：<br>
-> 如果使用getXXX(下标)，则下标是从1开始算的，即第一列数据的下标为1。
+> 要对ResultSet对象的结果集进行解析。
+> 通过next() 来确认和获取下一行数据。
+> 使用getXXX(下标/字段名)，来获取每行中每个数据。下标是从1开始算的，即第一列数据的下标为1。
 > 关于jdbc的批处理：<br>
+> 使用addBatch()将sql语句添加到批处理。
+> 使用executeBatch()将批中的语句一次性执行。<br>
+> 观察：
 > 1W条以下sql语句使用批处理和不用批处理的效率差不多，可能使用批处理性能还差点，因为批处理还要添加sql语句到批中，
 > 1W条以上sql语句使用批处理就会开启优化，速度快了1倍以上。<br>
 > ![img_1.png](img_1.png)
+
 ### 5.sql注入 -- 高频面试题
-#### 5.2 是什么？
-> sql注入：用户传入非法参数，导致服务器被欺骗，让用户进行了未授权的操作。
+#### 5.1 是什么？
+> sql注入：用户传入非法参数，而且服务器未进行预防(如预处理)，导致服务器被欺骗，让用户进行了未授权的操作。
 > 其主要原因是服务端未预处理而采用拼接字符串的方式执行sql语句，比如：
 > `delete from 表 where name= "随便写" or 1=1` 这里 or 1=1 就是非法参数 结果name条件可能不成立，但是1=1永远成立 最后会造成全表数据删除。
-#### 5.1 解决方案
+#### 5.2 解决方案
 > 使用预编译对象PreparedStatement来解决sql注入问题，它会编译sql语句，先让sql语句结果固定，
+> PreparedStatement对象已经在预处理时获取了sql语句，所以不需要在execute()时重新传入一遍，千万别搞混了。
+> 而且写sql语句时无需用''将字符串字段的指扩起来。
 > sql语句参数通过`?`作为占位符，同时还可以实现一次编译多次运行，执行效率会更高一些。
 > 一定要注意PreparedStatement对象的setXXX()是以1开始算？的下标的。
-#### 5.2 PreparedStatement 和 Statement 的区别。
+#### 5.3 PreparedStatement 和 Statement 的区别。
 > * Statement：是通过字符串拼接的方式处理参数，所以存在sql注入的隐患，非常不安全， 不推荐使用。
 >   mybatis中${}的底层是Statement。
 > * PreparedStatement：是Statement的子类，是预编译对象，先编译sql语句，可多次运行，效率会高于Statement 是采用`?`作为占位符形式来处理参数，可以`防止sql注入`比较安全 推荐使用 也是
@@ -208,7 +216,7 @@ public class TestSQLInjection {
     }
 }
 ```
-#### 5.3 mybatis中#{}和${}的区别
+#### 5.4 mybatis中#{}和${}的区别
 > mybatis的底层是jdbc，${}的底层是Statement，也存在sql注入的隐患
 
 ### 6. 封装jdbc工具类
