@@ -284,6 +284,25 @@ static{
 ```
 
 #### 实例1:支持事务,但线程不安全版本
+
+> 注意其中的关闭方法：
+>
+> ```java
+> // 2. 通用的关闭连接方法（因为要关闭的对象数量不固定(增删改2个，查询3个)所以由用户来传入）
+> // 因为都直接或间接实现了AutoCloseable，且该接口中有close()方法，所以用AutoCloseable而不使用Closeable。
+> public static void closeConn(AutoCloseable... closeables){
+>     for (AutoCloseable cl : closeables) {
+>         if(cl != null) {
+>             try {
+>                 cl.close();
+>             } catch (Exception e) {
+>                 e.printStackTrace();
+>             }
+>         }
+>     }
+> }
+> ```
+
 ```java
 // DBUtilV2 支持事务，线程不安全版
 // 要能支持事务只需要保证使用的是同一个连接对象。然后用这个连接对象开启事务。
@@ -295,7 +314,7 @@ public class DBUtil2 {
     private static String url;
     private static String username;
     private static String password;
-    // 为什么要把连接对象和报告对象设置为静态变量？ -- 为了能在外面被释放。
+    // 为什么要把连接对象和报告对象设置为静态变量？ -- 为了能在外面被释放这样能在外面类名.属性直接释放,不然没人来释放啊。
     private static Connection conn;
     private static PreparedStatement pstmt;
     // 所有线程共享同一个连接，会导致后面使用事务时是同一个事务线程不安全。
@@ -305,6 +324,7 @@ public class DBUtil2 {
         Properties propertie = new Properties();
         try {
             // 为什么要通过类加载器去获取流，而不使用文件流？
+            // 因为用文件流只能写绝对路径。但是实际的项目中更多的是使用相对路径。
             propertie.load(new FileReader("D:\\JavaCode\\sc240601\\jdbc\\src\\config\\jdbc.properties"));
             driver = propertie.getProperty("driver");
             url = propertie.getProperty("url");
@@ -329,12 +349,13 @@ public class DBUtil2 {
     }
 
     // 2. 通用的关闭连接方法（因为要关闭的对象数量不固定(增删改2个，查询3个)所以由用户来传入）
-    public static void closeConn(Closeable... closeables){
-        for (Closeable cl : closeables) {
+    // 因为都直接或间接实现了AutoCloseable，且该接口中有close()方法，所以用AutoCloseable而不使用Closeable。
+    public static void closeConn(AutoCloseable... closeables){
+        for (AutoCloseable cl : closeables) {
             if(cl != null) {
                 try {
                     cl.close();
-                } catch (IOException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -393,7 +414,6 @@ public class DBUtil2 {
         return null;
     }
 }
-
 ```
 #### 实例2:支持事务,线程安全版本
 ```java
@@ -442,12 +462,13 @@ public class DBUtil3 {
     }
 
     // 2. 通用的关闭连接方法（因为要关闭的对象数量不固定(增删改2个，查询3个)所以由用户来传入）
-    public static void closeConn(Closeable... closeables){
-        for (Closeable cl : closeables) {
+    // 因为都直接或间接实现了AutoCloseable，且该接口中有close()方法，所以用AutoCloseable而不使用Closeable。
+    public static void closeConn(AutoCloseable... closeables){
+        for (AutoCloseable cl : closeables) {
             if(cl != null) {
                 try {
                     cl.close();
-                } catch (IOException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -669,3 +690,84 @@ public class JDBCUtil2 { //扩展 支持事务的jdbc
     }
 }
 ```
+
+### 9.JDBC如何实现动态查询？
+> 动态搜索允许用户根据不同的条件执行搜索，这些条件可能在运行时才确定。在拼接查询的具体条件时，在数据前后都加上%，实现模糊查询。
+>
+> 在JDBC中实现动态搜索主要涉及到构建动态的SQL语句。动态搜索允许用户根据不同的条件执行搜索，这些条件可能在运行时才确定。以下是如何使用JDBC实现动态搜索的基本步骤：
+>
+> ### 1. 确定搜索条件
+>
+> 首先，你需要确定用户可以选择的搜索条件。例如，一个用户可能想要基于姓名、年龄或城市来搜索人员信息。
+>
+> ### 2. 构建SQL语句
+>
+> 根据用户选择的搜索条件，你需要动态构建SQL语句。可以使用`StringBuilder`或`String`拼接来构建SQL语句。
+>
+> ```java
+> StringBuilder sql = new StringBuilder("SELECT * FROM users WHERE 1=1");
+> 
+> if (name != null && !name.isEmpty()) {
+>     sql.append(" AND name LIKE '%" + name + "%'");
+> }
+> 
+> if (age != null) {
+>     sql.append(" AND age = " + age);
+> }
+> 
+> if (city != null && !city.isEmpty()) {
+>     sql.append(" AND city = '" + city + "'");
+> }
+> ```
+>
+> ### 3. 使用PreparedStatement（可选）
+>
+> 虽然上面的例子使用了字符串拼接来构建SQL语句，但这种方法可能会导致SQL注入的安全问题。更好的做法是使用`PreparedStatement`，并通过设置参数来避免SQL注入。
+>
+> ```java
+> String sql = "SELECT * FROM users WHERE 1=1";
+> if (name != null && !name.isEmpty()) {
+>     sql += " AND name LIKE ?";
+> }
+> 
+> if (age != null) {
+>     sql += " AND age = ?";
+> }
+> 
+> if (city != null && !city.isEmpty()) {
+>     sql += " AND city = ?";
+> }
+> 
+> PreparedStatement pstmt = connection.prepareStatement(sql);
+> int index = 1;
+> 
+> if (name != null && !name.isEmpty()) {
+>     pstmt.setString(index++, "%" + name + "%");
+> }
+> 
+> if (age != null) {
+>     pstmt.setInt(index++, age);
+> }
+> 
+> if (city != null && !city.isEmpty()) {
+>     pstmt.setString(index++, city);
+> }
+> 
+> ResultSet rs = pstmt.executeQuery();
+> ```
+>
+> ### 4. 执行查询并处理结果
+>
+> 执行SQL查询，并处理返回的`ResultSet`对象，以获取和显示查询结果。
+>
+> ```java
+> while (rs.next()) {
+>     // 处理每一行数据
+> }
+> ```
+>
+> ### 5. 关闭资源
+>
+> 最后，确保关闭所有打开的资源，如`ResultSet`、`PreparedStatement`和数据库连接，以释放数据库资源。
+>
+> 通过上述步骤，你可以使用JDBC实现一个灵活的动态搜索功能，允许用户根据多种不同的条件来搜索数据库中的数据。
