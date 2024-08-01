@@ -19,11 +19,12 @@
 
 ### 4.jdbc的使用步骤 -- 面试题
 > 1.加载驱动类(`前提：需要先导好驱动包`) 通过获取类对象来加载类<br>
-> 2.通过DriverManger管理驱动类来创建数据库连接对象 <br>
+> 2.通过DriverManager管理驱动类来创建数据库连接对象 <br>
 > 3.通过连接对象创建Statement对象<br>
 > 4.通过Statement对象执行sql语句<br>
 > 5.（只有查询才有的）处理结果集对象<br>
 > 6.关闭资源按创建对象的相反顺序关闭（连接对象、statement对象、结果集对象）
+> ==注意使用close()关闭对象后，并不会让对象指向null==
 >
 > ```java
 > // jdbc的使用实例：
@@ -33,95 +34,95 @@
 > 
 > // 测试的第一个JDBC
 > public class FirstJDBC {
->     public static void main(String[] args) throws ClassNotFoundException, SQLException {
+>  public static void main(String[] args) throws ClassNotFoundException, SQLException {
 > //0. 导入驱动包
 > // a. 在src目录同级处创建一个lib目录
 > // b. 把jar包拷贝到该目录中去
 > // c. 右击包，选择 "Add as Library……"选项 加载包
 > // d. 能展开包就表示导入成功
 > 
->         //1. 加载驱动类（前提是导入驱动包）
->         // 通过反射来获取驱动类的类对象，目的是让类加载器加载驱动类。
->         // 不同数据库的驱动包(jar)的全类名：
->         //    mysql5 驱动包：com.mysql.jdbc.Driver
->         //    mysql8 驱动包：com.mysql.cj.jdbc.Driver
->         //    Oracle ： oracle.jdbc.driver.OracleDriver
->         Class.forName("com.mysql.cj.jdbc.Driver");
+>      //1. 加载驱动类（前提是导入驱动包）
+>      // 通过反射来获取驱动类的类对象，目的是让类加载器加载驱动类。
+>      // 不同数据库的驱动包(jar)的全类名：
+>      //    mysql5 驱动包：com.mysql.jdbc.Driver
+>      //    mysql8 驱动包：com.mysql.cj.jdbc.Driver
+>      //    Oracle ： oracle.jdbc.driver.OracleDriver
+>      Class.forName("com.mysql.cj.jdbc.Driver");
 > 
->         //2. DriverManager驱动管理
->         // a. 导入java.sql下的Connection接口
->         // b. 创建Connection对象：Connection conn = DriverManager.getConnection(请求地址，账号，密码);
->         //     参数说明：
->         //         *请求地址(url)：统一资源定位符，俗称网址（协议://ip地址:端口号/项目资源?可选参数）
->         //                                      jdbc:mysql://localhost:3306/数据库名?key=value&key2=value2
->         //                                      数据库协议://本机ip:mysql端口号/数据库名
->         //                      可选参数：可以让操作数据库时，数据库不会出现不一致（比如：乱码和时区问题)
->         //                      常用的可选参数：1. useUnicode：表示unicode编码方式
->         //                                   2. characterEncoding：修改字符集编码（让中文不乱码）
->         //                                   3. autoReconnect: 是否自动连接
->         //                                   4. rewriteBatchedStatement：是否开启批处理（一口气处理很多条语句）
->         //                                   5. serverTimezone：设置时区 不是必选的 看数据库时间和系统时间是否有差异（报时区错误必须加）
->         //                                   6. useSSL：是否使用SSL协议 一般mysql5.7需要配置这个 （报ssl错误必须加）
->         //         *账号：数据库账号
->         //         *密码：数据库账号对应密码
->         String url = "jdbc:mysql://localhost:3306/sc240601?" +
->                 "useUnicode=true&" + //开启unicode编码方式
->                 "characterEncoding=utf-8&" +
->                 "autoReconnect=true&" +
->                 "rewriteBatchedStatement=true&";
->         // +"useSSL=false"; //报Establishing SSL connection错误要加该选项
->         // +"serverTimezone=Asia/Shanghai" //报serverTimezone错误要加该选项
->         String username = "root";
->         String password = "123456";
->         Connection conn = DriverManager.getConnection(url, username, password); //要处理SQL异常
->         System.out.println("连接成功：" + conn);
+>      //2. DriverManager驱动管理
+>      // a. 导入java.sql下的Connection接口
+>      // b. 创建Connection对象：Connection conn = DriverManager.getConnection(请求地址，账号，密码);
+>      //     参数说明：
+>      //         *请求地址(url)：统一资源定位符，俗称网址（协议://ip地址:端口号/项目资源?可选参数）
+>      //                                      jdbc:mysql://localhost:3306/数据库名?key=value&key2=value2
+>      //                                      数据库协议://本机ip:mysql端口号/数据库名
+>      //                      可选参数：可以让操作数据库时，数据库不会出现不一致（比如：乱码和时区问题)
+>      //                      常用的可选参数：1. useUnicode：表示unicode编码方式
+>      //                                   2. characterEncoding：修改字符集编码（让中文不乱码）
+>      //                                   3. autoReconnect: 是否自动连接
+>      //                                   4. rewriteBatchedStatement：是否开启批处理（一口气处理很多条语句）
+>      //                                   5. serverTimezone：设置时区 不是必选的 看数据库时间和系统时间是否有差异（报时区错误必须加）
+>      //                                   6. useSSL：是否使用SSL协议 一般mysql5.7需要配置这个 （报ssl错误必须加）
+>      //         *账号：数据库账号
+>      //         *密码：数据库账号对应密码
+>      String url = "jdbc:mysql://localhost:3306/sc240601?" +
+>              "useUnicode=true&" + //开启unicode编码方式
+>              "characterEncoding=utf-8&" +
+>              "autoReconnect=true&" +
+>              "rewriteBatchedStatement=true&";
+>      // +"useSSL=false"; //报Establishing SSL connection错误要加该选项
+>      // +"serverTimezone=Asia/Shanghai" //报serverTimezone错误要加该选项
+>      String username = "root";
+>      String password = "123456";
+>      Connection conn = DriverManager.getConnection(url, username, password); //要处理SQL异常
+>      System.out.println("连接成功：" + conn);
 > 
->         // 3.通过连接对象创建Statement对象 （注意是java.sql包下的）
->         Statement stmt = conn.createStatement();
+>      // 3.通过连接对象创建Statement对象 （注意是java.sql包下的）
+>      Statement stmt = conn.createStatement();
 > 
->         // 4.通过Statement执行sql语句
->         //   * stmt.execute(sql语句);
->         //       可以用于增删改查四种语句，但是返回值是一个boolean类型
->         //       无法查看查询的数据 不推荐这种方式
->         //   * stmt.executeUpdate(sql语句);
->         //       适用于增删改三种情况，返回值是一个int，表示受影响的行数（等于0表示失败）
->         //       增删改时推荐使用
->         //   * stmt.executeQuery(sql语句);
->         //       只适用于查询语句，返回值是一个ResultSet对象
->         //       查询数据时推荐使用
->         //   * stmt.executeBatch(); //要结合添加批处理addBatch(sql)来使用
->         //       在执行批量操作的时候使用，如批量新增100条数据，
->         //       要结合添加批处理 addBatch() 来使用
->         //       添加完成后使用stmt.executeBatch();来执行批中所有语句。
->         String sql = "select * from dept";
->         // 如果sql语句里有参数（条件） 还需要传递条件
->         ResultSet rs = stmt.executeQuery(sql);
+>      // 4.通过Statement执行sql语句
+>      //   * stmt.execute(sql语句);
+>      //       可以用于增删改查四种语句，但是返回值是一个boolean类型
+>      //       无法查看查询的数据 不推荐这种方式
+>      //   * stmt.executeUpdate(sql语句);
+>      //       适用于增删改三种情况，返回值是一个int，表示受影响的行数（等于0表示失败）
+>      //       增删改时推荐使用
+>      //   * stmt.executeQuery(sql语句);
+>      //       只适用于查询语句，返回值是一个ResultSet对象
+>      //       查询数据时推荐使用
+>      //   * stmt.executeBatch(); //要结合添加批处理addBatch(sql)来使用
+>      //       在执行批量操作的时候使用，如批量新增100条数据，
+>      //       要结合添加批处理 addBatch() 来使用
+>      //       添加完成后使用stmt.executeBatch();来执行批中所有语句。
+>      String sql = "select * from dept";
+>      // 如果sql语句里有参数（条件） 还需要传递条件
+>      ResultSet rs = stmt.executeQuery(sql);
 > 
->         //5. 只有查询才需要处理结果集（目的是为了取出查询的数据）
->         //   rs.next() ：含义表示每次获取第一行数据，然后删除第一行（初值指向的是第一行之前）
->         //   rs.getXXX() : 获取每行数据的每个字段，根据字段类型调用一下方法
->         //      rs.getInt() \ rs.getString() \ rs.getDate() \ rs.getDouble()
->         //      rs.get类型(数值) : 根据查询结果的第几个字段来获取，不推荐使用，字段在第几个位置不确定，不适合复杂查询。
->         //      rs.get类型(字符串) : 根据字段的每次来获取字段的值。
->         while (rs.next()) {
->             Integer deptno = rs.getInt(1);
->             Integer deptno2 = rs.getInt("deptno");
->             String dname = rs.getString("dname");
->             String loc = rs.getString("loc");
->             // 后续…… 要看需要，一般是打印 或者封装对象 集合。
->             System.out.println(deptno + " " + dname + " " + loc);
->             // 封装对象要先有实体类，即和数据库表中字段一样的属性
->             //    实体类：就是用来描述表中的数据。
->             // 然后用集合来保存所有对象。
->         }
+>      //5. 只有查询才需要处理结果集（目的是为了取出查询的数据）
+>      //   rs.next() ：含义表示每次获取第一行数据，然后删除第一行（初值指向的是第一行之前）
+>      //   rs.getXXX() : 获取每行数据的每个字段，根据字段类型调用一下方法
+>      //      rs.getInt() \ rs.getString() \ rs.getDate() \ rs.getDouble()
+>      //      rs.get类型(数值) : 根据查询结果的第几个字段来获取，不推荐使用，字段在第几个位置不确定，不适合复杂查询。
+>      //      rs.get类型(字符串) : 根据字段的每次来获取字段的值。
+>      while (rs.next()) {
+>          Integer deptno = rs.getInt(1);
+>          Integer deptno2 = rs.getInt("deptno");
+>          String dname = rs.getString("dname");
+>          String loc = rs.getString("loc");
+>          // 后续…… 要看需要，一般是打印 或者封装对象 集合。
+>          System.out.println(deptno + " " + dname + " " + loc);
+>          // 封装对象要先有实体类，即和数据库表中字段一样的属性
+>          //    实体类：就是用来描述表中的数据。
+>          // 然后用集合来保存所有对象。
+>      }
 > 
->         //6.释放资源 （有查询要释放3个对象，否则释放两个）
->         //  调用对象的close方法
->         //  释放资源要注意顺序，按创建顺序的倒序来关闭
->         rs.close();
->         stmt.close();
->         conn.close();
->     }
+>      //6.释放资源 （有查询要释放3个对象，否则释放两个）
+>      //  调用对象的close方法
+>      //  释放资源要注意顺序，按创建顺序的倒序来关闭
+>      rs.close();
+>      stmt.close();
+>      conn.close();
+>  }
 > }
 > ```
 
@@ -175,6 +176,7 @@
 > * sql语句参数通过`?`作为占位符，同时还可以实现一次编译多次运行，执行效率会更高一些。
 > * 一定要注意PreparedStatement对象的setXXX()是`从1开始算?的下标`。
 > * 占位符?不能用来表示字段名，只能用来表示字段的值。
+> * ==注意使用close()关闭对象后，并不会让对象指向null==
 
 #### 5.3 PreparedStatement 和 Statement 的区别。
 > * Statement：是通过字符串拼接的方式处理参数，所以存在sql注入的隐患，非常不安全， 不推荐使用。
@@ -315,8 +317,8 @@ public class DBUtil2 {
     private static String username;
     private static String password;
     // 为什么要把连接对象和报告对象设置为静态变量？ -- 为了能在外面被释放这样能在外面类名.属性直接释放,不然没人来释放啊。
-    private static Connection conn;
-    private static PreparedStatement pstmt;
+    private static Connection conn = null;
+    public static PreparedStatement pstmt = null;
     // 所有线程共享同一个连接，会导致后面使用事务时是同一个事务线程不安全。
     // private static Connection conn;
     // 0. 第一次使用类时完成初始化操作
@@ -349,6 +351,7 @@ public class DBUtil2 {
     }
 
     // 2. 通用的关闭连接方法（因为要关闭的对象数量不固定(增删改2个，查询3个)所以由用户来传入）
+    // 注意使用close()关闭对象后，并不会让对象指向null
     // 因为都直接或间接实现了AutoCloseable，且该接口中有close()方法，所以用AutoCloseable而不使用Closeable。
     public static void closeConn(AutoCloseable... closeables){
         for (AutoCloseable cl : closeables) {
@@ -360,6 +363,8 @@ public class DBUtil2 {
                 }
             }
         }
+        conn = null;
+        pstmt = null;
     }
     // 3. 增删改，一个通用方法 （传入预处理型sql语句，和对应的数据）
     public static int update(String sql, Object ... o){
@@ -414,6 +419,12 @@ public class DBUtil2 {
         return null;
     }
 }
+
+// 遇到的难点：注意使用close()关闭对象后，并不会让对象指向null，但此时对象也不能被使用。
+
+// 存在缺点：
+// 实现层每次都要调用getConn()来获取Connection对象，
+// 因为Connection对象在工具类DBUtil2中是静态的，close()后就必须重新创建
 ```
 #### 实例2:支持事务,线程安全版本
 ```java
@@ -428,9 +439,9 @@ public class DBUtil3 {
     private static String username;
     private static String password;
     // 为什么要把连接对象和报告对象设置为静态变量？ -- 为了能在外面被释放。
-    private static PreparedStatement pstmt;
+    public static PreparedStatement pstmt;
     // 要先创建一个本地线程类变量 (要new出来)
-    private static ThreadLocal<Connection> tconn = new ThreadLocal<>();
+    public static ThreadLocal<Connection> tconn = new ThreadLocal<>();
     // 所有线程共享同一个连接，会导致后面使用事务时是同一个事务线程不安全。
     // private static Connection conn;
     // 0. 第一次使用类时完成初始化操作
@@ -438,6 +449,7 @@ public class DBUtil3 {
         Properties propertie = new Properties();
         try {
             // 为什么要通过类加载器去获取流，而不使用文件流？
+            // 因为用文件流只能写绝对路径.
             propertie.load(new FileReader("D:\\JavaCode\\sc240601\\jdbc\\src\\config\\jdbc.properties"));
             driver = propertie.getProperty("driver");
             url = propertie.getProperty("url");
@@ -462,7 +474,6 @@ public class DBUtil3 {
     }
 
     // 2. 通用的关闭连接方法（因为要关闭的对象数量不固定(增删改2个，查询3个)所以由用户来传入）
-    // 因为都直接或间接实现了AutoCloseable，且该接口中有close()方法，所以用AutoCloseable而不使用Closeable。
     public static void closeConn(AutoCloseable... closeables){
         for (AutoCloseable cl : closeables) {
             if(cl != null) {
@@ -473,6 +484,9 @@ public class DBUtil3 {
                 }
             }
         }
+        // 注意close()并不会将对象置空。
+        pstmt = null;
+        tconn.set(null);
     }
     // 3. 增删改，一个通用方法 （传入预处理型sql语句，和对应的数据）
     public static int update(String sql, Object ... o){
@@ -692,7 +706,7 @@ public class JDBCUtil2 { //扩展 支持事务的jdbc
 ```
 
 ### 9.JDBC如何实现动态查询？
-> 动态搜索允许用户根据不同的条件执行搜索，这些条件可能在运行时才确定。在拼接查询的具体条件时，在数据前后都加上%，实现模糊查询。
+> 动态搜索允许用户根据不同的条件执行搜索，这些条件可能在运行时才确定（传参时还会传入对象来缺点要查询的字段）。在拼接查询的具体条件时，在数据前后都加上%，实现模糊查询。
 >
 > 在JDBC中实现动态搜索主要涉及到构建动态的SQL语句。动态搜索允许用户根据不同的条件执行搜索，这些条件可能在运行时才确定。以下是如何使用JDBC实现动态搜索的基本步骤：
 >
