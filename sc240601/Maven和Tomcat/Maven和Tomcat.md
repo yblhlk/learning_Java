@@ -147,7 +147,20 @@
 >	test-resources     标记为  Test Resources Root
 ><img src="D:\AppData\Typora\typora-user-images\image-20240803130149167.png" alt="image-20240803130149167" style="zoom: 50%;" />
 
-#### 5.2 maven项目中的根目录
+#### 5.2 标记maven项目的web目录
+
+> 如何将普通项目设置为Web项目(给项目配置webapp目录）？
+>
+> 1. 给项目添加一个webapp目录
+> 2. S + C + A + s 打开项目设置界面 选中项目 -> 右击选择"+ Add" -> 选择Web （给项目添加Web模块）
+> 3. 在Deployment Descriptors 和 Web Resource Directories 栏目中选择"+"把刚刚的web目录添加进去
+>    （配置Web资源目录和部署描述符）
+>
+> ![image-20240728164335517](.\img\将普通项目设置为Web项目.png)
+>
+> 4. 点击右下角的Apply完成设置（应用设置）
+
+#### 5.3 maven项目中的根目录
 
 > maven项目中谁是根目录？
 > 		main下的java、resources、webapps编译后会生成一个webapps\WEB-INF\lib目录，这个lib就是根目录，所以他们三个都是根目录。
@@ -314,6 +327,9 @@
 > 因为我们下载的只是一个子项目，所以我们还需要把它的父项目下载下来，父项目中的其他依赖就是和它有关联的依赖。
 > ![image-20240803131904238](D:\Desktop\gitee\java-learning\sc240601\Maven和Tomcat\img\导入依赖时还会一起导入相关依赖.png)
 
+#### 6.3如何在仓库中找到一个依赖？
+> 通过依赖的组id也就是<groupID>标签每一级就是一个文件夹，一直按这个找到和项目名相同的jar包就是导入的依赖了。
+
 ### 7.maven项目导入依赖出现错误如何解决
 
 > - file->settiings->搜索maven  查看maven配置是否正确(版本，配置文件，本地仓库)
@@ -326,7 +342,7 @@
 >
 > maven界面--->Lifecycle--->命令-->双击运行
 >
-> - clean: 清理项目,会将项目编译后的内容删除(target目录)，maven有可能会有缓存  如果编译了 可能不会每次都重新编译   会导致代码更新运行后还是更新之前效果
+> - clean: 清理项目,会将项目编译后的内容删除(target目录)，maven有可能会有缓存  如果编译了 可能不会每次都重新编译   会导致代码更新运行后还是更新之前效果。不使用maven的clean命令，直接删除targey目录的效果是一样的。(千万不要把jsp文件写到target中，clean后都没了，三次啊)
 >
 > - validate: 验证项目是否正确,如果错误 后期编译 后者打包都会出现问题
 >
@@ -336,7 +352,8 @@
 >
 > - test: 运行测试代码
 >
-> - package: 将项目进行打包（pom.xml  packaging标签配置决定） 
+> - package: 将项目进行打包（pom.xml  packaging标签配置决定） 会在target目录下生成一个XXX.war
+>   （扩：main下面的java和resources目录下的文件编译后都直接放在target\classes下）
 >
 >   默认先编译 后打包
 >
@@ -348,79 +365,76 @@
 
 ### 1.什么是Tomcat
 
-tomcat是一个开源的 轻量级的 web服务器,目前在中小型企业被广泛使用  tomcat默认支持1000个左右的并发量，后期可以去搭建tomcat服务器集群目前是java开发的首选     常用web服务器:  tomcat     apache   weblogic .
+> tomcat是一个开源的 轻量级的 web服务器,目前在中小型企业被广泛使用  tomcat默认支持1000个左右的并发量，后期可以去搭建tomcat服务器集群目前是java开发的首选     常用web服务器:  tomcat     apache   weblogic .
 
 ### 2. Tomcat目录结构
 
- tomcat安装 :  只需要解压即可  不用配置环境变量   
-
-- bin:  存放一些可执行文件   *.bat 文件 是用于window系统使用    
-
-  *.sh 文件 是用于linux或者unix系统使用的
-
-  shutdown.bat   shutdown.sh      关闭服务器
-
-  startup.bat       startup.sh           启动服务器
-
-- `conf`:  存放tomcat配置文件目录  非常重要   *.properties  *.xml文件
-
-  server.xml  比较重要     修改编码方式   修改tomcat端口号(8080)
-
-  web.xml     比较重要     修改tomcat全局配置    比如:修改会话默认时间
-
-  ```xml
-  <Connector port="8080" protocol="HTTP/1.1"
-                 connectionTimeout="20000"
-                 redirectPort="8443" />
-  ```
-
-- `webapps`:  最重要的目录  存储部署的项目   war包存放的位置     tomcat启动后 自动解压war包  自动部署项目  
-
-- lib:  存放tomcat自己运行需要依赖的环境  
-
-- `logs`:  日志文件的包   记录服务器运行的过程  方便后期维护 或者调错 
-
-- temp:   存放临时文件
-
-- work:  存放项目中jsp编译后的内容(servlet) 和 一些缓存内容
-
-   
+> tomcat安装 :  只需要解压即可  不用配置环境变量   
+>
+> - bin:  存放一些可执行文件   *.bat文件 和 *.sh文件比较重要。 
+>
+>   *.bat文件 ：给Windows系统使用的\.sh文件 ： 给Linux 和 Unix系统使用的 （所以tamcat支持Windows和Linux系统）其中开启和关闭tomcat的文件又是最重要的：
+>
+>   * 开启服务器：startup.bat\startup.sh(可以点开startup.bat文件看看会不会闪退，会闪退就表示java的环境变量没有配置好。)
+>   * 关闭服务器：shutdown.bat\shutdown.sh
+>     
+>
+> - `conf`:  存放tomcat配置文件目录 .properties 和*.xml文件非常重要。
+>   其中server.xml文件 和web.xml文件比较重要。
+>
+>   * server.xml文件 : 修改编码方式 和 tamcat服务器的端口号（默认为8080)
+>
+>     ```xml
+>     如何修改端口号？
+>     用记事本打开server.xml文件，找到根节点中的<Connector port=……>标签(70行左右)，注意是没有注释的那个标签。
+>     <Connector port="8080" protocol="HTTP/1.1"
+>                    connectionTimeout="20000"
+>                    redirectPort="8443" />
+>     ```
+>
+>   * web.xml文件: 修改tomcat全局配置 比如：修改会话的默认时间，默认为30
+>     ![image-20240803133700257](D:\Desktop\gitee\java-learning\sc240601\Maven和Tomcat\img\修改session会话时间.png)
+>
+> - `webapps`:  最重要的目录  存储部署的项目   war包存放的位置     tomcat启动后 自动解压war包  自动部署项目  
+>
+> - lib:  存放tomcat自己运行需要依赖的环境  
+>
+> - `logs`:  日志文件的包   记录服务器运行的过程  方便后期维护 或者调错 
+>
+> - temp:   存放临时文件
+>
+> - work:  存放项目中jsp编译后的内容(servlet) 和 一些缓存内容
 
 ### 3.tomcat项目部署过程
 
-- war包:  将idea打好的war包 放入到tomcat目录-->webapps包下 启动tomcat服务器就会自动部署    最后如果服务器启动没有报错   就可以通过网址来测试:  协议://ip:端口/项目资源
+> - war包:  将idea打好的war包(通过maven的packing选项打包)放入到`tomcat/webapps目录`下，使用`startup.bat`启动tomcat服务器就会自动部署。最后如果服务器启动没有报错   就可以通过网址(url)来测试：
+>   `http://localhost:tomcat的端口号/项目名[/index.jsp]`
+>   ![image-20240803144652483](D:\Desktop\gitee\java-learning\sc240601\Maven和Tomcat\img\在Tomcat中部署war包项目.png)
+> - jar包:   部署方式和上面一样，然后linux系统中或者windows中使用cmd 输入命令`java -jar xxx.jar`来启动如果服务器启动没有报错   就可以通过网址(url)来测试：`http://localhost:tomcat的端口号/项目名[/index.jsp]`
 
-  ```
-  http://localhost:8080/servlet/index.jsp    默认首页index可以省略
-  
-  http://localhost:8080/servlet/   x.war 换成ROOT.war /servlet 也可以省略 tomcat会把这个项目当成 默认项目
-  
-  http://localhost:8080     端口:设置80端口  也可以省略
-  
-  http://localhost          浏览器自动添加http协议
-  
-  localhost    就可以访问项目
-  
-  
-  花点钱 把上面ip地址 绑定域名 比如 www.baidu.com
-  ```
+#### 3.1 部署在Tomcat服务器的项目如何省略网址
 
-- jar包:   linux系统中或者windows中使用cmd 输入命令
-
-  ```
-  java -jar xxx.jar
-  
-  测试根上面war包的测试方式一致
-  ```
+> * 省略项目名：删除webapps目录下的 项目目录和ROOT目录删除，然后把项目的war包重命名为ROOT.war就可以省略项目名。
+>
+> * 省略端口号：把服务器端口号改写成80，那么写网址的时候端口号也可以省略。
+>
+> * 省略协议头：浏览器会自动添加http协议所以 http:// 也可以省略。
+>
+>   完成以上步骤，通过网址访问项目的时候就可以只写一个localhost。
+>
+>   这样设置省略的好处在于：后期如果申请了域名，我们直接用域名来代替IP地址直接访问部署在服务器上的项目，也就是为什么百度等网站使用域名www.baidu.com就能访问百度搜索项目的原因。
 
 ### 4.idea如何集成tomcat
 
-注意IDEA中的Tomcat是本地Tomcat的镜像副本，对其的设置进行修改并不会影响本地的Tomcat。在C盘下的用户数据文件夹的JetBrains公司文件夹下的IDEA文件夹的tomcat文件下的XXXXX加密文件夹下的server.xml中（C:\Users\wang'ya'lin\AppData\Local\JetBrains\IntelliJIdea2020.3\tomcat\XXXXXXX\server.xml）就可以看到这镜像副本的配置文件，就可以看到其修改的设置。
+#### 4.1 IDEA中的Tomcat是本地Tomcat的镜像副本
 
-> IDEA集成Tomcat服务器：
+> `IDEA中的Tomcat是本地Tomcat的镜像副本`，对其的设置进行修改并不会影响本地的Tomcat。在C盘下的用户数据文件夹的JetBrains公司文件夹下的IDEA文件夹的tomcat文件下的XXXXX加密文件夹下的server.xml中（C:\Users\wang'ya'lin\AppData\Local\JetBrains\IntelliJIdea2020.3\tomcat\XXXXXXX\server.xml）就可以看到这镜像副本的配置文件，就可以看到其修改的设置。
+
+#### 4.2 IDEA集成Tomcat服务器
+
 > 右上角点击TomcatXX -> 选择Edit Configurations -> 选择Tomcat Server -> 选择"+"添加Tomcat服务器 ->
-> 选择Tomcat Server（注意是Tomcat Server不是TomEE Server） -> 选择local ->
-> 选择Server页面：
+> 选择Tomcat Server（注意是Tomcat Server不是TomEE Server） -> 选择Local(Local是本地  Remote是云服务器)  -> 选择Server页面：
+>
 > 1. Configure... 找到服务器文件位置
 > 2. Name 表示服务器名，可修改
 > 2. URL 表示启动服务器后默认访问的页面
@@ -428,7 +442,7 @@ tomcat是一个开源的 轻量级的 web服务器,目前在中小型企业被�
 > C:\Users\wang'ya'lin\AppData\Local\JetBrains\IntelliJIdea2020.3\tomcat下的server.xml中就可以看到这个HTTP port设置的端口号
 > 5. VM options: 表示虚拟机参数，"-Dfile.encoding=UTF-8"可设置虚拟机编码方式
 >
-> ![image-20240728163000296](D:\Pictures\Tomcat\IDEA集成Tomcat.png)
+> <img src=".\img\IDEA集成Tomcat.png" alt="image-20240728163000296" style="zoom:50%;" />
 >
 > 还要在Deployment界面中
 > 1. 选择 "+" 选择 Artifact 添加项目（将一个前端项目部署到Tomcat服务器，必须是包含了前端的项目），选择 exploded后缀的选项(==exploded后缀表示已经展开的项目==，不像war后缀项目一样表示项目要解压后才能部署，所以它：
@@ -436,7 +450,7 @@ tomcat是一个开源的 轻量级的 web服务器,目前在中小型企业被�
 >    - 部署速度更快，因为不需要解压WAR文件。
 >    - 能进行热部署，即在不重启服务器的情况下更新应用程序。)
 >
->    ![image-20240731212429411](D:\Pictures\Tomcat\exploded表示已展开的项目.png)
+>    ![image-20240731212429411](.\img\exploded表示已展开的项目.png)
 >
 > 2. 在Application context中 设置项目前缀（设置为"/" 在网页访问项目时就不需要带上一串前缀了）
 >
@@ -444,14 +458,14 @@ tomcat是一个开源的 轻量级的 web服务器,目前在中小型企业被�
 > 6. On 'Update' action 和 On frame deactivation 表示前端代码修改时是否要通过重启服务器来更新
 >     两个都设置为update classes and resources 就是前端热部署即不重启服务器，直接刷新网页就可以完成更新。
 
-#### 4.1 如何将普通项目设置为Web项目(给项目配置webapp目录）？
+#### 4.3 如何将普通项目设置为Web项目(给项目配置webapp目录）？
 
 > 1. 给项目添加一个webapp目录
 > 2. S + C + A + s 打开项目设置界面 选中项目 -> 右击选择"+ Add" -> 选择Web （给项目添加Web模块）
 > 3. 在Deployment Descriptors 和 Web Resource Directories 栏目中选择"+"把刚刚的web目录添加进去
 > （配置Web资源目录和部署描述符）
 >
-> ![image-20240728164335517](D:\Pictures\Tomcat\将普通项目设置为Web项目.png)
+> ![image-20240728164335517](.\img\将普通项目设置为Web项目.png)
 >
 > 4. 点击右下角的Apply完成设置（应用设置）
 
@@ -464,7 +478,7 @@ tomcat是一个开源的 轻量级的 web服务器,目前在中小型企业被�
 >
 > 法二：
 >
-> 或是修改idea.exe.vmoptions文件（在IDEA的bin目录下） 加一句：-Dfile.encoding=UTF-8
+> 或是修改idea.exe.vmoptions文件（在IDEA的bin目录下） 加一句：-Dfile.encoding=UTF-8(有弊端)
 
 ##### b. 解决前端页面中文乱码问题
 
@@ -506,3 +520,6 @@ tomcat是一个开源的 轻量级的 web服务器,目前在中小型企业被�
 > java.util.logging.ConsoleHandler.level = FINE
 > java.util.logging.ConsoleHandler.formatter = org.apache.juli.OneLineFormatter
 > java.util.logging.ConsoleHandler.encoding = UTF-8
+
+##### d.IDEA无法输出中文标点符号的原因
+> 因为在idea.exe.vmoptions文件中加了-Dfile.encoding=UTF-8，就无法在IDEA输入中文标点
