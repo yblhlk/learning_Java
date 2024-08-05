@@ -169,76 +169,80 @@
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- xml版本信息  一般放在第一行 -->
+<!-- xml的版本信息，一般放在第一行，控制版本和编码-->
 
-<!-- 根节点: xml根节点只有一个
-     xml早期: 可扩展标记语言 标签是可以自定义的 默认每个标签没有任何意义
-     前期xml应用场景主要用于做数据传递,还可以实现数据库存储  后期出现json取代了xml数据传递
-     后期数据库取代了xml存储数据  到目前为止xml一般被当成配置文件存在
-     但是xml本身的标签是可以自定义的没有任何含义  所以每个框架或者技术都为xml
-     设置了一套规则(可以放哪个根节点  可以放哪些子标签 能存储哪些值) 这个规则就叫做约束
-     约束主要分两种:  DTD约束 (初级)   schema约束 (高级)
-
-     html: 超文本标记语言  h1  div  p table ul
-     <modelVersion>4.0.0</modelVersion>
-     <html>4.0.0</html>
+<!--xml的根节点：xml的根节点只有一个：即最外层标签只能有一个
+    xml早期：可扩展的标记语言，可扩展指的是标签是可以自定义的，所以默认每个标签没有任何意义。
+    前期xml应用场景主要用于做数据传递，还可以实现数据库存储（表当成父级标签，字段当成子级标签）
+    后期出现了json更适合做数据传递（因为json就是一个字符串，不用像xml要解析一个一个标签）
+    后期出现数据库更适合做数据存储（安全，易操作）
+    所以现在xml一般被当成配置文件，
+    但是xml的自定义标签是没有任何含义的，
+    所以每个框架或技术给xml设置了一套标准，给标签赋予了含义，限制了根节点，限制了子节点能放在哪个父节点下，
+    这个规则就叫约束，约束主要分两种：
+      DTD约束：初级约束，规范没怎么细致
+      Schema约束：高级约束，规范更细致，现在框架主要使用的约束
+    html：超文本标记语言
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <!--组id: 公司域名倒序-->
+<!--  组id：公司域名倒叙-->
   <groupId>com.sc.sc240601</groupId>
-  <!--项目名-->
+<!--  项目名-->
   <artifactId>servlet</artifactId>
-  <!--版本号: 随着项目更新迭代 1.0 1.1 1.12 2.0-->
+<!--  版本号：随着项目更新迭代 1.0 1.1 1.12 2.0-->
   <version>1.0-SNAPSHOT</version>
-  <!--打包方式:
-         jar: 将项目所有内容 打包成 XX.jar 一般javase项目 或者 springboot项目会使用
-         war: 将项目所有内容 打包成 XX.war 一般来说普通的web项目( servlet, SSM )
-         pom: 不是打包 叫做聚合项目  一般来说父项目才需要配置成pom  不会编译的
-              只用于子项目继承  子项目就无需再次导入重复的依赖
-  -->
-  <packaging>war</packaging>
-  <!-- 右边 maven界面显示的名称 -->
-  <name>servlet</name>
+    <!--  打包方式：
+            jar: 将项目所有内容打包成一个xxx.jar （一般javaSE项目和springboot项目会使用）
+            war: 将项目所有内容打包成一个xxx.war （一般普通的web项目（servlet，SSM）会使用）
+            pom: 不是打包的意思，这表示一个聚合项目，一般来说父项目才需要配置成pom，是不会编译的，是让子项目来继承环境，这样子项目就无需再次导入重复的依赖。
+    -->
+  <packaging>pom</packaging>
+<!--IDEA右侧栏点开的Maven界面的名字-->
+  <name>servlet Maven Webapp</name>
   <!-- FIXME change it to the project's website -->
+<!--  测试网站-->
   <url>http://www.example.com</url>
 
-  <!--设置通用属性:一般自带编码方式 和 maven编译的版本 推荐:1.8
-      同时还可以设置项目依赖的通用版本号
-      设置方式: 写任意的标签(成对的)
-      使用方式: 下面${任意的标签} 获取里面的版本号
-      好处: 可以通用  可以统一修改版本
-  -->
+<!--  设置通用属性：一般会自带编码方式 和 maven编译版本 推荐1.8
+      还可以在这里设置项目依赖的通用版本号
+        设置方式：
+          写一个任意的标签（成对出现）
+        使用方式：
+          在定义标签的下面，可以使用${标签名} 来获取标签里的内容。
+        好处：
+          代码重用，方便统一修改（提高可维护性）
+-->
   <properties>
-    <abcd>4.11</abcd>
-    <spring---version>5.0</spring---version>
+    <!--设置编码方式-->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <!--maven编译版本 推荐1.8-->
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
   </properties>
 
-  <!--设置依赖: 最核心的
-    有几个dependency标签就添加了几个依赖(jar)
-    一般可以通过: https://mvnrepository.com/
-    手动查找 哪个dependency标签
-    jsp  servlet  jstl mysql
-  -->
+<!--  设置依赖：最核心的
+      每个<dependency>都表示一个依赖，有几个<dependency>就添加了几个依赖（表示添加了几个jar包）
+      依赖如果添加成功，在IDEA右侧的Maven界面的Dependencies栏中可以找到
+      要添加jar可以到 网上maven仓库：https://mvnrepository.com/中去找他的<dependency>，赋值到下面，然后在maven界面中刷新
+-->
   <dependencies>
-    <!--一个依赖-->
+
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>${abcd}</version>
-      <!--score标签: 用于指定jar包作用范围
-               test:  指定jar包测试范围有效  编译和打包不会使用该依赖
-               provided: 已提供   比如:jsp和servlet 服务器自带的包 不需要重复导入
-               compile: 默认方式 编译范围有效  打包时候会使用该依赖
-               runtime: 在运行时才会需要的依赖  编译时候不需要
+      <version>4.11</version>
+      <!-- score标签：用于指定jar包作用范围
+            test：指定jar包测试范围有效 编译和打包时不会使用该依赖
+            provided: 框架已经提供时不会使用该依赖 比如jsp和servlet 服务器自带，就不会重复使用
+            compile(编译): 默认方式，编译范围有效，打包的时候会使用该依赖
+            runtime: 在运行时才会需要的依赖 编译时候不需要使用该依赖
       -->
       <scope>test</scope>
     </dependency>
-    <!--jsp依赖-->
+
+    <!-- jsp依赖-->
     <dependency>
       <groupId>javax.servlet.jsp</groupId>
       <artifactId>javax.servlet.jsp-api</artifactId>
@@ -246,12 +250,20 @@
       <scope>provided</scope>
     </dependency>
 
-    <!--servlet依赖-->
+    <!-- servlet依赖 -->
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>javax.servlet-api</artifactId>
       <version>4.0.1</version>
       <scope>provided</scope>
+    </dependency>
+
+
+    <!--mysql的依赖，推荐：MySQL Connector Java-->
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>8.0.17</version>
     </dependency>
 
     <!--jstl依赖-->
@@ -261,17 +273,55 @@
       <version>1.2</version>
     </dependency>
 
-    <!--mysql依赖-->
+    <!-- spring-webmvc的依赖：
+         是springmvc的核心依赖
+     -->
     <dependency>
-      <groupId>mysql</groupId>
-      <artifactId>mysql-connector-java</artifactId>
-      <version>5.1.44</version>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-webmvc</artifactId>
+      <version>5.0.3.RELEASE</version>
     </dependency>
+
+    <!-- com.alibaba/druid的依赖：
+          德鲁伊，是阿里巴巴提供的一个依赖，是一个连接池。
+     -->
+    <dependency>
+      <groupId>com.alibaba</groupId>
+      <artifactId>druid</artifactId>
+      <version>1.1.20</version>
+    </dependency>
+
+    <!-- mybatis的依赖 -->
+    <dependency>
+      <groupId>org.mybatis</groupId>
+      <artifactId>mybatis</artifactId>
+      <version>3.4.5</version>
+    </dependency>
+
+    <!--com.github.pagehelper/pagehelper的依赖：
+        分页用的一个插件
+     -->
+    <dependency>
+      <groupId>com.github.pagehelper</groupId>
+      <artifactId>pagehelper</artifactId>
+      <version>4.2.1</version>
+    </dependency>
+
+    <!-- slf4j-log4j12的依赖：
+          日志插件
+     -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+      <version>1.7.25</version>
+      <scope>test</scope>
+    </dependency>
+
   </dependencies>
 
-  <!--构建标签:-->
+  <!--构建标签：-->
   <build>
-    <!--项目编译后的名字 -->
+    <!--项目编译后的名字-->
     <finalName>servlet</finalName>
     <!--配置maven插件-->
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
@@ -309,6 +359,7 @@
     </pluginManagement>
   </build>
 </project>
+
 ```
 
 #### 6.1 score标签：用于指定jar包作用范围
@@ -392,7 +443,7 @@
 >                    redirectPort="8443" />
 >     ```
 >
->   * web.xml文件: 修改tomcat全局配置 比如：修改会话的默认时间，默认为30
+>   * web.xml文件: 修改tomcat全局配置 比如：修改会话的默认时间(600行左右)，默认为30
 >     ![image-20240803133700257](D:\Desktop\gitee\java-learning\sc240601\Maven和Tomcat\img\修改session会话时间.png)
 >
 > - `webapps`:  最重要的目录  存储部署的项目   war包存放的位置     tomcat启动后 自动解压war包  自动部署项目  
