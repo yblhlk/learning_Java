@@ -19,7 +19,9 @@
 >
 >   (网址不好找 版本不好找 下载衣赖如果还关联其他依赖也需要去下载)
 
-
+> ==C + A + s ：开启IDEAmaven管理界面==
+>
+> ==S+C+A+s：开启IDEA项目管理界面==
 
 ### 2.maven安装和配置
 
@@ -116,6 +118,12 @@
 >
 > * 检测没有问题就点击Finish完成maven项目构建。（完成构建后要下载必要依赖和maven插件，要保证网络良好，不然下载失败要重新创建）
 >   ![image-20240803125018507](D:\Desktop\gitee\java-learning\sc240601\Maven和Tomcat\img\创建maven项目4.png)
+
+#### 4.1 IDEA中管理maven项目
+
+> ==C + A + s ：开启IDEAmaven管理界面==
+>
+> ==S+C+A+s：开启IDEA项目管理界面==
 
 ### 5.maven项目目录结构
 
