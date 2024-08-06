@@ -265,9 +265,9 @@ delete from 表名 where 条件
 
 > MySQL中char类型和varchar类型的区别：
 >
-> char一旦创建就不能改变其大小。
+> char一旦创建就不能改变其大小。上限为255个字符。
 >
-> varchar会根据内容来决定占用的空间，存储的内容变大，空间也变大。
+> varchar会根据内容来决定占用的空间，存储的内容变大，空间也变大。上限为65535个字节。
 >
 > ![image-20240709155007187](D:\Pictures\MySQL中char类型和varchar类型的区别.png)
 
@@ -284,7 +284,7 @@ delete from 表名 where 条件
 > timestamp和datetime的区别：
 >
 > * 容量不同：timestamp占4个字节，datetime在mysql5.6后占5个字节之前是8个字节。
-> * 存储不同：timestamp存储的值转换成UTC的时间再进行存入datetime不会转换，给什么存什么
+> * 存储不同：timestamp存储的值转换成UTC的时间再进行存入。datetime不会转换，给什么存什么。
 > * 存储null：timestamp在mysql8之前，如果存储null自动转换为now()，datetime不会，给什么存什么。
 > * 存储now()：timestamp可能与当前时间不一致，因为他会把当前时间转化为UTC来存储；但datetime不会转换，和当前时间是一致的。（当UTC（格林尼治标准时间）为00:00时，东八区的标准时间为08:00。）
 
@@ -942,7 +942,7 @@ drop index 索引名 on 表
 > * ref ：一般是普通索引作为条件查找单条数据时
 > * fulltext ： 全文索引查找单条数据时，如果全文索引和普通索引都存在，会优先索引全文索引
 > * range ：用索引走了范围查询（between >  < in like)
-> * index ：用索引全表扫描，就是把索引从头到尾都扫描一遍
+> * index ：用索引全表扫描，就是查询时不带条件且查询的是带索引的字段，会从头到尾把表扫描一遍。
 > * all  ：全表扫描，不使用索引
 
 ```sql
@@ -973,6 +973,10 @@ explain select * from testIndex2
 where id between 1 and 5;
 
 -- 级别6：
+-- index ：用索引全表扫描
+explain select id from a;
+
+-- 级别7：
 -- all 不使用索引
 ```
 
@@ -982,7 +986,7 @@ where id between 1 and 5;
 
 ### ==6. 联合索引的最左匹配原则?==
 
-> 最左匹配原则：主要是给联合索引使用的，在联合索引中，如果查询条件涉及到索引的多个字段，只要联合索引最左边的字段匹配了，就会走联合索引。但是最左边的字段没匹配上，即使后面的字段都匹配了，也不会走联合索引。
+> 最左匹配原则：主要是给联合索引使用的，在联合索引中，如果==查询条件涉及到索引的多个字段==，只要联合索引最左边的字段匹配了，就会走联合索引。但是最左边的字段没匹配上，即使后面的字段都匹配了，也不会走联合索引。
 
 ```sql
 -- 一个联合索引(A,B)
@@ -1472,3 +1476,9 @@ drop view teacher_course_info;
 > ```
 >
 > ![image-20240802102140689](D:\Pictures\MySQL\MySQL中的数据类型转换.png)
+
+### 4. sql语句中 and 和 or 的优先级
+
+> sql语句中and的优先级大于or，所以下面要用（）来提升or的优先级：
+>
+> ![image-20240805101922216](D:\Pictures\MySQL\and和or的优先级.png)
