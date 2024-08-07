@@ -471,7 +471,14 @@
 >   ![image-20240803144652483](D:\Desktop\gitee\java-learning\sc240601\Maven和Tomcat\img\在Tomcat中部署war包项目.png)
 > - jar包:   部署方式和上面一样，然后linux系统中或者windows中使用cmd 输入命令`java -jar xxx.jar`来启动如果服务器启动没有报错   就可以通过网址(url)来测试：`http://localhost:tomcat的端口号/项目名[/index.jsp]`
 
-#### 3.1 部署在Tomcat服务器的项目如何省略网址
+#### 3.1 如何将一个项目以war包的形式部署在Tomcat服务器上？
+
+> * pom.xml修改packaging标签设置成war
+> * 利用maven的package命令进行打包XXXX.war
+> * 将war包放入tomcat目录下webapps目录里面
+> * 通过bin日录 startup.bat 启动服务器
+
+#### 3.2 部署在Tomcat服务器的项目如何省略网址
 
 > * 省略项目名：删除webapps目录下的 项目目录和ROOT目录删除，然后把项目的war包重命名为ROOT.war就可以省略项目名。
 >
