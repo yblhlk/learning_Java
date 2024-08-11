@@ -1,0 +1,39 @@
+<html>
+<head>
+    <title>用户空间</title>
+</head>
+<body>
+    <p>欢迎来到用户空间。</p>
+    <p>以下是所有用户的信息：</p>
+    <%
+        //将所有的用户信息保存到作用域中
+        List<DDUser>  list = (new UserDaoImpl()).getUsers();
+        request.setAttribute("list",list);
+    %>
+    <table width="40%" border="1px" cellspacing="0px">
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>phone</th>
+                <th>money</th>
+                <th>serviceId</th>
+            </tr>
+        </thead>
+        <tbody>
+            <c:forEach var="l" items="${list}">
+                <tr>
+                    <td>${l.id}</td>
+                    <td>${l.phone}</td>
+                    <td>${l.money}</td>
+                    <td>${l.serviceId}</td>
+                </tr>
+            </c:forEach>
+        </tbody>
+    </table>
+</body>
+</html>
+
+<!--单词：-->
+<!--cell : 细胞，电池-->
+<!--spacing : 间距，字距，行距-->
+<!--cell spacing : 细胞间距-->

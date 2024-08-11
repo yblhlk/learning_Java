@@ -1,0 +1,27 @@
+<html>
+<head>
+    <title>下拉框</title>
+</head>
+<body>
+    <form>
+        <fieldset>
+            <legend>注册</legend>
+            <p>手机：<input name="phone" type="text"/></p>
+            <p>密码：<input name="password" type="text"/></p>
+            <p>确认：<input name="isPassword" type="password"/></p>
+            <!--输入字段就允许用户输入小数，并且可以通过界面上的上下箭头以0.01为步长进行增减。-->
+            <p>余额：<input name="money" type="number" step="0.1"/></p>
+            <p>套餐：
+                <select>
+                    <option value="30">超人套餐</option>
+                    <option selected value="40">话痨套餐</option>
+                    <option value="50">网虫套餐</option>
+                    <option disabled value="60">至尊套餐</option>
+                </select>
+            </p>
+            <p><input type="radio"> 同意用户协议</p>
+            <button>注册</button>
+        </fieldset>
+    </form>
+</body>
+</html>

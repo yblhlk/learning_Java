@@ -1,0 +1,36 @@
+<html>
+    <head>
+        <title>内联窗口</title> <!--不写就以文件名为网页标题-->
+    </head>
+    <body>
+        <h3>Welcom XXX login, service packge: XXX, money: XXX</h3>
+        <ul>
+            <!--a标签的锚链接：
+            <a>标签的target属性可以用来指定链接的打开方式，
+            可以填入内联窗口的name或id来进行关联
+            如_blank（在新窗口或标签页中打开）、_self（在当前窗口或标签页中打开，默认值）、
+            _parent（在父窗口或标签页中打开）、_top（在最顶层的窗口或标签页中打开）。-->
+            <li> <a target="_self" href="1.内联窗口.html">内联展开</a></li>
+            <li> <a target="_blank" href="2.领域.html">领域展开</a></li>
+            <li> <a target="_blank" href="3.下拉框.html">下拉框展开</a></li>
+            <li> <a target="c" href="1.内联窗口.html">内联展开2</a></li>
+            <li> <a target="c" href="2.领域.html">领域展开2</a></li>
+            <li> <a target="c" href="3.下拉框.html">下拉框展开2</a></li>
+        </ul>
+        <!-- iframe（内嵌框架）是HTML中的一个标签，用于在网页中嵌入另一个网页或文档。
+        内联窗口和a标签的target联合使用，
+        内联窗口使用src属性来指定默认页面
+        -->
+        <iframe name="c" style="position:absolute; top:50; left:150;" width="500px" height="300px" src="2.领域.html"></iframe>
+    </body>
+</html>
+
+<!--单词：-->
+    <!-- href是HyperText Reference的缩写，中文译为“超文本引用” -->
+    <!-- target -- 目标 -->
+    <!-- iframe -- 全称为inline frame，即内联框架。 -->
+    <!-- inline -- 内联 -->
+    <!-- frame -- 框架 -->
+    <!-- style -- 风格 -->
+    <!-- position -- 位置 -->
+    <!-- absolute -- 绝对的 -->
