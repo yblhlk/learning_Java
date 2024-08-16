@@ -361,12 +361,12 @@
 >     <servlet>
 >         <!--servlet名称任意写 但是不要和别的Servlet重名-->
 >         <servlet-name>user</servlet-name>
->                     
+>                         
 >         <!--告诉配置文件 哪个类实现了Servlet 要把这个类的唯一的地址给我(全类名)-->
 >         <!--底层:通过全类名获取Class对象  通过CLass对象创建Servlet实例 原理就是反射-->
 >         <servlet-class>controller.UserController</servlet-class>
 >     </servlet>
->                 
+>                     
 >     <servlet-mapping>
 >         <!--必须跟Servlet的名称对应-->
 >         <servlet-name>user</servlet-name>
@@ -382,7 +382,7 @@
 >   - 通过@WebServlet注解来配置 --- 了解
 >
 >     ```
->                 
+>                     
 >     ```
 >
 
@@ -1237,3 +1237,95 @@ public class MyTest {
 > 注意点：and前面有一个空格，不然拼接后就是直接糊在一起。
 >
 > ![image-20240814020939267](.\img\实现动态sql语句.png)
+
+> 前端：
+>
+> ```jsp
+>     <!--增加一个动态搜索框-->
+>     <form action="/user" method="post">
+>         <p>
+>             手机号：<input value="${sphone}" placeholder="要查询的号码" size="10px" maxlength="11" name="sphone" type="text">
+>             <select name="sid">
+>                 <option value="0" selected disabled>请选择套餐</option>
+>                 <!--把下拉框改成动态的-->
+>                 <c:forEach var="sl" items="${splist}">
+>                     <option <c:if test="${sl.id == ssid}"> selected </c:if> value="${sl.id}"> ${sl.name}</option>
+>                 </c:forEach>
+>                 <option value="0">未知套餐</option>
+>             </select>
+>             <button>查询</button>
+>         </p>
+>     </form>
+> ```
+>
+> 控制层：
+>
+> ```java
+>     private void show(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+>         //改成动态搜索，根据用户传来的数据中是否有值来确定
+>         String sphone = req.getParameter("sphone");
+>         String ssid = req.getParameter("sid");
+>         Integer sid = 0;
+>         if(ssid != null)
+>             sid = Integer.parseInt(ssid);
+>         //创建一个搜索条件对象
+>         DDUser user = new DDUser(null, sphone, null, 0, sid);
+> 
+>         //判断是否登录（session中是否有用户信息）：
+>         if(req.getSession().getAttribute("user") != null) {
+>             // 要把数据发送给前端：
+>             // 1. 通过dao层从数据库中获取数据：
+>             List<DDUser> list = ud.getUsers(user);
+>             // 2. 把数据保存到作用域中
+>             req.setAttribute("list",list);
+>             req.setAttribute("sphone", sphone);
+>             req.setAttribute("ssid", sid);
+>         }
+>         // 3. 到展示数据的页面
+>         // 由于request作用域只在一次请求内有效，所以不能通过重定向来跳转页面
+>         // 只能通过转发转发则是相对于根目录开始
+>         req.getRequestDispatcher("day2/show.jsp").forward(req,resp);
+>     }
+> ```
+>
+> dao层
+>
+> ```java
+> public List<DDUser> getUsers(DDUser user) {
+>     //实现查询所有用户功能
+>     // 两表关联查询的结果的顺序问题
+>     String sql = "select * from dduser u, ddservicepackage s where u.serviceId = s.id ";
+>     List<Object> o = new ArrayList<>();
+>     if(user.getPhone() != null) {
+>         sql += " and u.phone like ? ";
+>         //拼接字符串一定要注意空格问题，为了不出错哪怕多打几个空格也没问题。
+>         o.add("%" + user.getPhone() + "%"); //为什么不写到上面？ -- 因为预处理时会添加''
+>     }
+>     if(user.getServiceId() != 0) {
+>         sql += " and u.serviceId=? ";
+>         o.add(user.getServiceId());
+>     }
+>     sql += " order by u.id "; //为什么会有顺序问题？导致我要加 order by?
+> 
+>     Connection conn = DBUtil2.getConn(); //为了关闭连接。
+>     ResultSet result = DBUtil2.query(sql, o.toArray());
+>     // 解析ResultSet对象，获取所有用户信息：
+>     List<DDUser> users = new ArrayList<>();
+>     try {
+>         while (result.next()) {
+>             users.add(createUsers(result));
+>         }
+>         // 打印提示用于判断是否执行成功。
+>         for (DDUser u : users) {
+>             System.out.println(u);
+>         }
+>     } catch (SQLException throwables) {
+>         throwables.printStackTrace();
+>     }
+> 
+>     //关闭连接
+>     PreparedStatement pstmt = DBUtil2.pstmt;//为了关闭连接
+>     DBUtil2.closeConn(result, pstmt, conn); //注意关闭顺序
+>     return users;
+> }
+> ```

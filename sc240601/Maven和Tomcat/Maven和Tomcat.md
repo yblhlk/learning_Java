@@ -541,6 +541,7 @@
 
 > 法一：
 > Setting -> Editor -> General -> Console -> Default Encoding 改成和系统一样的编码方式
+> Tomcat服务器打印白色区域时乱码则可以改成GBK。
 >
 > 法二：
 >
@@ -585,7 +586,7 @@
 >
 > java.util.logging.ConsoleHandler.level = FINE
 > java.util.logging.ConsoleHandler.formatter = org.apache.juli.OneLineFormatter
-> java.util.logging.ConsoleHandler.encoding = UTF-8
+> java.util.logging.ConsoleHandler.encoding = GBK
 
 ##### d.IDEA无法输出中文标点符号的原因
 > 因为在idea.exe.vmoptions文件中加了-Dfile.encoding=UTF-8，就无法在IDEA输入中文标点
