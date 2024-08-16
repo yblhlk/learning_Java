@@ -278,7 +278,7 @@
 >   execution(* com.sc.service.impl.*.*(..))
 >   			   包名.包名.包名.所有类.所有方法
 >   void test(参数){
->     
+>       
 >   }
 >   ```
 >
@@ -528,6 +528,8 @@
 >     @DateTimeFormat @JsonFormat 
 >     @RequestBody @ResponseBody
 >     @RequestParam
+> * 其他注解：
+>   * @Scope：指定bean对象的作用域。
 
 ### 5. Spring加载配置文件的方式
 
@@ -547,9 +549,51 @@
 >
 > * 配置Spring提供的监听：加载Spring配置文件（web.xml中）
 
+### 6. Spring事务的传播特性
 
+> Spring一共提供了七种事务传播特性，是为了解决事务和事务之间嵌套的问题。通过它可以控制哪些方法支持事务，哪些方法不支持，哪些支持嵌套事务（复杂业务中很可能会出现，业务层调用其他业务层的情况，这种时候就会出现一共事务嵌套了到了另一共事务中了。）
+>
+> * required：默认值，必须有一个事务，如果事务不存在，则开启一个新的事务。
+> * required_new：属于新的事务 必须运行在自己新建的事务中。
+> * supports：支持事务(支持不代表必须要有)，不强制要求有事务，但是有事务一定会支持。
+> * not_supports：不支持事务，如果有事务也不会运行。
+> * never：永不支持事务。如果有事务，不但不运行，还会抛出异常。
+> * mandatory：必须要有事务，没有事务则抛出异常。
+> * nested：嵌套事务，可以支持多个事务之间嵌套在一起，但是一旦里面的子事务失败，外层事务也会失败都要回滚。
 
+### 7.整合SSM(Spring\Springmvc\Mybatis)
+> 整合SM(Springboot+Mybatis)
 
+> * 导入相关依赖（有很多，不仅仅是三个框架的依赖，还有用于整合的依赖，Spring版本不能不一样）
+> * 创建对应的配置文件：Spring、SpringMVC、MyBatis、反向生成插件
+> * 配置web.xml
+>   * 在全局配置(配置Spring配置文件的地址)
+>   * 配置编码过滤器（为了前端提交数据到后端可以识别中文）
+>   * Spring的监听器（用来读取Spring的配置文件）
+>   * 配置核心控制器（是为了读取SpringMVC的配置文件，也是SpringMVC的入口）
+>   * 按需求配置其他配置：日志...
+> * 配置MyBatis配置文件
+>   * 加载jdbc 、基础设置(日志)、环境(事务和连接池)、插件、映射文件关联配置
+>   * 只有基础设置是Spring无法整合的，要自己配置，其他都可以靠Spring来整合，不是必要的。
+> * 配置SpringMVC：Spring和SpringMVC是无缝连接的所以它的配置和之前是一样的。
+>   * IOC扫描Controller层
+>   * 开启注解驱动
+>   * 放行静态资源
+>   * 视图解析器
+>   * 上传组件对象
+>   * 拦截器
+>   * 静态资源路径映射
+> * 配置Spring配置文件
+>   * IOC扫描(一般是扫描service层，`注意控制层在SpringMVC中已经扫描过了`，
+>     如果添加了过滤器，aop也需要扫描；如果添加了工具类和注解，aop也可以扫描；)
+>   * Spring如何做事务
+>     * 加载jdbc
+>     * 创建数据源连接池
+>     * 创建事务管理类
+>     * 开启注解事务（或配置声明式事务策略）
+>   * Spring整合MyBatis
+>     * 整合SqlSessionFactory(要关联数据源，关联MyBatis配置文件，关联映射文件，配置分页插件)
+>     * 整合MyBatis中的Mapper接口：会在Spring IOC容器中创建Mapper接口的实现类，如果需要使用，只需要添加@Autowired注解即可。
 
 ### 问题记录
 
@@ -579,14 +623,14 @@
 > ```xml
 > <?xml version="1.0" encoding="UTF-8"?>
 > <beans xmlns="http://www.springframework.org/schema/beans"
->     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
->     xmlns:context="http://www.springframework.org/schema/context"
->     xmlns:mvc="http://www.springframework.org/schema/mvc"
->     xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+> xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+> xmlns:context="http://www.springframework.org/schema/context"
+> xmlns:mvc="http://www.springframework.org/schema/mvc"
+> xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 > 
->  <context:component-scan base-package="com.sc.controller"/>
->  <mvc:annotation-driven/>
->  <mvc:default-servlet-handler/>
+> <context:component-scan base-package="com.sc.controller"/>
+> <mvc:annotation-driven/>
+> <mvc:default-servlet-handler/>
 > </beans>
 > ```
 >
@@ -595,5 +639,31 @@
 >
 > ![image-20240815115040098](D:\Desktop\gitee\java-learning\sc240601\Spring\Img\扫描不到bean对象.png)
 >
+> <hr>
+>
 > 配置spring配置文件前一定要在pom.xml导入spring的依赖，不然弹不出提示，而且配对了也会报找不到错误。而且一定要注意不要使用cache为后缀的。
+>
+> <hr>
+>
+> 配置德鲁伊连接池时一定要注意驱动包的注入配置：
+> 如果我们是通过properties文件来导入，是字符串就一定不能用driver，因为它需要注入一个Driver类。
+>
+> ![image-20240816122426973](D:\Desktop\gitee\java-learning\sc240601\Spring\Img\配置德鲁伊连接池时一定要注意驱动包的注入配置.png)
+>
+> ![image-20240816123123475](D:\Desktop\gitee\java-learning\sc240601\Spring\Img\德鲁伊连接池报错.png)
+>
+> <hr>
+>
+> webapps\TCP报错通常是web.xml文件没有配置好
+> ![image-20240816125402213](D:\Desktop\gitee\java-learning\sc240601\Spring\Img\web.xml文件的错误.png)
+>
+> <hr>
+>
+> 找不到图片css等静态资源文件
+>
+> 就是静态资源路径映射哪里写错了
+>
+> ![image-20240816142243197](D:\Desktop\gitee\java-learning\sc240601\Spring\Img\找不到图片css等静态资源文件.png)
+>
+> 
 
