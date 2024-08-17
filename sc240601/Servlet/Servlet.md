@@ -361,12 +361,12 @@
 >     <servlet>
 >         <!--servlet名称任意写 但是不要和别的Servlet重名-->
 >         <servlet-name>user</servlet-name>
->                         
+>                             
 >         <!--告诉配置文件 哪个类实现了Servlet 要把这个类的唯一的地址给我(全类名)-->
 >         <!--底层:通过全类名获取Class对象  通过CLass对象创建Servlet实例 原理就是反射-->
 >         <servlet-class>controller.UserController</servlet-class>
 >     </servlet>
->                     
+>                         
 >     <servlet-mapping>
 >         <!--必须跟Servlet的名称对应-->
 >         <servlet-name>user</servlet-name>
@@ -382,7 +382,7 @@
 >   - 通过@WebServlet注解来配置 --- 了解
 >
 >     ```
->                     
+>                         
 >     ```
 >
 
