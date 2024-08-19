@@ -843,7 +843,7 @@ return "地址" //方式2  默认方式就是转发 是由于存储Request是最
 
 #### 6.1 session技术的原理 --- 了解
 
- Session技术是将数据存储在服务端用于管理会话的技术，`服务端会为每个客户端都创建一个会话的内存空间`,而每个session都有一个唯一标识sessionID，目的是为了找到是哪个session对象, 浏览器第一次发送请求时  服务端才会创建session对象  `服务端还会通过响应把sessionID传回 浏览器 , 浏览器会将sessionID存储到Cookie(缓存)中`, 这样浏览器之后发送的每一次请求都可以携带这个sessionID 目的时为了到服务端找到哪个session对象 。
+> Session技术是将数据存储在服务端用于管理会话的技术，`服务端会为每个客户端都创建一个会话的内存空间`,而每个session都有一个唯一标识sessionID，目的是为了找到是哪个session对象, 浏览器第一次发送请求时  服务端才会创建session对象  `服务端还会通过响应把sessionID传回 浏览器 , 浏览器会将sessionID存储到Cookie(缓存)中`, 这样浏览器之后发送的每一次请求都可以携带这个sessionID 目的时为了到服务端找到哪个session对象 。
 
 > 总结:==浏览器关闭了 ,只是浏览器中保存sessionId没有了(Cookie清空了)==,无法找到服务器的session，再打开浏览器发送请求就会认为是新的请求所以是新的session。 原来session还在服务器中保存，最后 session除了手动清除 或者 session超时(30分钟)
 > 服务器会为某个客户端的每次会话创建一个sessionId，然后保存在客户端自己的浏览器的Cookie中，所以是没有办法通过Cookie来进行不同客户端之间的数据通信的，因为每个sessionId都是客户端私有的。
@@ -852,41 +852,82 @@ return "地址" //方式2  默认方式就是转发 是由于存储Request是最
 
 #### 6.2 Cookie浏览器缓存
 
-Cookie是`服务端创建`,`存储在客户端` (浏览器) `一小段文本信息` 
-Cookie可以实现浏览器和服务器之间的数据传递  
-主要用于实现浏览器功能(比如:记住密码  浏览记录 ) 同时还可以实现会话跟踪
+> Cookie是`服务端创建`,`存储在客户端` (浏览器) `一小段文本信息` 
+> Cookie可以实现浏览器和服务器之间的数据传递  
+> 主要用于实现浏览器功能(比如:记住密码  浏览记录 ) 同时还可以实现会话跟踪
 
 实现Cookie步骤:
 
-- 创建Cookie(服务端创建的)
-
-  ```
-   Cookie c=new Cookie("key","value");  //只能存字符串
-   //辅助功能:可以设置Cookie有效期 默认是会话级别(30分钟)
-   c.setMaxAge(秒);
-  ```
-
-- 通过`响应response`把Cookie发送给浏览器(保存再浏览器)
-
-  ```
-   response.addCookie(c);
-  ```
-
-- 通过`请求request`获取所有Cookie对象进行使用
-
-  ```java
-   Cookie[] cs=request.getCookies();
-   for(Cookie c:cs){
-       if(c.getName().equals("key")) c.getValue()
-   }
-   
-   -- 前端如果想获取Cookie推荐使用EL表达式${数据}
-   语法:${cookie.key.value}
-   比如:${cookie.username.value}
-  ```
+> - 创建Cookie(服务端创建的)
+>
+>   ```
+>    Cookie c=new Cookie("key","value");  //只能存字符串
+>    //辅助功能:可以设置Cookie有效期 默认是会话级别(30分钟)
+>    c.setMaxAge(秒);
+>   ```
+>
+> - 通过`响应response`把Cookie发送给浏览器(保存在浏览器)
+>
+>   ```
+>    response.addCookie(c);
+>   ```
+>
+> - 通过`请求request`获取所有Cookie对象进行使用
+>
+>   ```java
+>    Cookie[] cs=request.getCookies();
+>    for(Cookie c:cs){
+>        if(c.getName().equals("key")) c.getValue()
+>    }
+>    
+>    -- 前端如果想获取Cookie推荐使用EL表达式${数据}
+>    语法:${cookie.key.value}
+>    比如:${cookie.username.value}
+>   ```
+>
+>   
 
 > 如果浏览器关闭了,是否有方式可以找到之前使用的session?
 > 答: 是可以的 只需要之前使用的sessionID保留下来 通过cookie技术发送到浏览器中去就可以获取之前的session。
+>
+> <hr>
+>
+> 实现步骤：
+>
+> * 将SessionID保存到本地
+> * 读本地文件后通过Cookie发送给浏览器（Cookie存储sessionid不能乱写 key是固定名称: JSESSIONID）
+>
+> ```jsp
+> one.jsp ： 将SessionID保存到本地
+> <h1>负责创建session作用域的数据</h1>
+>     <%
+>         session.setAttribute("msg","sessionValue"+new Date());
+>         //关闭浏览器 sessionid没了 所以我可以保存起来这个id
+>         String sessionId=session.getId();
+>         FileOutputStream fos=
+>                 new FileOutputStream("d://jar//session.txt");
+>         fos.write(sessionId.getBytes());
+>     %>
+> 
+> 
+> two.jsp：获取session中保存的数据
+> <h3>获取session数据:${msg}</h3>
+> 
+> 
+> 
+> three.jsp：读本地文件后通过Cookie发送给浏览器
+> <h3>session丢失了 我要通过sessionID还原</h3>
+> <%
+>     FileReader fr=new FileReader("d://jar//session.txt");
+>     BufferedReader br=new BufferedReader(fr);
+>     String sessionid=br.readLine();
+>     //存储sessionid不能乱写 key是固定名称: JSESSIONID
+>     Cookie c=new Cookie("JSESSIONID",sessionid);
+>     response.addCookie(c);
+> %>
+> ```
+>
+> 
 
 #### 6.3 如何用Cookie实现免登录？
 
@@ -908,7 +949,7 @@ Cookie可以实现浏览器和服务器之间的数据传递
 > ```jsp
 > 前端：
 > <%
-> 	Cookiell cs=request.getCookies();
+> 	Cookie[] cs=request.getCookies();
 > 	for(Cookie c:cs){ 
 > //Cookie不止有一个，每个会话都会有一个Cookie,所以我们要遍历Cookie集合，通过key来找到我们需要的Cookie。
 > 		if(c.getName().equals("un")) 
