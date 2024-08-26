@@ -16,16 +16,16 @@
 
 #### 1.1 C/S架构
 
->  client客户端/server服务端，基于服务端和客户端的软件架构(缺一不可)，凡是C/S必须安装指定的客户端连接服务器才可以使用，注意完全在本地运行，不依赖于远程服务器的软件不是C/S架构。
+>  client客户端/server服务端，基于服务端和客户端的软件架构(缺一不可)，凡是C/S必须安装指定的客户端连接服务器才可以使用（注意：完全在本地运行，不依赖于远程服务器的软件不是C/S架构。）
 >
 > - 优点: 交互性更强(卡顿和延迟因为有些数据可以在本地运算，而不是全交给服务器来运算)，数据安全性更高，可以支持离线操作。
-> - 缺点: 用户使用不方便(需要下载客户端)、客户端需要针对性开发、维护和版本变更非常不灵活。
+> - 缺点: 用户使用不方便(需要下载指定客户端)、客户端需要针对性开发、维护和版本变更非常不灵活。
 
 #### 1.2 B/S架构
 
 >  browser浏览器/server服务端  基于浏览器和服务端软件架构    只需要安装浏览器即可使用  所有程序都部署在服务端。如网页版的学习通。
 >
-> - 优点:  使用方便    维护方便  版本变更 成本非常低  分布性非常强   
+> - 优点:  使用方便    维护方便  版本变更的成本非常低  分布性非常强   
 > - 缺点:  对网络的依赖性强、  数据安全不强 、 对服务器要求很高  
 
 ### 2.JSP  
@@ -251,7 +251,7 @@
 > - 应用场景不同:  get用于获取服务器数据的   post用于向服务器提交数据的
 > - 数据传输方式:  get请求会将数据在地址栏通过?显示出来；
 >       post请求属于隐式提交，他不会在地址栏中显示数据，但是可以查看浏览器控制台 看到数据
-> - ==数据传输长度==: get请求是在地址栏显示 传输长度会受到浏览器限制而决定 大约是1-2k 左右   post请求理论上没有长度限制
+> - ==数据传输长度==: get请求是在地址栏显示 传输长度会受到浏览器限制 大约是1-2k 左右   post请求理论上没有长度限制
 > - ==安全性==:   post方式相比get方式 更安全   所以说一般传输一些敏感信息   只能使用post   比如: 密码  信用卡    get方式适合传递不重要的信息   比如: 传递搜索的内容  传输分页的页面数 
 > - ==上传文件功能  只能使用post方式。==  
 
@@ -376,7 +376,7 @@
 >         <!--告诉配置文件 哪个类实现了Servlet 要把这个类的唯一的地址给我(全类名)-->
 >         <!--底层:通过全类名获取Class对象  通过CLass对象创建Servlet实例 原理就是反射-->
 >         <servlet-class>controller.UserController</servlet-class>
->         
+>     
 >         <!--设置servlet启动优先级，默认为负数，表示第一次处理请求时加载-->
 >         <!--设置整数表示服务器启动时就进行初始化，范围1-10，越小优先级越高-->
 >         <load-on-startup>1</load-on-startup>
@@ -534,7 +534,7 @@
 > 		取值范围1-10 值越小优先级越高
 > 		如果两个都是1则按顺序来先读取到谁谁先加载
 > 	-->
->     <load-on-startup>1</load-on-startup>
+>  <load-on-startup>1</load-on-startup>
 > </servlet>
 > ```
 >
@@ -925,7 +925,7 @@ return "地址" //方式2  默认方式就是转发 是由于存储Request是最
 >    for(Cookie c:cs){
 >        if(c.getName().equals("key")) c.getValue()
 >    }
->      
+>        
 >    -- 前端如果想获取Cookie推荐使用EL表达式${数据}
 >    语法:${cookie.key.value}
 >    比如:${cookie.username.value}
@@ -944,8 +944,8 @@ return "地址" //方式2  默认方式就是转发 是由于存储Request是最
 > * 读本地文件后通过Cookie发送给浏览器（Cookie存储sessionid不能乱写 key是固定名称: JSESSIONID）
 >
 > ```jsp
-> one.jsp ： 将SessionID保存到本地
-> <h1>负责创建session作用域的数据</h1>
+> <one.jsp>： 将SessionID保存到本地
+> 	<h1>负责创建session作用域的数据</h1>
 >     <%
 >         session.setAttribute("msg","sessionValue"+new Date());
 >         //关闭浏览器 sessionid没了 所以我可以保存起来这个id
@@ -956,24 +956,23 @@ return "地址" //方式2  默认方式就是转发 是由于存储Request是最
 >     %>
 > 
 > 
-> two.jsp：获取session中保存的数据
-> <h3>获取session数据:${msg}</h3>
+> <two.jsp>：获取session中保存的数据
+> 	<h3>获取session数据:${msg}</h3>
 > 
 > 
-> 
-> three.jsp：读本地文件后通过Cookie发送给浏览器
-> <h3>session丢失了 我要通过sessionID还原</h3>
-> <%
->     FileReader fr=new FileReader("d://jar//session.txt");
->     BufferedReader br=new BufferedReader(fr);
->     String sessionid=br.readLine();
->     //存储sessionid不能乱写 key是固定名称: JSESSIONID
->     Cookie c=new Cookie("JSESSIONID",sessionid);
->     response.addCookie(c);
-> %>
+> <three.jsp>：读本地文件后通过Cookie发送给浏览器
+>     <h3>session丢失了 我要通过sessionID还原</h3>
+>     <%
+>         FileReader fr=new FileReader("d://jar//session.txt");
+>         BufferedReader br=new BufferedReader(fr);
+>         String sessionid=br.readLine();
+>         //存储sessionid不能乱写 key是固定名称: JSESSIONID
+>         Cookie c=new Cookie("JSESSIONID",sessionid);
+>         response.addCookie(c);
+>     %>
 > ```
->
 > 
+>
 
 #### 6.3 如何用Cookie实现免登录？
 
@@ -1100,7 +1099,7 @@ js验证是通过javascript对用户输入的数据进行校验,目的是为了�
 
 ### 8.过滤器
 
-> 过滤器可以对应web资源进行拦截只有符合过滤器规则得资源才能到达服务器
+> ==过滤器可以`对web资源进行拦截`==只有符合过滤器规则得资源才能到达服务器
 > 过滤器是可以设置多个的，也可以同时设置多种规则
 >
 > 过滤器是Servlet非常重要的一个组件，能够对web资源进行拦截过滤，再拦截的过程中对web资源进行一些处理,目的是让符合要求的数据可以正常使用,否则是无法到达真正的服务器资源 类似于`安检`的过程 
@@ -1272,10 +1271,80 @@ js验证是通过javascript对用户输入的数据进行校验,目的是为了�
 
 ##### c. 敏感词过滤器
 
-> 敏感词过滤器是要对所有前端提交的数据进行过滤和替换`重点和难点在于替换`(即把敏感词换成***)
+> 敏感词过滤器是要对所有前端提交的数据进行过滤和替换`重点和难点在于替换`(即把敏感词换成***)，目前想到了两种方案：1.获取内容后再通过一个方法来进行检测和替换(每次都要重新调用方法太麻烦)，2.直接重新获取内容的getParameter()方法
+>
+> > 重写getParameter()的注意事项：
+> > 1.要自定义一个请求类(Request)，继承HttpServletRequestWrapper类。
+> > 2.一定要在自定义类中写一个有参构造，里面一定要调用父类的有参构造，参数是HttpServletRequest类型。
+> > ![image-20240826085846684](D:\Desktop\gitee\java-learning\sc240601\Servlet\img\自定义Request类.png)
+> > 3.在自定义的请求类中重写getParameter()方法。
+> > 4.在getParameter中调用super.getParameter()来获取前端传来的数据。
+> > 5.在getParameter中对数据进行处理后返回。
+> > 6.在doFilter()方法中用自定义的请求类型传递给下一个过滤器或servlet。
 >
 > ```java
+> package com.sc.filter;
 > 
+> import com.sc.dao.impl.WordDaoImpl;
+> import com.sc.pojo.Word;
+> 
+> import javax.servlet.*;
+> import javax.servlet.http.HttpServletRequest;
+> import javax.servlet.http.HttpServletRequestWrapper;
+> import java.io.IOException;
+> import java.util.List;
+> 
+> // 敏感词过滤器
+> public class SensitiveFilter implements Filter {
+>     public static List<Word> words;
+>     public void init(FilterConfig filterConfig) throws ServletException {
+>         //获取敏感词集合
+>         words = new WordDaoImpl().show();
+>         for (Word word : words) {
+>             System.out.println(word);
+>         }
+>     }
+> 
+>     public void destroy() {
+>     }
+> 
+>     public void doFilter(ServletRequest request, ServletResponse resp, FilterChain filterChain) throws IOException, ServletException {
+>         MyRequest req = new MyRequest((HttpServletRequest) request);
+>         filterChain.doFilter(req,resp);
+>     }
+> }
+> 
+> // 自定义一个请求类型(必须要调用父类的有参构造)
+> class MyRequest extends HttpServletRequestWrapper{
+>     // 必须要调用父类的有参构造
+>     public MyRequest(HttpServletRequest req){
+>         super(req);
+>     }
+> 
+>     // 重写getParameter()处理前端传来的数据
+>     @Override
+>     public String getParameter(String name) {
+>         String oldValue = super.getParameter(name);
+>         //处理前端传来的数据（将敏感词转化为***）
+>         if(oldValue!= null) {
+>             StringBuilder sb = new StringBuilder();
+>             //遍历敏感词集合，和传入信息逐一比对，有就直接替换
+>             for (Word word : SensitiveFilter.words) {
+>                 String sensitiveWord = word.getWord();
+>                 if(oldValue.contains(sensitiveWord)) {
+>                     sb = new StringBuilder();
+>                     for (int i = 0; i < sensitiveWord.length(); i++) {
+>                         sb.append('*');
+>                     }
+>                     //替换为*, 要赋值才会把老的值覆盖掉
+>                     //还不能用newValue，不然只替换最新的那个。
+>                     oldValue=oldValue.replaceAll(sensitiveWord, sb.toString());
+>                 }
+>             }
+>         }
+>         return oldValue;
+>     }
+> }
 > ```
 
 #### 8.5 Servlet和Filter的区别
@@ -1407,91 +1476,109 @@ public class MyTest {
 > 前端：
 >
 > ```jsp
->     <!--增加一个动态搜索框-->
->     <form action="/user" method="post">
->         <p>
->             手机号：<input value="${sphone}" placeholder="要查询的号码" size="10px" maxlength="11" name="sphone" type="text">
->             <select name="sid">
->                 <option value="0" selected disabled>请选择套餐</option>
->                 <!--把下拉框改成动态的-->
->                 <c:forEach var="sl" items="${splist}">
->                     <option <c:if test="${sl.id == ssid}"> selected </c:if> value="${sl.id}"> ${sl.name}</option>
->                 </c:forEach>
->                 <option value="0">未知套餐</option>
->             </select>
->             <button>查询</button>
->         </p>
->     </form>
+>  <!--增加一个动态搜索框-->
+>  <form action="/user" method="post">
+>      <p>
+>          手机号：<input value="${sphone}" placeholder="要查询的号码" size="10px" maxlength="11" name="sphone" type="text">
+>          <select name="sid">
+>              <option value="0" selected disabled>请选择套餐</option>
+>              <!--把下拉框改成动态的-->
+>              <c:forEach var="sl" items="${splist}">
+>                  <option <c:if test="${sl.id == ssid}"> selected </c:if> value="${sl.id}"> ${sl.name}</option>
+>              </c:forEach>
+>              <option value="0">未知套餐</option>
+>          </select>
+>          <button>查询</button>
+>      </p>
+>  </form>
 > ```
 >
 > 控制层：
 >
 > ```java
->     private void show(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
->         //改成动态搜索，根据用户传来的数据中是否有值来确定
->         String sphone = req.getParameter("sphone");
->         String ssid = req.getParameter("sid");
->         Integer sid = 0;
->         if(ssid != null)
->             sid = Integer.parseInt(ssid);
->         //创建一个搜索条件对象
->         DDUser user = new DDUser(null, sphone, null, 0, sid);
+>  private void show(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+>      //改成动态搜索，根据用户传来的数据中是否有值来确定
+>      String sphone = req.getParameter("sphone");
+>      String ssid = req.getParameter("sid");
+>      Integer sid = 0;
+>      if(ssid != null)
+>          sid = Integer.parseInt(ssid);
+>      //创建一个搜索条件对象
+>      DDUser user = new DDUser(null, sphone, null, 0, sid);
 > 
->         //判断是否登录（session中是否有用户信息）：
->         if(req.getSession().getAttribute("user") != null) {
->             // 要把数据发送给前端：
->             // 1. 通过dao层从数据库中获取数据：
->             List<DDUser> list = ud.getUsers(user);
->             // 2. 把数据保存到作用域中
->             req.setAttribute("list",list);
->             req.setAttribute("sphone", sphone);
->             req.setAttribute("ssid", sid);
->         }
->         // 3. 到展示数据的页面
->         // 由于request作用域只在一次请求内有效，所以不能通过重定向来跳转页面
->         // 只能通过转发转发则是相对于根目录开始
->         req.getRequestDispatcher("day2/show.jsp").forward(req,resp);
->     }
+>      //判断是否登录（session中是否有用户信息）：
+>      if(req.getSession().getAttribute("user") != null) {
+>          // 要把数据发送给前端：
+>          // 1. 通过dao层从数据库中获取数据：
+>          List<DDUser> list = ud.getUsers(user);
+>          // 2. 把数据保存到作用域中
+>          req.setAttribute("list",list);
+>          req.setAttribute("sphone", sphone);
+>          req.setAttribute("ssid", sid);
+>      }
+>      // 3. 到展示数据的页面
+>      // 由于request作用域只在一次请求内有效，所以不能通过重定向来跳转页面
+>      // 只能通过转发转发则是相对于根目录开始
+>      req.getRequestDispatcher("day2/show.jsp").forward(req,resp);
+>  }
 > ```
 >
 > dao层
 >
 > ```java
 > public List<DDUser> getUsers(DDUser user) {
->     //实现查询所有用户功能
->     // 两表关联查询的结果的顺序问题
->     String sql = "select * from dduser u, ddservicepackage s where u.serviceId = s.id ";
->     List<Object> o = new ArrayList<>();
->     if(user.getPhone() != null) {
->         sql += " and u.phone like ? ";
->         //拼接字符串一定要注意空格问题，为了不出错哪怕多打几个空格也没问题。
->         o.add("%" + user.getPhone() + "%"); //为什么不写到上面？ -- 因为预处理时会添加''
->     }
->     if(user.getServiceId() != 0) {
->         sql += " and u.serviceId=? ";
->         o.add(user.getServiceId());
->     }
->     sql += " order by u.id "; //为什么会有顺序问题？导致我要加 order by?
+>  //实现查询所有用户功能
+>  // 两表关联查询的结果的顺序问题
+>  String sql = "select * from dduser u, ddservicepackage s where u.serviceId = s.id ";
+>  List<Object> o = new ArrayList<>();
+>  if(user.getPhone() != null) {
+>      sql += " and u.phone like ? ";
+>      //拼接字符串一定要注意空格问题，为了不出错哪怕多打几个空格也没问题。
+>      o.add("%" + user.getPhone() + "%"); //为什么不写到上面？ -- 因为预处理时会添加''
+>  }
+>  if(user.getServiceId() != 0) {
+>      sql += " and u.serviceId=? ";
+>      o.add(user.getServiceId());
+>  }
+>  sql += " order by u.id "; //为什么会有顺序问题？导致我要加 order by?
 > 
->     Connection conn = DBUtil2.getConn(); //为了关闭连接。
->     ResultSet result = DBUtil2.query(sql, o.toArray());
->     // 解析ResultSet对象，获取所有用户信息：
->     List<DDUser> users = new ArrayList<>();
->     try {
->         while (result.next()) {
->             users.add(createUsers(result));
->         }
->         // 打印提示用于判断是否执行成功。
->         for (DDUser u : users) {
->             System.out.println(u);
->         }
->     } catch (SQLException throwables) {
->         throwables.printStackTrace();
->     }
+>  Connection conn = DBUtil2.getConn(); //为了关闭连接。
+>  ResultSet result = DBUtil2.query(sql, o.toArray());
+>  // 解析ResultSet对象，获取所有用户信息：
+>  List<DDUser> users = new ArrayList<>();
+>  try {
+>      while (result.next()) {
+>          users.add(createUsers(result));
+>      }
+>      // 打印提示用于判断是否执行成功。
+>      for (DDUser u : users) {
+>          System.out.println(u);
+>      }
+>  } catch (SQLException throwables) {
+>      throwables.printStackTrace();
+>  }
 > 
->     //关闭连接
->     PreparedStatement pstmt = DBUtil2.pstmt;//为了关闭连接
->     DBUtil2.closeConn(result, pstmt, conn); //注意关闭顺序
->     return users;
+>  //关闭连接
+>  PreparedStatement pstmt = DBUtil2.pstmt;//为了关闭连接
+>  DBUtil2.closeConn(result, pstmt, conn); //注意关闭顺序
+>  return users;
 > }
 > ```
+
+### 12. 面试题
+
+> 1.http请求方式
+>
+> 2.http请求状态码
+>
+> 3.get和post区别?
+>
+> 4.转发和重定向区别?
+>
+> 5.session和Cookie区别?
+>
+> 6.servlet生命周期?
+>
+> 7.过滤器执行原理?
+>
+> 8.如何编写一个Servlet?
