@@ -365,16 +365,16 @@
 >     <servlet>
 >         <!--servlet名称任意写 但是不要和别的Servlet重名-->
 >         <servlet-name>user</servlet-name>
->         
+>             
 >         <!--告诉配置文件 哪个类实现了Servlet 要把这个类的唯一的地址给我(全类名)-->
 >         <!--底层:通过全类名获取Class对象  通过CLass对象创建Servlet实例 原理就是反射-->
 >         <servlet-class>controller.UserController</servlet-class>
->         
+>             
 >         <!--设置servlet启动优先级，默认为负数，表示第一次处理请求时加载-->
 >         <!--设置整数表示服务器启动时就进行初始化，范围1-10，越小优先级越高-->
 >         <load-on-startup>1</load-on-startup>
 >     </servlet>
->         
+>             
 >     <servlet-mapping>
 >         <!--必须跟Servlet的名称对应-->
 >         <servlet-name>user</servlet-name>
@@ -390,7 +390,7 @@
 >   - 通过@WebServlet注解来配置 --- 了解
 >
 >     ```
->         
+>             
 >     ```
 >
 
@@ -751,7 +751,7 @@
 > * 无论是请求还是转发，写路径时要注意：以./开头代表当前目录。 以/开头代表根目录(三合一)。不写则要看跳转方式。
 > * 转发地址栏不变，刷新页面会进行重复操作。
 
-#### 5.2 不同控制层的转发方式
+#### 5.2 Servlet实现不同的转发方式
 
 ```java
 //servlet重定向，使用response对象的sendRedirect()
@@ -929,7 +929,7 @@ return "地址" //方式2  默认方式就是转发 是由于存储Request是最
 >    for(Cookie c:cs){
 >        if(c.getName().equals("key")) c.getValue()
 >    }
->          
+>            
 >    -- 前端如果想获取Cookie推荐使用EL表达式${数据}
 >    语法:${cookie.key.value}
 >    比如:${cookie.username.value}
