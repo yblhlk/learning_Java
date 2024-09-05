@@ -285,7 +285,7 @@
 >   execution(* com.sc.service.impl.*.*(..))
 >   			   包名.包名.包名.所有类.所有方法
 >   void test(参数){
->             
+>               
 >   }
 >   ```
 
@@ -723,7 +723,7 @@
 > 如果页面一片空白很可能是你的拦截器没有放行资源：
 > ![image-20240822004325487](D:\Desktop\gitee\java-learning\sc240601\Spring\Img\网页页面空白的原因.png)
 >
-> 
+> <hr>
 >
-> 
+> 如果一直报空指针异常，可能是忘记加@Autowired
 
