@@ -72,7 +72,7 @@
 > SpringMVC三层架构：
 > MVC是一种开发模式,也是软件设计风格 将一个系统分成M模型层 V视图层 C控制层 `能够实现一个系统各个层级的解耦合` 便于后期程序的扩展(不同平台只需要切换V视图层)
 >
-> ![image-20240801105225746](D:\Desktop\SpringMVC\img\MVC的三层架构.png)
+> ![image-20240801105225746](.\img\MVC的三层架构.png)
 >
 > 7是controller去哪个页面处理(判断成功去哪个页面，失败去哪个页面)。
 >
@@ -292,7 +292,7 @@
 > }
 > ```
 >
-> ![image-20240801120630126](D:\Desktop\SpringMVC\img\通过springmvc方法获取前端数据.png)
+> ![image-20240801120630126](.\img\通过springmvc方法获取前端数据.png)
 
 ##### b. 获取多个数据(一个key有多个value)
 
@@ -619,7 +619,7 @@
 >   <p>头像：<input onchange="showimg(this)" type="file" name=""></p>
 >   <p><img id="img" src="img/1.PNG"
 >           style="width:50px; height: 50px; border-radius: 50px;"></p>
->     
+>       
 >   <script>
 >       function showImg(o){
 >           //1. 获取上传的文件的对象
@@ -987,7 +987,7 @@ public class UpAndDown_Load_File {
 > ```
 >
 > 前端，分页显示器
-> ![image-20240908005049021](D:\Desktop\SpringMVC\img\分页显示器.png)
+> ![image-20240908005049021](.\img\分页显示器.png)
 
 ### 7. 批量新增与删除
 
@@ -1037,7 +1037,7 @@ public class UpAndDown_Load_File {
 > * mapping属性的值的末尾一定要加一个==/**==
 > * location属性的值的末尾一定要加一个==/==
 >
-> ![image-20240908172253972](D:\Desktop\SpringMVC\img\静态资源路径映射的注意事项.png)
+> ![image-20240908172253972](.\img\静态资源路径映射的注意事项.png)
 
 ```
 <mvc:resources mapping="/映射地址前缀/**" location="真实地址"/>
@@ -1107,14 +1107,14 @@ return "/WEB-INF/jsp/study/show.jsp"
 
 #### 8.1 前后端分离的SpringMVC的工作流程
 
-> ![image-20240806142853722](D:\Desktop\SpringMVC\img\前后端分离的SpringMVC的工作流程.png)
+> ![image-20240806142853722](.\img\前后端分离的SpringMVC的工作流程.png)
 
 #### 8.2 前后端不分离的SpringMVC的工作流程
 
-> ![image-20240806143433854](D:\Desktop\SpringMVC\img\前后端不分离的SpringMVC的工作流程.png)
+> ![image-20240806143433854](.\img\前后端不分离的SpringMVC的工作流程.png)
 
 > 上图中controller的返回值中什么是Model什么是View?
-> ![image-20240806143211445](D:\Desktop\SpringMVC\img\model和view.png)
+> ![image-20240806143211445](.\img\model和view.png)
 >
 > 上图中的mv用来保存数据的作用域就是model，要跳转的网页就是view。
 
