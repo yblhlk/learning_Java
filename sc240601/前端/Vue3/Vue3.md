@@ -31,6 +31,19 @@
 
 #### 1.3 npm 和 cnpm
 
+> ### npm
+>
+> - **定义**：npm（Node Package Manager）是Node.js的官方包管理器，用于Node.js插件的管理，包括安装、更新、卸载和发布等操作。
+> - **功能**：`npm不仅是一个包管理工具，它还维护了一个庞大的包仓库`（registry.npmjs.org），开发者可以在其中找到并安装所需的Node.js包。
+> - **特点**：npm的服务器位于国外，因此在国内使用时可能会受到网络延迟或不稳定的影响，导致包下载速度较慢或下载失败。
+>
+> ### cnpm
+>
+> - **定义**：cnpm是中国版的npm，由淘宝团队定制并开源。它是一个完整的npmjs.org镜像，可以用作npm的替代品（只读），以确保与官方服务的同步。
+> - **功能**：cnpm与npm的功能几乎相同，都用于Node.js插件的管理。但由于其服务器位于国内，因此在使用时可以显著提高包的下载速度，减少因网络问题导致的下载失败。
+> - **安装与使用**：要安装cnpm，可以使用npm的全局安装命令，并将仓库地址设置为淘宝的npm镜像。安装完成后，就可以使用cnpm命令来代替npm命令进行包的管理操作了。
+> - **推荐场景**：当由于网络原因导致无法使用npm时，推荐使用cnpm作为替代方案。特别是在国内网络环境下，cnpm能够显著提升开发效率。
+
 > npm是node官方提供包管理器.cnpm是中国版的npm，是淘宝定制的命令行 用于替代npm 如果网络原因导致无法使用 推荐使用cnpm
 >
 > * 安装方式：在cmd命令提示行窗口(保证良好的网络环境)
@@ -45,7 +58,9 @@
 
 #### 1.4 安装Vue项目脚手架
 
-> 是vue cli的一个组件，帮助我们快速构建Vue项目的，类似于之前使用的Maven项目，安装过程比较繁琐（可能会失败很多次 多装几次就好了，对网络环境要求较高）
+> Vue项目脚手架（Vue Project Scaffolding）通常指的是Vue CLI（Vue Command Line Interface，Vue命令行界面）`提供的一系列工具和功能`，用于快速生成、配置和管理Vue.js项目的结构。简单来说，Vue项目脚手架就是帮助开发者快速搭建Vue.js项目框架的工具集。
+
+> 是vue cli的子组件，帮助我们快速构建Vue项目的，类似于之前使用的Maven项目，安装过程比较繁琐（可能会失败很多次 多装几次就好了，对网络环境要求较高）
 >
 > * 安装命令
 >
@@ -55,21 +70,21 @@
 >
 >   ![image-20240820175325591](D:\Desktop\gitee\java-learning\sc240601\前端\Vue3\img\安装Vue项目脚手架.png)
 
-#### 1.5 设置npm和cnpm地址都设置成淘宝镜像地址
+#### 1.5 设置npm和cnpm地址（都设置成淘宝镜像地址）
 > 用来加速
 >
-> ```shell
-> 以下两个网址截止8月21仍有效
-> npm config set registry https://registry.npmmirror.com/  
-> cnpm config set registry https://registry.npmmirror.com/
-> ```
+> * 在命令行中输入：
 >
-> 设置成功后C盘的用户的XXX下会出现三个文件：
+>   ```shell
+>   以下两个网址截止到2024年9月1日仍有效
+>   npm config set registry https://registry.npmmirror.com/  
+>   cnpm config set registry https://registry.npmmirror.com/
+>   ```
 >
-> ![image-20240821111640709](D:\Desktop\gitee\java-learning\sc240601\前端\Vue3\img\设置npm和cnpm的地址.png)
+> * 设置成功后C盘的用户的XXX下会出现三个文件：![image-20240821111640709](D:\Desktop\gitee\java-learning\sc240601\前端\Vue3\img\设置npm和cnpm的地址.png)
 >
-> 修改.vuerc文件，设置为true开启加速。(创建好的模板也保存在.vuerc文件中)
-> ![image-20240821111826862](D:\Desktop\gitee\java-learning\sc240601\前端\Vue3\img\修改vuerc文件.png)
+> * 修改.vuerc文件，设置为true开启加速。(创建好的模板也保存在.vuerc文件中)
+>   ![image-20240821111826862](D:\Desktop\gitee\java-learning\sc240601\前端\Vue3\img\修改vuerc文件.png)
 
 ### 2. 创建Vue项目
 
@@ -107,45 +122,43 @@
 >   ```properties
 >   Babel:一个js编译器转码器 可以将ES6转换成ES5代码 主要用于向下兼容
 >   	  #属于必加项
->   	  
+>   
 >   TypeScript:底层就是对于js做了一个封装 相当于一种面向对象的js
 >   		   #看需要导入
 >   		  :简称叫ts 最后运行时也会转换成js;
 >   		  :如果选择了它:会有两个子菜单...
 >   			Use class-style component syntax 是否使用类风格装饰器（Y）
 >   			Use Babel alongside TypeScript Babel和Ts是否一起使用(Y)
->   		  
+>   
 >   Web App:属于web应用程序 
 >   		#属于必加项
 >   
 >   Router:vue路由 通过请求链接到具体的vue组件(跳转) 目前看需要导入 
 >   	   Use history mode for router? （n） 不使用历史版本的路由组件
->   
->   
+>   	   
 >   Vuex: vue的状态管理模式 可以保存一些vue中的对象 、
 >         #看需要导入
->         
+>   
 >   CSS Pre-processors: CSS预处理器 目前看需要 
->   					#一般不需要导入
+>     					#一般不需要导入
 >   
 >   Linter / Formatter: 代码风格检查和格式化，用于检测代码是否符合规范的
->   					#慎用，一般不导入 
->   					#因为如果后期多写个空格也会检测你错了 为了避免不必要的麻烦 不要导入
+>     					#慎用，一般不导入 
+>     					#因为如果后期多写个空格也会检测你错了 为了避免不必要的麻烦 不要导入
 >   
 >   Unit Testing:单元测试的插件 类似于java的junit
->   			 #用于测试
->   			 
+>     			 #用于测试
+>   
 >   E2E Testing:(end to end )端到端的测试
->    			#用于测试
->   ```
+>      			#用于测试
 >
 > * 选择第一个和第三个插件关闭第七个插件后回车确认，选择`vue3(3.x)`确认
 >
 > * 配置 配置文件放在哪里 是默认位置还是放在package.json中，`推荐使用默认`
 >
 >   ```java
->   > In dedicated config files  -> 使用默认位置
->     In package.json            -> 放入package.json中
+>     > In dedicated config files  -> 使用默认位置
+>       In package.json            -> 放入package.json中
 >   ```
 >
 > * 是否要保存历史配置,可以保存上一次创建vue项目的插件配置，可以让我们更加快接创建项目 后期可以使用 前期练手选择N 后期选择y
@@ -159,7 +172,7 @@
 >
 >   ![image-20240821114257596](D:\Desktop\gitee\java-learning\sc240601\前端\Vue3\img\成功创建vue项目.png)
 >
-> * 使用`cd one`进入项目
+> * 使用`cd XXX`进入项目所在目录
 >
 > * ==进入项目后==，使用`npm run serve`运行项目
 
@@ -182,7 +195,7 @@
 
 #### 2.3 Vue项目的目录结构
 
-
+> 看3.1
 
 ### 3. 什么是Vue
 
@@ -258,7 +271,7 @@
 >   ```vue
 >   <!--编写css-->
 >   <style>
->       
+>           
 >   </style>
 >   ```
 
@@ -269,16 +282,21 @@
 > * let：ES6新增的，是用来替代var的，只能作用在`局部区域` `不能重复声明`
 >
 > * const：ES6新增的，用来声明常量的(使用的最多)，只能够作用在局部区域 不能重复声明
->   `const`用于声明一个只读的常量。一旦一个常量被赋值后，就不能再被重新赋值（但如果是对象或数组，则可以修改其内部属性或元素）。
->
+>   `const`用于声明一个只读的常量。一旦一个常量被赋值后，就不能再被重新赋值
+>   （但如果是对象或数组等引用类型，则可以修改其内部属性或元素）。
+>   
 >   ```vue
 >   <script setup>
->       const user={}; //非响应式，写死了。
->       
->       import {ref} from 'vue' //导入ref包，作用是引用, vue只能用单引号括起来
+>       const user={}; //非响应式，写死了。{}是json语法表示一个对象
+>     
+>       import {ref} from 'vue' //导入ref包，作用是引用
 >       const user=ref({}); //响应式，输入user对象的地址不能改，但是对象里面的属性是可以修改的。
 >   </script>
 >   ```
+>   
+>   > `ref` 函数是Vue的Composition API的一部分，用于创建一个响应式的引用对象。这个对象包含一个内部的value属性，该属性是响应式的，意味着当它的值变化时，任何依赖于它的视图或计算属性都会自动更新。
+>   >
+>   > 当你执行 `const user = ref({});` 时，你实际上是在创建一个响应式的对象引用，这个引用的value是一个空对象`{}`。这意味着你不能直接替换这个对象的引用（即你不能直接将`user.value`指向另一个对象），但你可以修改这个对象内部的属性，并且这些修改是响应式的。
 
 #### 4.2 vue基本指今
 > 指令:就是html标签里面添加带有v-前缀的特殊属性，不同指令具有不同的函数而vue是通过这些指令还实现页面动态的效果 比如: v-in v-for v-model....
@@ -286,7 +304,7 @@
 > | 指令                     | 作用                                               |
 > | ------------------------ | -------------------------------------------------- |
 > | v-bind                   | 为html标签绑定属性值的，比如设置href css样式       |
-> | v-model                  | 为==表单元素==插件双向数据绑定的                   |
+> | v-model                  | 为==表单元素==实现双向数据绑定的                   |
 > | v-on                     | 为html标签绑定事件                                 |
 > | v-if   v-else-if  v-else | 做条件性渲染，满足条件就显示元素(渲染)，否则不渲染 |
 > | v-show                   | 条件性渲染                                         |
@@ -294,18 +312,30 @@
 
 ##### a. v-bind指令
 
-> 用来实现template中的标签和script中的变量的绑定，在template中需要值的标签的前面加上bind:或:，=后面就可以使用script中的变量了。
+> 用来实现template中的标签的属性和script中的变量的绑定，在template中需要值的标签的前面加上`bind:`或`:`，=后面就可以使用script中的变量了。(软编码)
+> `也可以用于响应式地更新标签的属性`
 >
 > ```vue
 > <template>
->     <!-- v-bind 用于绑定属性值
->             这里就是将下面创建的url变量，绑定给a标签
->             v-bind可以省略，一个:就表示v-bind
->       -->
->      <a v-bind:href="url">链接1</a>
->      <a :href="url">链接2</a> <!--v-bind可以省略-->
->      <!-- 借助于双向绑定修改url的值 -->
->      地址：<input v-model="url"/>
+>   <input v-bind:value="v1" :type="type">
+> </template>
+> 
+> <script setup>
+>   const v1 = "adfas123";
+>   const type = "password";
+> </script>
+> ```
+>
+> ```vue
+> <template>
+>  <!-- v-bind 用于绑定属性值
+>          这里就是将下面创建的url变量，绑定给a标签
+>          v-bind可以省略，一个:就表示v-bind
+>    -->
+>   <a v-bind:href="url">链接1</a>
+>   <a :href="url">链接2</a> <!--v-bind可以省略-->
+>   <!-- 借助于双向绑定修改url的值 -->
+>   地址：<input v-model="url"/>
 > </template>
 > 
 > <script setup>
@@ -316,7 +346,25 @@
 
 ##### b. v-model指令
 
-> 使用v-model属性来实现双向绑定，.lazy表示懒加载
+> 使用v-model属性来实现双向绑定，.lazy表示懒加载，.trim表示去除首尾多余空格
+>
+> ```vue
+> <template>
+>   <input v-model="num">
+>   <p>输入的内容：{{ num }}</p>
+>   <input v-model.lazy="num1">
+>   <p>输入的内容：{{ num1 }}</p>
+>   <input v-model.trim="num2">
+>   <p>输入的内容：{{ num2 }}</p>
+> </template>
+> 
+> <script setup>
+>   import {ref} from "vue"
+>   const num = ref()
+>   const num1 = ref()
+>   const num2 = ref()
+> </script>
+> ```
 >
 > ```vue
 > <template>
@@ -326,27 +374,27 @@
 >     <p>输入：<input v-model.lazy="msg"/></p>
 >     <!-- 使用v-model属性来实现双向绑定，.lazy表示懒加载 -->
 >     <p>输出：{{ msg }}</p>
+> 	<!--使用下面定义好的变量/常量-->
 >     <img src="../assets/logo.png"/>
 > </template>
 > <!-- setup属于vue3.2语法糖
->     1.省略导出export 它会默认导出
->     2.省略繁琐的data()return 返回值
->     3.省略methods 存放js函数的位置
->     缺点必须把对象变成响应式的，使用要引入ref包
+>  1.省略导出export 它会默认导出
+>  2.省略繁琐的data()return 返回值
+>  3.省略methods 存放js函数的位置
+>  缺点必须把对象变成响应式的，使用要引入ref包
 > -->
 > <script setup>
->     // 使用setup可以更加方便的定义变量
->     import {ref} from 'vue' //vue只能用单引号括起来
->     // 要不变量定义成常量 vue规则变量不能改 但是内容可以修改
->     const msg=ref('呵呵')
+>  // 使用setup可以更加方便的定义变量
+>  import {ref} from 'vue' //vue只能用单引号括起来
+>  // 要不变量定义成常量 vue规则变量不能改 但是内容可以修改
+>  const msg=ref('呵呵')
 > </script>
 > ```
 >
-> 
 
 ##### c. v-if指令 和 v-show指令
 
-> 1
+> 用来判断一个标签是否该在页面显示。
 >
 > ```vue
 > <template>
@@ -379,25 +427,41 @@
 
 ##### e. v-for指令
 
-> 1
+> 做页面内容的循环遍历
 >
 > ```vue
 > 语法规则1： 这个集合或数组 需要在script中定义好
 > <标签 v-for="临时别名 in 集合或数组">
->     <!--这个集合或数组 需要在script中定义好-->
->     {{临时变量}}
+>  <!--这个集合或数组 需要在script中定义好-->
+>  {{临时变量}}
 > </标签>
 > 
 > 语法规则2： 如果页面需要遍历数据的索引值
 > <标签 v-for="(临时别名,索引变量) in 集合或数组">
->     {{索引变量+1}} : {{临时变量}}
->     <!--索引变量从0开始-->
+>  {{索引变量+1}} : {{临时变量}}
+>  <!--索引变量从0开始,所以这里+1，让他从1开始-->
 > </标签>
+> ```
+>
+> ```vue
+> <template>
+>   <div v-for=" (i,j) in arr">
+>     {{ j }} : {{ i }}
+>     <div> for盒子 </div>
+>   </div>
+> </template>
+> 
+> <script setup>
+> 	const arr = ref([11,22,33,44,55]);
+> </script>
+> 
+> <style scoped></style>
+> 
 > ```
 
 ### 5. VSCode快速生成vue3模板
 
-> File(文件)->Preferences(首选项)->Configure Snippets(配置用户代码片段)->输入vue(或者vue.json)
+> Vscode的File(文件)选项->Preferences(首选项)->Configure Snippets(配置用户代码片段)->输入vue(或者vue.json)
 > 修改vue.json文件
 >
 > ```json
@@ -420,8 +484,19 @@
 > ```
 
 ### 6.组件基础
-> Vue是基于组件开发的,我们创建每一个*.vue文件 它是一种特殊的文件格式,再
-> Vue中称这种文件叫做Vue组件(html 样式css 业务逻辑js)
+> Vue是基于组件开发的,我们创建每一个*.vue文件 它是一种特殊的文件格式,在Vue中称这种文件叫做Vue组件(html 样式css 业务逻辑js)
+
+> 在Vue.js中，`.vue` 文件是一种特殊的文件格式，它允许开发者将组件的模板（HTML）、样式（CSS）和业务逻辑（JavaScript）封装在同一个文件中。这种组织方式极大地提高了代码的可维护性和可读性，因为它遵循了“关注点分离”（Separation of Concerns, SoC）的原则，同时又以一种更灵活和集成的方式将它们结合在一起。
+>
+> 一个 `.vue` 组件文件通常包含三个部分：
+>
+> 1. **模板（Template）**：这是组件的HTML结构部分，它定义了组件的DOM结构。在 `.vue` 文件中，模板通常被 `<template>` 标签包裹。Vue编译器会把这个模板编译成虚拟DOM，然后在渲染时转换为真实的DOM。
+> 2. **脚本（Script）**：这部分包含了组件的JavaScript逻辑，如数据（data）、计算属性（computed）、方法（methods）、生命周期钩子（lifecycle hooks）等。它使用 `<script>` 标签包裹，并通常使用ES6的模块系统（export default）来导出组件对象。
+> 3. **样式（Style）**：这是组件的CSS样式部分，它定义了组件的样式规则。在 `.vue` 文件中，样式通常被 `<style>` 标签包裹。Vue支持CSS预处理器（如Sass、Less）以及作用域CSS（Scoped CSS），这有助于避免样式冲突，提高样式的模块化。
+>
+> `.vue` 文件还允许开发者在 `<script>`、`<template>` 和 `<style>` 标签上添加特殊的属性，以实现更高级的功能，比如使用TypeScript（通过添加 `lang="ts"` 属性到 `<script>` 标签）或者为样式指定不同的作用域（通过添加 `scoped` 属性到 `<style>` 标签）。
+>
+> 这种将模板、样式和逻辑封装在一起的方式，使得Vue组件既独立又灵活，非常适合于构建大型的单页应用（SPA）。
 
 #### ==6.1 加载组件步骤==
 
@@ -433,7 +508,7 @@
 >   </script>
 >   ```
 >
-> * 挂载组件
+> * 注册组件
 >
 >   ```vue
 >   <script>
@@ -442,23 +517,27 @@
 >       }
 >   </script>
 >   
+>   //3.2新语法：
 >   <script setup>
->       import {defineComponent, ref} from "vue"
+>       //0.使用前要导入defineComponent
+>       import {defineComponent, ref} from "vue" 
 >       //1.引入组件
 >       import Two from './Child.vue'
->       //2.挂载组件  vue3.2 添加setup语法糖后 需要导出 需要使用defineComponent()来挂载
+>       //2.注册组件  vue3.2 添加setup语法糖后 需要导出 需要使用defineComponent()来挂载
 >       //define:定义 Component:组件
->       defineComponent({
+>       defineComponent({  //使用前要导入defineComponent
 >           components:{
 >               Two
 >           }
 >       })
 >   </script>
 >   
+>   //传统派语法：
 >   <script>
 >       //1.引入组件
 >       import Two from "./Child.vue";
->       //2.在导出中挂载组件
+>       //2.在导出中注册组件
+>       // 必须写一个export default才能被其他组件找到和导入
 >       export default{
 >           components:{
 >               Two
@@ -466,6 +545,10 @@
 >       }
 >   </script>
 >   ```
+>
+>   > 通过export default将组件导出，这个导出的对象告诉Vue：“这里有一个Vue组件，它的配置是这样的。” 当你从另一个文件通过`import`语句导入这个组件时，你实际上是在获取这个导出的对象，然后你可以在Vue实例或另一个组件的`components`选项中注册它，以便在模板中使用。
+>   >
+>   > ==必须写一个export default才能被其他组件找到和导入==
 >
 > * 显示组件 （在template标签中使用）
 >
@@ -477,13 +560,19 @@
 
 #### 6.2 组件的交互
 
-> 组件和组件之间如果没有任何关系 就没有意思 他们之间是可以进行交互的，比如:a组件的需要 给交给b组件使用 通过prop来组件交互。
+> 组件和组件之间如果没有任何关系 就没有意思 他们之间是可以进行交互的，比如:a组件的需要 给交给b组件使用 通过prop来进行组件交互。
 
 > ==注:下面几种传递方式前提组件具有父子关系，如果没有父子关系借助于路由来传递数据。==
 
 ##### a. 引用者传递，被引用者接收（通过prop来组件交互）
 
 > * 老版本：
+>
+>   > * 引用者：
+>   >   * 在引用：被引用者标签时，在标签名后面加`:传递的变量名=值`来传递
+>   > * 被引用者：
+>   >   * 在`export default(导出)`中通过`props属性`来接收引用我的组件传来的数据。
+>   >   * 在`props中`通过 `传递的变量名:{type: 数据类型, default: 默认值}` 来接收引用者传递的数据。
 >
 >   ```vue
 >   被引用者接收数据：
@@ -572,6 +661,12 @@
 >
 > * 新版本（vue3.2)
 >
+>   > * 引用者：
+>   >   * 在引用：被引用者标签时，在标签名后面加`:传递的变量名=值`来传递
+>   > * 被引用者：
+>   >   * ==在script标签中加上setup==，使用`defineProps()`来接收数据
+>   >   * 在`defineProps()中`通过 `传递的变量名:{type: 数据类型, default: 默认值}` 来接收引用者传递的数据。
+>   
 >   ```vue
 >   被引用者接收数据：
 >   <script setup>
@@ -597,9 +692,17 @@
 >       })
 >   </script>
 >   ```
->
+>   
 >   ```vue
 >   引用者传递数据：
+>   <template>
+>       <h3>父组件</h3>
+>       <!-- 3.显示子组件 -->
+>       <!-- vue老版本 通过":属性名1=属性值1" 属性值就是要传递的数据（可以传递任意数据）-->
+>       <!-- 注意是空格间隔不是逗号-->
+>       <Two :age="myAge" :name="myName" :user="myUser" :list="myList"/>
+>   </template>
+>     
 >   <script setup>
 >       import {defineComponent, ref} from "vue"
 >       //1.引入组件
@@ -617,11 +720,19 @@
 >   </script>
 >   ```
 >
->   
 
 ##### b. 引用者接收，被引用者传递
 
->子组件想传递数据父组件借助于自定义事件，如果vue之前的版本，借助于this.semit(自定义事件,数据)如果是新版Vue3.2通过导入defineEmits() 创建一个触发器绑定自定义事件。
+> `被引用者借助于自定义事件来传递数据给引用者`
+>
+>* 被引用者：
+>  * 如果vue之前的版本，借助于`this.$emit(参数1：自定义事件名，参数2：传递的数据)`
+> 
+>  * 如果是新版Vue3.2通过导入`defineEmits(参数1：自定义事件，参数2：传递的数据) `来创建一个触发器绑定自定义事件。
+> 
+>* 引用者：
+>  * 在被引用者标签中加上`@自定义事件名="响应函数名"`来监听自定义事件是否被触发，触发就调用响应函数
+>
 
 > * 老版本：
 >
@@ -640,6 +751,7 @@
 > <script>
 >     import { ref } from 'vue';
 >     export default {
+>         //注意data后面是() 且没有":"
 >         data() {
 >             return {
 >                 msg: ""
@@ -649,7 +761,7 @@
 >             send: function(){
 >                 //this.$emit() 用于向引用我的组件传值
 >                 //参数1：自定义事件名，可以随便写
->                 //参数2：要传递的数据，可以是任意类型
+>                 //参数2：要传递的数据，可以是任意类型，可以写多个参数
 >                 this.$emit("childSend", this.msg);
 >             }
 >         }
@@ -665,12 +777,9 @@
 >         <legend>引用者接收数据</legend>
 >         <h3>父组件接收到的数据：{{ result }}</h3>
 >     </fieldset>
-> 
->     <!-- 3.显示子组件 -->
->     <!-- vue老版本 通过":属性名1=属性值1" 属性值就是要传递的数据（可以传递任意数据）-->
->     <!-- 注意是空格间隔不是逗号-->
+> 	
+> 	<!--@自定义事件="响应函数"：监听自定义事件是否被触发，触发就调用响应函数-->
 >     <Two @childSend="getChildData" />
->     <!-- <Two :age="myAge" :name="myName" :user="myUser" :list="myList"/> -->
 > </template>
 > 
 > <script>
@@ -682,7 +791,7 @@
 >         Two
 >     },
 >     methods: {
->         // 方法的参数就是子组件传递的数据（参数名可以随便写）
+>         // 方法的参数就是子组件传递的数据（参数名可以随便写，可以写多个参数）
 >         getChildData: function (result) {
 >             this.result = result; //注意lambda表达式形式的函数不能用this
 >         }
@@ -709,19 +818,22 @@
 >           <h4><input v-model="msg" /></h4>
 >       </fieldset>
 >   </template>
->   
+>     
 >   <script setup>
 >       import {ref} from 'vue';
->       //defineEmits()返回一个触发器 用于触发自定义事件
->       //触发器函数（参数1：自定义事件，参数2：传递的数据）
->       const emit=defineEmits(['childsend'])
 >       const msg=ref();
+>         
+>       //defineEmits()返回一个触发器 用于触发自定义事件
+>       //触发器函数（参数1：自定义事件，参数2：传递的数据，可以定义多个）
+>       const emit=defineEmits(['childsend'])
+>       //注意定义函数时也不要少了const
 >       const send=()=>{
 >           emit('childSend',msg.value);//触发器函数（参数1：自定义事件，参数2：传递的数据）
+>           //如果不写msg.value，而是msg那按一次就变成了双向绑定的模式。
 >       }
 >   </script>
 >   ```
->
+>   
 >   ```vue
 >   引用者接收数据
 >   <template>
@@ -733,7 +845,7 @@
 >       <!-- 3.显示子组件 -->
 >       <Two @childSend="getChildData" />
 >   </template>
->   
+>     
 >   <script setup>
 >       import { defineComponent,ref } from 'vue';
 >       //1.引入组件
@@ -744,15 +856,17 @@
 >               Two
 >           }
 >       })
->   
+>   	  
 >       const result = ref();
+>       //注意定义函数时也不要少了const
+>       //方法的参数就是子组件传递的数据（参数名可以随便写，可以写多个参数）
 >       const getChildData = (res) => {
 >           result.value = res;
 >       }
 >   </script>
 >   ```
 >
->   
+> 
 
 > ==注: 上面几种传递方式前提组件具有父子关系，如果没有父子关系借助于路由来传递数据。==
 
@@ -785,7 +899,7 @@
 >       <!--注意双引号中要用单引号-->
 >       <button @click="msg='数据2'">改变数据</button>
 >   </template>
->   
+>     
 >   <!--老版钩子函数-->
 >   <!--老版钩子函数 和 methods 是同级的不能放在methods里面，会失效-->
 >   <script>
@@ -797,7 +911,7 @@
 >           },
 >           //普通函数的位置
 >           methods:{
->   
+>     
 >           },
 >           //钩子函数：随着生命周期的变化自动触发
 >           //页面刚刚加载 会根据生命周期阶段，执行下面4个函数
@@ -810,7 +924,7 @@
 >           beforeMount:()=>{
 >               console.log("组件挂载前");
 >           },
->           mounted:()=>{
+>           mounted:()=>{ //注意首字母是小写
 >               console.log("挂载后，页面已经渲染完成，可以在前端看到");
 >               //最常用的 经常需要在这里加载后端数据
 >           },
@@ -821,7 +935,7 @@
 >           updated:()=>{
 >               console.log("更新后");
 >           },
->           // //当组件销毁 会自动执行下面两个函数 看不到效果的
+>           //当组件销毁 会自动执行下面两个函数 看不到效果的
 >           beforeDestroy:()=>{
 >               console.log("组件卸载前");
 >           },
@@ -832,12 +946,12 @@
 >   </script>
 >   ```
 >
->   
+> 
 >
 > * 新版写法
 >
 >   > 新版钩子函数:
->   > 和旧版相比，新版vue方式beforeCreate和created已经被调用了，所以这两个函数再使用是可以忽略不计的需要导入对应函数名`(on钩子函数)`通过import 而且每种钩子函数可以编写多个
+>   > 和旧版相比，新版vue方式beforeCreate和created已经被调用了，所以这两个函数再使用是可以忽略不计的需要导入对应函数名`(on钩子函数)`通过import而且每种钩子函数可以编写多个
 >
 >   ```vue
 >   <template>
@@ -847,7 +961,7 @@
 >   </template>
 >   <!--
 >       新版钩子函数:
->       和旧版相比，新版vue方式beforeCreate和created已经被调用了，所以这两个函数再使用是可以忽略不计的需要导入对应函数名(on钩子函数)通过import 而且每种钩子函数可以编写多个
+>       和旧版相比，新版vue方式beforeCreate和created已经被调用了，而且beforeDestroy和destroyed已经被删除了，所以这四个函数再使用是可以忽略不计的。新版的构造函数需要导入对应函数名(on钩子函数)通过import 而且每种钩子函数可以编写多个
 >   -->
 >   <script setup>
 >       import {onMounted,onUpdated,ref} from "vue"
@@ -863,13 +977,20 @@
 >       onMounted(function(){
 >           console.log("我再次挂载了",msg.value);
 >       })
->       onUpdated(function(){
->           console.log("更新后")
->           msg.value="数据3"
->       })
+>         
+>       onBeforeMount(function(){
+>           console.log("被挂载中");
+>       });
 >       onMounted(function(){
->           
->       })
+>           console.log("挂载完成了");
+>       });
+>     
+>       onBeforeUpdate(function(){
+>           console.log("被更新中");
+>       });
+>       onUpdated(function(){
+>           console.log("更新完成了");
+>       });
 >   </script>
 >   ```
 
@@ -885,10 +1006,12 @@
 #### 8.1 swiper组件
 
 > 官网：swiper.com.cn (进不去就用：https://www.swiper.com.cn/index.html)
+> 查看在Vue中使用swiper
 >
 > * vue项目中安装swiper（==注意是在要使用的项目的目录中安装==）
 >
 >   ```shell
+>   在命令行中输入下面的语句
 >   -- 注意是在要使用的项目的目录中安装
 >   -- 安装最新版的swiper
 >   cnpm install --save swiper
@@ -901,38 +1024,18 @@
 >
 >   ![image-20240822163216581](D:\Desktop\gitee\java-learning\sc240601\前端\Vue3\img\vue项目中安装swiper.png)
 >
-> * 在组件中导入swiper，类似于之前学习的组件引入
+> * 在组件中导入swiper，类似于之前学习的组件引入`(Swiper,SwiperSlide)`
 >
 >   ```vue
->   <template>
->       <!-- 4.导入成功后使用Swiper标签导入轮播图组件，SwiperSlide子标签来添加图片 -->
->       <div>
->           <Swiper>
->           <SwiperSlide>
->               <img src="../assets/logo.png">
->           </SwiperSlide>
->           <SwiperSlide>
->               <img src="../assets/logo.png">
->           </SwiperSlide>
->           <SwiperSlide>
->               <img src="../assets/logo.png">
->           </SwiperSlide>
->           <SwiperSlide>
->               <img src="../assets/logo.png">
->           </SwiperSlide>
->       </Swiper>
->       </div>
->   </template>
->   
 >   <!-- 如果使用vue3.2 setup语法糖 可以省略挂载组件 -->
 >   <script setup>
 >       import { defineComponent } from 'vue';
 >       //1.引入组件Swiper,SwiperSlid来自'swiper/vue'
 >       import { Swiper,SwiperSlide } from 'swiper/vue';
->       //1.1引入swiper的css组件
->       import 'swiper/css';
+>       //1.1引入swiper的css组件（必须导入不然是上下排成一列）
+>       import 'swiper/css'; 
 >   
->       //2.挂载组件(3.2加setup可以省略)
+>       //2.挂载组件(3.2 setup可以省略)
 >       defineComponent({
 >           components:{
 >               Swiper,SwiperSlide
@@ -940,22 +1043,81 @@
 >       })
 >   </script>
 >   
+>   ```
+>   
+> * 4.导入成功后使用Swiper标签导入轮播图组件，SwiperSlide子标签来添加图片
+>
+>   ```vue
+>   <template>
+>       <!-- 4.导入成功后使用Swiper标签导入轮播图组件，SwiperSlide子标签来添加图片 -->
+>       <div >
+>           <!-- 属性名前加:表示要绑定下面的变量
+>               属性介绍： 
+>               modules：类似于v-model 做双向绑定 只不过它是绑定很多个值 需要在下面定义好数组变量
+>               navigation:使用上下一页
+>               pagination:开启页面指示器
+>               autoplay:自动播放 {delay:1000,pauseOnMouseEnter:'false'} 
+>   					 delay控制轮播时间, pauseOnMouseEnter鼠标悬停
+>             -->
+>           <Swiper :modules="modules" navigation :pagination="{ clickable:true}" :autoplay="{delay:1000,pauseOnMouseEnter:'false'}">
+>               <SwiperSlide>
+>                   <img width="700px" height="400px" src="../assets/1.png">
+>               </SwiperSlide>
+>               <SwiperSlide>
+>                   <img width="700px" height="400px" src="../assets/3.png">
+>               </SwiperSlide>
+>               <SwiperSlide>
+>                   <img width="700px" height="400px" src="../assets/4.png">
+>               </SwiperSlide>
+>               <SwiperSlide>
+>                   <img width="700px" height="400px" src="../assets/6.png">
+>               </SwiperSlide>
+>               <SwiperSlide>
+>                   <img width="700px" height="400px" src="../assets/8.png">
+>               </SwiperSlide>
+>           </Swiper>
+>       </div>
+>   </template>
+>   <!-- 如果使用vue3.2 setup语法糖 可以省略挂载组件 -->
+>   <script setup>
+>       import { defineComponent } from 'vue';
+>       //1.引入组件Swiper,SwiperSlid来自'swiper/vue'
+>       import { Swiper,SwiperSlide } from 'swiper/vue';
+>       //1.1引入swiper的css组件
+>       import 'swiper/css';
+>       //1.2 导入其他组件
+>       import {Autoplay,Navigation,Pagination} from 'swiper/modules';
+>       //1.3 给1.2中导入的其他组件添加css样式
+>       import 'swiper/css/navigation';
+>       import 'swiper/css/pagination';
+>     
+>       // 加入其他功能到数组变量中，给上面做双向绑定：
+>       const modules=[Autoplay,Navigation,Pagination];
+>     
+>       //2.挂载组件(3.2 setup可以省略)
+>       defineComponent({
+>           components:{
+>               Swiper,SwiperSlide
+>           }
+>       })
+>   </script>
+>     
 >   <style scoped>
+>       /* 居中 */
 >       div{
 >           text-align: center;
 >       }
 >   </style>
->   d
 >   ```
 
 ### 9. Vue发送异步请求
 
 > * 原生js实现的，步骤比较繁琐 不推荐
-> * jQuery封装好的方法 $.post() $.get() s.ajax(),但是需要手动控制请求和响应的数据格式 不推荐
+> * jQuery封装好的方法 $.post() $.get() s.ajax()，但是需要手动控制请求和响应的数据格式 不推荐。
 > * 通过axios发送异步请求 底层就是对jQuery的ajax进一步的封装，非常适合
 >   前端分离的项目 它默认的传递数据格式就是json   推荐使用
 
-#### 9.1 axios的安装和使用
+#### 9.1 axios组件的安装和使用
 
 > * 安装：==(在需要的项目中安装要先进入该项目的目录)==
 >
@@ -975,19 +1137,19 @@
 >   > * 全局导入：在vue项目入口(main.js) 添加一段配置 这样以后每个组件都无需导入axios
 >   >
 >   >   ```js
->   >   // 在main.js中进行全局配置
+>   >   // 在main.js(vue项目入口)中进行全局配置
 >   >   import { createApp } from 'vue'
 >   >   import App from './App.vue'
 >   >   import './registerServiceWorker'
 >   >   // 1. 导入axios组件
 >   >   import axios from 'axios'
->   >   
+>   >       
 >   >   //createApp(App).mount('#app')
 >   >   //2.创建App组件：
 >   >   const app = createApp(App)
 >   >   //3.在创建App组件后，挂载App组件前，进行全局引入
 >   >   //app.config.globalProperties.任意别名=要导入的组件
->   >   //这样定义好了后，其他组件就可以通过这个任意别名直接使用axios
+>   >   //这样定义好了后，其他组件就可以通过这个 任意别名 直接使用axios
 >   >   app.config.globalProperties.myAxios=axios
 >   >   //4.挂载App组件
 >   >   app.mount('#app')
@@ -1023,9 +1185,9 @@
 >   >       const {proxy}=getCurrentInstance()
 >   >       const user=ref({})
 >   >       const msg=ref()
->   >       const add=()=> {
+>   >       const add= ()=>{
 >   >           // post()函数参数1是地址，参数2是数据（会自动转化为json数据）
->   >           proxy.myAxios.post('http://localhost:80/add',user.value).then(res=>{
+>   >           proxy.myAxios.post('http://localhost:80/add',user.value).then(res=>		   {
 >   >               msg.value = res.data.msg
 >   >           })
 >   >       }
@@ -1043,64 +1205,66 @@
 
 > 封装方式：
 >
+> * 创建一个包util，创建一个request.js (或者http.js) 看公司心情
+>
 > ```js
 > //这个文件的目的是将axios对象进行封装 提高安全性
 > // 1.导入axios
 > import axios from 'axios'
 > // 2.创建错误对象映射(参数status:状态码，参数info:错误信息)
 > const errorHandler=(status,info)=>{
->     //使用switch进行等值判断
->     switch(status) {
->         case 400: console.log('客户端参数有误');break;
->         case 404: console.log('地址错误');break;
->         case 500: console.log(info);break;
->         default : console.log(info);break;
->     }
+>  //使用switch进行等值判断
+>  switch(status) {
+>      case 400: console.log('客户端参数有误');break;
+>      case 404: console.log('地址错误');break;
+>      case 500: console.log(info);break;
+>      default : console.log(info);break;
+>  }
 > }
 > 
 > // 3.通过axios创建请求实例
 > const instance = axios.create({
->     timeout:5000 //控制请求超时数据，单位ms
+>  timeout:5000 //控制请求超时数据，单位ms
 > })
 > 
 > // 4.通过请求实例 配置 请求拦截器
 > //instance.interceptors.request.use(成功函数，失败函数)
 > instance.interceptors.request.use(
->     config=>{
->         if(config.method == "post") {
->             //处理所有的post请求 要看公司需求
->         } else if(config.method == "get") {
->             //处理所有get请求
->         }
->         // ... 可以写很多个
->         //一定要返回，不然白写
->         return config;
->     },
->     error=>{
->         //返回错误信息
->         return Promise.reject(error);
->     }
+>  config=>{
+>      if(config.method == "post") {
+>          //处理所有的post请求 要看公司需求
+>      } else if(config.method == "get") {
+>          //处理所有get请求
+>      }
+>      // ... 可以写很多个
+>      //一定要返回，不然白写
+>      return config;
+>  },
+>  error=>{
+>      //返回错误信息
+>      return Promise.reject(error);
+>  }
 > )
 > 
 > // 5.通过请求实例 配置 响应拦截器
 > instance.interceptors.response.use(
->     responce=>{
->         //根据状态码是否是200来控制返回的信息
->         return responce.status==200? Promise.resolve(response):Promise.reject(response)
->     },
->     eror=>{
->         //定义响应变量，因为常量不能改
->         const {response} = error;
->         //调用上面的错误映射传入状态码和错误信息
->         errorHandler(response.status,response.info);
->     }
+>  responce=>{
+>      //根据状态码是否是200来控制返回的信息
+>      return responce.status==200? Promise.resolve(response):Promise.reject(response)
+>  },
+>  eror=>{
+>      //定义响应变量，因为常量不能改
+>      const {response} = error;
+>      //调用上面的错误映射传入状态码和错误信息
+>      errorHandler(response.status,response.info);
+>  }
 > )
 > // 6.导出请求实例
 > export default instance;
 > ```
 >
 > * 创建一个包(api包)（一般存放的是发送网络请求，文件可能会有很多），
->   比如：base.js(可以常量同意地址) index.js user.js bbs.js
+>   比如：base.js(可以处理通用地址) index.js user.js bbs.js
 >
 >   * base.js
 >
@@ -1110,8 +1274,8 @@
 >     const base={
 >         baseUrl:"http://localhost:80" //写项目地址
 >     }
->     
->     //导出(这样别人就能通过import进行导入了，注意导出的名字带了{}，要求导入时也要带{})
+>
+>     //导出(这样别人就能通过import进行导入了，注意如果导出的名字带了{}，要求导入时也要带{})
 >     export default base;
 >     ```
 >
@@ -1122,7 +1286,7 @@
 >     import myRequest from '../util/request';
 >     //引入封装好的公共地址
 >     import myBase from 'base';
->     
+>         
 >     // 创建公共api接口， 编写好了 以后发送不同模块网络请求
 >     // 都是引入这个api接口 来实现的 公司业务不同 这个也是经常
 >     const api={
@@ -1140,7 +1304,17 @@
 >
 > * 如何使用封装好的api接口发送请求
 >
->   ```
+>   ```vue
+>   <script>
+>   import api from  '../api/index'
+>   onMounted(()=>{
+>       //由于没有参数传递 {} 来占个位置
+>       api.postReq('/queryAll',{}).then(res=>{
+>           console.log(res.data)
+>           users.value=res.data.data
+>       })
+>   })
+>   </script>
 >   ```
 
 ### 10.前端跨域
@@ -1158,22 +1332,22 @@
 > //创建公共地址的比如:http://localhost:9999
 > //这样其他请求 公共部分无需编写了
 > const base={
-> 	baseUrl:"/api"//等价于http://localhost:9999
+> 	baseUrl:"/api"//等价于http://localhost:9999/api
 > }
 > export default base;
 > ```
 >
 > ==注：修改了vue.config.js一定要重启服务器，否则不生效，就它最特殊，其他都不需要重启。==
 
-### ==11.Vue路由==
+### ==11.Vue路由组件==
 
-> 路由主要是用来管理vue组件中的关系，可以实现路径跳转，可以实现组件之间的数据传递，这样可以让vue.js构建单页的应用更加轻松。
+> 路由(vue-router组件)：主要是用来管理vue组件中的关系，可以实现路径跳转，可以实现组件之间的数据传递，这样可以让vue.js构建单页的应用更加轻松。
 
 #### 11.1 vue路由安装
 
 > 注：不要通过cnpm来安装，虽然语法通过，但是路由都会失效。(因为国内的少了几个组件)，推荐使用vue ui图形界面方式安装依赖，或 创建vue项目时 选择路由插件
 >
-> * 使用vue ui图形界面安装（前期联系时使用）
+> * 使用vue ui图形界面安装 `vue-router组件`（前期联系时使用）
 >
 >   在终端用vue ui打开图形化界面。
 >   <img src="D:\AppData\Typora\typora-user-images\image-20240826120918245.png" alt="image-20240826120918245" style="zoom:33%;" />
@@ -1187,20 +1361,28 @@
 
 #### 11.2 路由的配置方式
 
+> 1. 配置路由（在router/index.js中) 
+>    (引入创建路由需要的组件  创建路由规则  创建路由对象  导出路由对象)
+> 2. 启用路由 （在项目入口 - main.js中）
+>    (引入路由，启用路由）
+> 3. 使用路由
+>    (路由显示入口， 通过链接标签来使用路由引入其他组件）
+
 > * 创建一个目录：router用来保存路由配置文件(index.js)通过路由管理所有vue组件
 >
-> * 再创建一个目录：view用来保存所有的被路由管理的vue组件，其他vue组件依然可以保存中原来的component目录下，但大多数组件都被路由管理。
+> * 再创建一个目录：views用来保存所有的被路由管理的vue组件，其他vue组件依然可以保存中原来的component目录下，但大多数组件都被路由管理。
 >
->   * views: 创建组件的位置 比如: Home.vue User.vue
+>   * views: 创建组件的位置 比如: Home.vue\User.vue
 >
->   * router: 创建一个index.js 编写路由配置(引入路由 路由规则 创建路由 导出路由)
+>   * router: 创建一个index.js 编写路由配置(引入创建路由需要的组件  创建路由规则  创建路由对象  导出路由对象)
 >
 >     ```js
->     //1.导入路由组件对象
+>     //1.导入创建路由需要的组件
 >     import { createRouter, createWebHashHistory} from 'vue-router'
 >     import Home from '../views/Home.vue'
 >     
 >     //2.创建路由对象(数组 因为vue组件有很多个)
+>     //注意创建路由规则时，名称不能改，必须是routes (routers是错误的)
 >     const routes = [
 >         {
 >             path:'/', //访问的路径
@@ -1218,10 +1400,11 @@
 >     // 3.创建路由组件
 >     const router=createRouter(
 >         {
->             //createWebHashHistroy比较常用
->             // 需要配合后端配置做重定向，否则会404
->             history: createWebHashHistory(),
->             routes //路由规则
+>             //createWebHashHistroy比较常用 表示选择哈希路由模式
+>             // 是切换页面（无需加载） 而不是跳转页面了
+>             // 如果要跳转页面就需要配合后端配置做重定向，否则会404
+>             history: createWebHashHistory(),      // 选择路由方式
+>             routes                                // 选择路由规则：上面配置的路由规则
 >         }
 >     )
 >     
@@ -1229,43 +1412,111 @@
 >     export default router;
 >     ```
 >
->     
->
->   * main.js: 再vue项目的入口 启用vue 路由
+>   * main.js: 在vue项目的入口 启用vue路由组件
 >
 >     ```js
 >     import { createApp } from 'vue'
 >     import App from './App.vue'
 >     import './registerServiceWorker'
->     // 1. 导入axios组件
 >     import axios from 'axios'
->     
->     //引入路由 如果格式是js 可以省略
->     //如果文件名就一个叫index.js 则都可以省略
+>     //上面是其他配置可以不用看
+>         
+>     //1.引入路由 如果格式是js 可以省略
+>     //如果包里面就一个文件 则都可以省略
 >     import router from './router'
->     
->     
->     //使用路由 创建之后 挂载之前 位置一定不能换
+>         
+>     //2.使用路由的时机：在vue项目创建之后，被挂载之前。位置一定不能换！
 >     createApp(App).use(router).mount('#app')
 >     ```
+>
+
+> `/#/` 和 `/` 在 Web 开发中，尤其是在单页面应用（SPA）和 URL 路由管理中，具有不同的含义和用途。以下是它们之间的主要区别：
+>
+> ### 1. 含义
+>
+> * `/`：在 URL 中，`/` 通常用作路径分隔符，表示根目录或目录之间的层级关系。在 Web 应用中，它用于指定资源的相对路径或绝对路径。例如，在 URL `http://www.example.com/about` 中，`/` 分隔了域名和路径部分，而路径部分 `/about` 表示网站根目录下的 `about` 目录或资源。
+> * `/#/`：这种形式的 URL 路径通常与前端路由（如 Vue Router、React Router 等）中的哈希模式（hash mode）相关。在哈希模式下，URL 的 `#` 符号及其后面的部分不会被发送到服务器，而是由前端路由库捕获并用于控制页面内容的显示。`/#/` 中的 `/` 仍然表示路径分隔符，但整个 `/#/` 部分及其后的内容被视为前端路由的路径，用于在客户端进行页面内容的切换，而无需重新加载整个页面。
+>
+> ### 2. 用途
+>
+> * `/`：主要用于定义 Web 应用的资源路径，包括静态文件（如图片、CSS、JavaScript 文件）和动态页面（如通过服务器端渲染或前端路由控制的页面）。它是 Web 应用中资源定位的基础。
+> * `/#/`：主要用于前端路由的哈希模式中，以实现单页面应用的页面跳转和状态管理。通过改变 URL 中的哈希部分，前端路由库可以捕获这些变化并相应地更新页面内容，而无需重新加载页面。这种方式有助于提升用户体验，减少服务器请求次数，并使得前端路由更加灵活和可控。
+>
+> ### 3. 注意事项
+>
+> * 在使用前端路由时，需要根据项目的具体需求和目标来选择使用哈希模式还是历史模式（history mode）。哈希模式具有更好的兼容性，但 URL 中包含 `#` 符号可能会影响美观和 SEO。历史模式则更加美观和符合现代 Web 应用的标准，但需要服务器端的支持来确保刷新页面时能够正确加载资源。
+> * 在设计 URL 结构时，应遵循一定的命名规则和最佳实践，以确保 URL 的清晰、简洁和易于理解。这有助于提升用户体验和 SEO 效果。
+>
+> 综上所述，`/#/` 和 `/` 在 Web 开发中具有不同的含义和用途，分别用于前端路由的哈希模式和定义 Web 应用的资源路径。在实际应用中，应根据项目的具体需求和目标来选择合适的模式和路径结构。
+
+> 哈希模式（Hash Mode）和历史模式（History Mode）是Vue Router中提供的两种路由模式，它们在URL的显示、服务器的配置需求以及SEO（搜索引擎优化）的友好性等方面存在显著差异。
+>
+> ### 1. 哈希模式（Hash Mode）
+>
+> **特点**：
+>
+> * **URL格式**：使用`#`符号分隔路径，例如`http://example.com/#/home`。哈希值之后的部分由客户端解析。
+> * **服务器配置**：无需服务器配置，因为哈希值部分不会被发送到服务器。
+> * **浏览器支持**：兼容所有现代浏览器以及一些老旧浏览器。
+> * **SEO友好性**：URL中的`#`符号对搜索引擎不友好，影响SEO。搜索引擎难以索引`#`后面的内容。
+> * **页面加载**：浏览器在哈希值发生变化时不会重新加载页面，只会触发`hashchange`事件，客户端脚本（如Vue Router）可以捕捉并处理这个事件来进行导航。
+>
+> **适用场景**：
+>
+> * 适用于不需要SEO支持的项目。
+> * 适用于不便或无法配置服务器的项目。
+>
+> ### 2. 历史模式（History Mode）
+>
+> **特点**：
+>
+> * **URL格式**：使用正常的路径格式，没有`#`符号，例如`http://example.com/home`。
+> * **服务器配置**：需要配置服务器来处理所有路由请求，返回应用的主页面。这是因为在History模式下，直接访问浏览器中的URL路径时，服务器需要返回前端应用的HTML文件，由前端路由来处理该URL。
+> * **SEO友好性**：URL结构对搜索引擎友好，有助于SEO。搜索引擎可以正常索引内容。
+> * **页面加载**：利用HTML5 History API（如`pushState`和`replaceState`）来管理历史记录，路径的变化会更新浏览器的地址栏，但不会重新加载页面，客户端脚本（如Vue Router）处理路径变化。
+>
+> **适用场景**：
+>
+> * 适用于需要更友好的URL和更好的SEO支持的项目。
+> * 适用于项目的目标浏览器支持HTML5 History API，并且需要处理特定的服务器请求（如RESTful API）的情况。
+>
+> ### 总结
+>
+> 哈希模式和历史模式各有优劣，选择哪种模式取决于项目的具体需求和目标。如果项目对SEO要求不高，或者无法配置服务器，可以选择哈希模式。如果项目需要更美观的URL、更好的SEO支持，并且能够处理服务器配置，那么历史模式将是更好的选择。
+
+
 
 #### 11.3 使用路由
 
 > 在vue项目的首页App.vue(其他页面也可以添加)添加几个标签：
 >
 > ```vue
-> <!--表示路由显示的入口-->
+> <!--表示路由显示的入口(单标签)，下面的两种写法都行，不用‘-’就要用驼峰法命名-->
 > <router-view/> 或 <routerView/>
 > 
-> <!--等价于之前的a标签 连接标签-->
-> <router-link to="链接地址">链接名称</router-link>
+> <!--连接标签：等价于之前的a标签 -->
+> <router-link to="配置好的路由规则中的地址，对应了一个组件">链接名称</router-link>
+> <router-link to="配置好的路由规则中的地址，对应了一个组件">链接名称</router-link>
 > ```
+
+> 路由配置和使用方式的总结：
+>
+> 1. 配置路由（在router/index.js中) 
+>   (引入创建路由需要的组件  创建路由规则  创建路由对象  导出路由对象)
+>   (注意创建路由规则时，名称不能改,必须是routes (routers是错误的)
+> 2. 启用路由 （在项目入口 - main.js中）
+> (引入路由，启用路由）
+> 3. 使用路由
+> (路由显示入口， 通过链接标签来使用路由引入其他组件(切换式引入，每次只引入一个)）
 
 #### 11.4 路由传递参数
 
+##### a. 给被引用的组件传递参数
+
 > 类似于后端 根据id传递后端 会在同一个页面显示不同的内容 而vue路由肯定也需要这种需求
 >
-> * 路由配置地址的时候添加":"表示 传递参数
+> * 路由配置地址的时候添加":要传递的参数名"表示 要传递参数 参数名可以任意编写
+>   （使用路由引用其他组件的组件按顺序传值，被引用的组件根据参数名取值）
 >
 >   ```vue
 >   {
@@ -1275,7 +1526,7 @@
 >   }
 >   ```
 >
-> * route-link标签地址体哦阿正时传入指定的随机（要和配置的方式一样）
+> * route-link标签地址跳转时传入指定的数据（要和配置的方式一样）
 >
 >   ```
 >   <route-link to="/goodz/10/衣服"> 链接</route-link>
@@ -1290,22 +1541,29 @@
 >   </template>
 >   <script setup>
 >       import {useRoute} from 'vue-router
+>       //在script标签中要通过useRoute()函数来获取
 >       const id=useRoute().params.id
 >       const name=useRoute().params.name
 >   </script>
 >   ```
+>
+> ![image-20240903080430977](D:\Desktop\gitee\java-learning\sc240601\前端\Vue3\img\使用路由传参.png)
+
+##### b.	给引用我的组件传递参数
+
+> 
 
 #### 11.5 二级路由
 > 如果项目中的功能特别复杂 设计很多组件 肯定会出现父级导航 和子级导航 每个导航 都有很多子级组件 对应 就要设计到二级路由或者多级路由。
 >
-> * 在路由配置文件添加属性 children
+> * 在路由配置文件的路由规则对象中添加属性 children
 >
 > ```js
 > //1.导入路由组件对象
 > import { createRouter, createWebHashHistory} from 'vue-router'
 > import Home from '../views/Home.vue'
 > 
-> //2.创建路由对象(数组 因为vue组件有很多个)
+> //2.创建路由规则对象(数组 因为vue组件有很多个)
 > const routes = [
 >     {
 >         path:'/', //访问的路径
@@ -1322,7 +1580,7 @@
 >         component:() => import("../views/New.vue")
 >     },
 >     {
->         // ":"表示我要传递参数，类似于后端的？ 师兄们可以任意编写
+>         // ":"表示我要传递参数，类似于后端的？属性可以任意编写
 >         // vue组件就需要根据属性名来取值
 >         // /newContent/:属性1/:属性2/:属性3  来传递多个值
 >         path:'/newContent/:type',
@@ -1365,7 +1623,8 @@
 > export default router;
 > ```
 >
-> * 在一级路由组件页面中 通过<router-link to="/一级/二级"
+> * 在一级路由组件页面中 通过<router-link to="/一级/二级" 来访问二级路由。必须加上一级路由才能访问二级，三级路由就必须加上一级和二级。
+>   ![image-20240903095919051](D:\Desktop\gitee\java-learning\sc240601\前端\Vue3\img\使用多级路由.png)
 >
 >   ```vue
 >   <template>
@@ -1380,13 +1639,15 @@
 >           <router-view></router-view>
 >       </div>
 >   </template>
->   
+>     
 >   <script setup>
 >       import {ref} from "vue"
 >   </script>
 >   ```
 >
 > * 注：如果时三级路由，继续无限套娃 理论上是没有上限的。但是绝大部分功能二级路由已经足够使用了。
+
+> 创建项目时选中第四个组件，会帮我们自动在项目中创建router包和index.js文件和views包
 
 ### 12.Vue使用Elementplus(做后台)
 
@@ -1421,7 +1682,7 @@
 >   import Elementplus from 'element-plus'
 >   //1.1 导入elementplus的样式index.css
 >   import 'element-plus/dist/index.css'
->   
+>       
 >   //2. 使用elementplus
 >   // elementplus一定要在路由前使用，否则会失效。
 >   createApp(App).use(Elementplus).use(router).mount('#app')
@@ -1493,16 +1754,16 @@
 >   import App from './App.vue'
 >   import './registerServiceWorker'
 >   import router from './router'
->   
+>       
 >   //引入所有的Elementplus图标
 >   import * as ElementPlusIconsVue from '@element-plus/icons-vue'
->   
+>       
 >   //通过app组件遍历所有的Elementplus图标 遍历一个注册(挂载)一个
 >   const app = createApp(App)
 >   for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 >     app.component(key, component) //挂载组件
 >   }
->   
+>       
 >   app.use(router).mount('#app')
 >   ```
 
@@ -1562,7 +1823,7 @@
 >     const Components = require('unplugin-vue-components/webpack');
 >     //在elementplus基础上Vant额外导入
 >     const { VantResolver } = require('@vant/auto-import-resolver');
->     
+>         
 >     module.exports = defineConfig({
 >       transpileDependencies: true,
 >       //生产服务器
