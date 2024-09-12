@@ -323,11 +323,11 @@ systemctl status firewalld : 查看防火墙状态
 >   1.本地的数据库 需要开启ip访问(远程访问)
 >   	因为数据库在本地，所以要在数据库中创建一个支持远程访问的用户：用户名随意@% 【注意主机一定要是%】
 >   	然后测试远程连接用户是否可用
->         
+>             
 >   2.SSM.war放入linux   访问windows本机的数据库
 >   	修改jdbc的配置文件的url：url=Windows的IP地址:3306/数据库名...
 >   	还要修改jdbc的user用户：uesr=设置的远程连接用户
->         
+>             
 >   3.linux  关闭防火墙 或 开放访问端口
 >   ```
 >   
@@ -415,7 +415,7 @@ systemctl status firewalld : 查看防火墙状态
 >     ```
 >     java -jar xxx.jar    (ctrl+c结束)
 >     java -jar xxx.jar &  (ctrl+c进行后台运行)
->     
+>         
 >     -- 如果端口号被占用  可以不用修改jar包 也可以动态修改端口号
 >     java -jar -Dserver.port=XXXX  xxx.jar 
 >     ```
@@ -493,12 +493,12 @@ systemctl status firewalld : 查看防火墙状态
 >   export CLASSPATH=百度搜直接粘贴根window几乎一样 
 >          但是linux间隔符是冒号   
 >          .:%JAVA_HOME%/lib/dt.jar:%JAVA_HOME%/lib/tools.jar
->             
+>                 
 >   -- 2.追加PATH变量 添加一个配置 导出  $PATH 和 $JAVA_HOME 调用定义好的变量  间隔符是冒号
 >   export PATH=$PATH : $JAVA_HOME/bin
->     
+>         
 >   -- 3.通过命令source /etc/profile  刷新配置(否则不生效)
->     
+>         
 >   -- 4.测试 java -version   javac -version
 >   ```
 >
@@ -692,7 +692,7 @@ systemctl status firewalld : 查看防火墙状态
 >    0  0  *  * 1-5    root 备份命令
 >   --比如:每分钟执行一次数据库备份任务
 >    */1 * *  *  *    root mysqldump -uroot -proot -B sc240601>/usr/local/sql/cron.$(date +\%Y-\%m-\%d-\%H:\%M:\%S).sql
->   
+>       
 >   -- 2.重启cron服务
 >   systemctl restart crond
 >   ```
@@ -754,7 +754,7 @@ systemctl status firewalld : 查看防火墙状态
 >
 >    ```bash
 >    bash复制代码
->    
+>          
 >    crontab -u <用户名> -e
 >    ```
 >
