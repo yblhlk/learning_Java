@@ -52,16 +52,17 @@
 >
 > * 修改Linux的ip地址
 >   进入ifcfg-XXX文件进行修改
->
+>   根据子网掩码的位数来确定ip要对应的位数
+>   
 >   ![image-20240904113910173](D:\Desktop\gitee\java-learning\sc240601\Linux\img\VirtualBox连接虚拟机16.png)
->
+>   
 > * 重启Linux网络service network restart
 >   ![image-20240904114256629](D:\Desktop\gitee\java-learning\sc240601\Linux\img\VirtualBox连接虚拟机17.png)
 >
 > * 通过Xshell连接Linux![image-20240904114710569](D:\Desktop\gitee\java-learning\sc240601\Linux\img\VirtualBox连接虚拟机18.png)
 >   ![image-20240904114859869](D:\Desktop\gitee\java-learning\sc240601\Linux\img\VirtualBox连接虚拟机19.png)
 >
-> * Xshell 中 Alt+回车 切换全屏
+> * `Xshell 中 Alt+回车 切换全屏`
 >
 > * 使用Xftp快速传输文件
 >   ![image-20240904164435356](D:\Desktop\gitee\java-learning\sc240601\Linux\img\VirtualBox连接虚拟机20.png)
@@ -219,14 +220,50 @@ rm -rfv : 递归删除 r表示递归  f强制  v展示
 vi      : 可以查看 可以编辑  如果查看的文件不存在 帮你创建文件
 touch   : 创建文件
 cp      : 复制文件  不能复制整个目录
-cp -r   : 递归复制整个目录
+cp -rf   : 递归复制整个目录
 mv      : 可以重命名(修改新文件名和原文件名在同一个目录)
           mv  原文件  新文件
           也可以剪切(修改新文件名和原文件名不在同一个目录)
           mv  原文件  a/b/c/新文件
 ```
 
+#### 查看Linux系统信息
 
+> #### 1.2 查看 /etc/os-release 文件
+>
+> 几乎所有现代Linux发行版都包含 `/etc/os-release` 文件，该文件以键值对的形式提供了系统的版本信息。在终端中输入以下命令来查看该文件的内容：
+>
+> ```bash
+> bash复制代码
+> 
+> cat /etc/os-release
+> ```
+>
+> #### 1.3 uname 命令
+>
+> 虽然 `uname` 命令主要用于显示系统的内核版本信息，但它也能提供关于系统架构的一些基本信息。如果你只想查看内核版本，可以使用：
+>
+> ```bash
+> bash复制代码
+> 
+> uname -r
+> ```
+>
+> 但如果你想得到更全面的信息，包括操作系统名称、主机名等，可以使用：
+>
+> ```bash
+> bash复制代码
+> 
+> uname -a
+> ```
+>
+> 
+>
+> CentOS与Linux内核之间存在密切的关系，具体可以从以下几个方面来理解：
+>
+> CentOS基于Linux内核构建
+>
+> CentOS（Community Enterprise Operating System）是一个开源的Linux发行版，它基于Linux内核构建而成。Linux内核是Linux操作系统的核心组件，负责管理系统资源、调度进程、提供系统调用接口等功能。CentOS在Linux内核的基础上，加入了额外的软件包和工具，进行了特定的配置和定制，形成了一个完整的操作系统。
 
 #### 5.2 查看命令
 
@@ -323,11 +360,11 @@ systemctl status firewalld : 查看防火墙状态
 >   1.本地的数据库 需要开启ip访问(远程访问)
 >   	因为数据库在本地，所以要在数据库中创建一个支持远程访问的用户：用户名随意@% 【注意主机一定要是%】
 >   	然后测试远程连接用户是否可用
->             
+>               
 >   2.SSM.war放入linux   访问windows本机的数据库
 >   	修改jdbc的配置文件的url：url=Windows的IP地址:3306/数据库名...
 >   	还要修改jdbc的user用户：uesr=设置的远程连接用户
->             
+>               
 >   3.linux  关闭防火墙 或 开放访问端口
 >   ```
 >   
@@ -415,7 +452,7 @@ systemctl status firewalld : 查看防火墙状态
 >     ```
 >     java -jar xxx.jar    (ctrl+c结束)
 >     java -jar xxx.jar &  (ctrl+c进行后台运行)
->         
+>           
 >     -- 如果端口号被占用  可以不用修改jar包 也可以动态修改端口号
 >     java -jar -Dserver.port=XXXX  xxx.jar 
 >     ```
@@ -493,12 +530,12 @@ systemctl status firewalld : 查看防火墙状态
 >   export CLASSPATH=百度搜直接粘贴根window几乎一样 
 >          但是linux间隔符是冒号   
 >          .:%JAVA_HOME%/lib/dt.jar:%JAVA_HOME%/lib/tools.jar
->                 
+>                   
 >   -- 2.追加PATH变量 添加一个配置 导出  $PATH 和 $JAVA_HOME 调用定义好的变量  间隔符是冒号
 >   export PATH=$PATH : $JAVA_HOME/bin
->         
+>           
 >   -- 3.通过命令source /etc/profile  刷新配置(否则不生效)
->         
+>           
 >   -- 4.测试 java -version   javac -version
 >   ```
 >
@@ -692,7 +729,7 @@ systemctl status firewalld : 查看防火墙状态
 >    0  0  *  * 1-5    root 备份命令
 >   --比如:每分钟执行一次数据库备份任务
 >    */1 * *  *  *    root mysqldump -uroot -proot -B sc240601>/usr/local/sql/cron.$(date +\%Y-\%m-\%d-\%H:\%M:\%S).sql
->       
+>         
 >   -- 2.重启cron服务
 >   systemctl restart crond
 >   ```
@@ -754,7 +791,7 @@ systemctl status firewalld : 查看防火墙状态
 >
 >    ```bash
 >    bash复制代码
->          
+>             
 >    crontab -u <用户名> -e
 >    ```
 >
