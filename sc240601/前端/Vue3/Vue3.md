@@ -92,7 +92,7 @@
 
 > * 在VSCode中用快捷键 `Ctrl  + ~` 打开终端
 >
-> * 输入命令创建项目：vue create 项目名==（必须都小写，项目名必须小写）==
+> * 输入命令创建项目：vue create 项目名==（必须都小写，项目名必须全部小写）==
 >   ![image-20240821142153511](D:\Desktop\gitee\java-learning\sc240601\前端\Vue3\img\vue项目的名称必须小写.png)
 >
 > * 选择vue项目模板格式：（选第三个自定义模板）
@@ -271,7 +271,7 @@
 >   ```vue
 >   <!--编写css-->
 >   <style>
->           
+>                   
 >   </style>
 >   ```
 
@@ -288,7 +288,7 @@
 >   ```vue
 >   <script setup>
 >       const user={}; //非响应式，写死了。{}是json语法表示一个对象
->     
+>             
 >       import {ref} from 'vue' //导入ref包，作用是引用
 >       const user=ref({}); //响应式，输入user对象的地址不能改，但是对象里面的属性是可以修改的。
 >   </script>
@@ -511,18 +511,12 @@
 > * 注册组件
 >
 >   ```vue
->   <script>
->   	components:{
->           组件名，组件名2
->       }
->   </script>
->   
 >   //3.2新语法：
 >   <script setup>
 >       //0.使用前要导入defineComponent
 >       import {defineComponent, ref} from "vue" 
 >       //1.引入组件
->       import Two from './Child.vue'
+>         import Two from './Child.vue'
 >       //2.注册组件  vue3.2 添加setup语法糖后 需要导出 需要使用defineComponent()来挂载
 >       //define:定义 Component:组件
 >       defineComponent({  //使用前要导入defineComponent
@@ -537,7 +531,7 @@
 >       //1.引入组件
 >       import Two from "./Child.vue";
 >       //2.在导出中注册组件
->       // 必须写一个export default才能被其他组件找到和导入
+>         // 必须写一个export default才能被其他组件找到和导入
 >       export default{
 >           components:{
 >               Two
@@ -545,11 +539,11 @@
 >       }
 >   </script>
 >   ```
->
+>   
 >   > 通过export default将组件导出，这个导出的对象告诉Vue：“这里有一个Vue组件，它的配置是这样的。” 当你从另一个文件通过`import`语句导入这个组件时，你实际上是在获取这个导出的对象，然后你可以在Vue实例或另一个组件的`components`选项中注册它，以便在模板中使用。
 >   >
 >   > ==必须写一个export default才能被其他组件找到和导入==
->
+>   
 > * 显示组件 （在template标签中使用）
 >
 >   ```vue
@@ -569,10 +563,41 @@
 > * 老版本：
 >
 >   > * 引用者：
->   >   * 在引用：被引用者标签时，在标签名后面加`:传递的变量名=值`来传递
+>   >   * 在引用，被引用者标签时，在标签名后面加`:传递的变量名=值`来传递
 >   > * 被引用者：
 >   >   * 在`export default(导出)`中通过`props属性`来接收引用我的组件传来的数据。
 >   >   * 在`props中`通过 `传递的变量名:{type: 数据类型, default: 默认值}` 来接收引用者传递的数据。
+>
+>   ```vue
+>   引用者传递数据：
+>   <template>
+>       <h3>父组件</h3>
+>       <!-- 3.显示子组件 -->
+>       <!-- vue老版本 通过":属性名1=属性值1" 属性值就是要传递的数据（可以传递任意数据）-->
+>       <!-- 注意是空格间隔不是逗号-->
+>       <Two :age="myAge" :name="myName" :user="myUser" :list="myList"/>
+>   </template>
+>   
+>   <!-- 注意注释方式 -->
+>   <script>
+>       //1.引入组件
+>       import Two from "./Child.vue";
+>       //2.在导出中挂载组件
+>       export default{
+>           components:{
+>               Two
+>           },
+>           data(){ 
+>               return{
+>                   myAge:20,
+>                   myName:"亚林",
+>                   myUser:{id:1,sex:'男',class:"sc240601"},
+>                   myList:["java","mysql","js","vue"]
+>               }
+>           }
+>       }
+>   </script>
+>   ```
 >
 >   ```vue
 >   被引用者接收数据：
@@ -616,6 +641,14 @@
 >   </script>
 >   ```
 >
+> * 新版本（vue3.2)
+>
+>   > * 引用者：
+>   >   * 在引用：被引用者标签时，在标签名后面加`:传递的变量名=值`来传递
+>   > * 被引用者：
+>   >   * ==在script标签中加上setup==，使用`defineProps()`来接收数据
+>   >   * 在`defineProps()中`通过 `传递的变量名:{type: 数据类型, default: 默认值}` 来接收引用者传递的数据。
+>
 >   ```vue
 >   引用者传递数据：
 >   <template>
@@ -625,8 +658,8 @@
 >       <!-- 注意是空格间隔不是逗号-->
 >       <Two :age="myAge" :name="myName" :user="myUser" :list="myList"/>
 >   </template>
->   
->   <!-- <script setup>
+>         
+>   <script setup>
 >       import {defineComponent, ref} from "vue"
 >       //1.引入组件
 >       import Two from './Child.vue'
@@ -636,36 +669,12 @@
 >               Two
 >           }
 >       })
->   </script> -->
->   
->   <!-- 注意注释方式 -->
->   <script>
->       //1.引入组件
->       import Two from "./Child.vue";
->       //2.在导出中挂载组件
->       export default{
->           components:{
->               Two
->           },
->           data(){ 
->               return{
->                   myAge:20,
->                   myName:"亚林",
->                   myUser:{id:1,sex:'男',class:"sc240601"},
->                   myList:["java","mysql","js","vue"]
->               }
->           }
->       }
+>       const myAge = ref(18);
+>       const myName = ref("王");
+>       const myUser = ref({id:1,sex:'男',class:"sc240601"});
+>       const myList = ref(["java","mysql","js","vue"])
 >   </script>
 >   ```
->
-> * 新版本（vue3.2)
->
->   > * 引用者：
->   >   * 在引用：被引用者标签时，在标签名后面加`:传递的变量名=值`来传递
->   > * 被引用者：
->   >   * ==在script标签中加上setup==，使用`defineProps()`来接收数据
->   >   * 在`defineProps()中`通过 `传递的变量名:{type: 数据类型, default: 默认值}` 来接收引用者传递的数据。
 >   
 >   ```vue
 >   被引用者接收数据：
@@ -692,46 +701,20 @@
 >       })
 >   </script>
 >   ```
->   
->   ```vue
->   引用者传递数据：
->   <template>
->       <h3>父组件</h3>
->       <!-- 3.显示子组件 -->
->       <!-- vue老版本 通过":属性名1=属性值1" 属性值就是要传递的数据（可以传递任意数据）-->
->       <!-- 注意是空格间隔不是逗号-->
->       <Two :age="myAge" :name="myName" :user="myUser" :list="myList"/>
->   </template>
->     
->   <script setup>
->       import {defineComponent, ref} from "vue"
->       //1.引入组件
->       import Two from './Child.vue'
->       //2.挂载组件  vue3.2需要使用defineComponent()来挂载
->       defineComponent({
->           components:{
->               Two
->           }
->       })
->       const myAge = ref(18);
->       const myName = ref("王");
->       const myUser = ref({id:1,sex:'男',class:"sc240601"});
->       const myList = ref(["java","mysql","js","vue"])
->   </script>
->   ```
 >
 
 ##### b. 引用者接收，被引用者传递
 
 > `被引用者借助于自定义事件来传递数据给引用者`
 >
->* 被引用者：
->  * 如果vue之前的版本，借助于`this.$emit(参数1：自定义事件名，参数2：传递的数据)`
-> 
->  * 如果是新版Vue3.2通过导入`defineEmits(参数1：自定义事件，参数2：传递的数据) `来创建一个触发器绑定自定义事件。
-> 
->* 引用者：
->  * 在被引用者标签中加上`@自定义事件名="响应函数名"`来监听自定义事件是否被触发，触发就调用响应函数
+> * 被引用者：
+>   * 如果vue之前的版本，借助于`this.$emit(参数1：自定义事件名，参数2：传递的数据)`
+>
+>   * 如果是新版Vue3.2通过导入`defineEmits(参数1：自定义事件，参数2：传递的数据) `来创建一个触发器绑定自定义事件。
+>
+> * 引用者：
+>   * 在被引用者标签中加上`@自定义事件名="响应函数名"`来监听自定义事件是否被触发，触发就调用响应函数
+>
 >
 
 > * 老版本：
@@ -818,16 +801,16 @@
 >           <h4><input v-model="msg" /></h4>
 >       </fieldset>
 >   </template>
->     
+>             
 >   <script setup>
 >       import {ref} from 'vue';
 >       const msg=ref();
->         
+>                 
 >       //defineEmits()返回一个触发器 用于触发自定义事件
->       //触发器函数（参数1：自定义事件，参数2：传递的数据，可以定义多个）
 >       const emit=defineEmits(['childsend'])
 >       //注意定义函数时也不要少了const
 >       const send=()=>{
+>      		//触发器函数（参数1：自定义事件，参数2：传递的数据，可以定义多个）
 >           emit('childSend',msg.value);//触发器函数（参数1：自定义事件，参数2：传递的数据）
 >           //如果不写msg.value，而是msg那按一次就变成了双向绑定的模式。
 >       }
@@ -845,7 +828,7 @@
 >       <!-- 3.显示子组件 -->
 >       <Two @childSend="getChildData" />
 >   </template>
->     
+>             
 >   <script setup>
 >       import { defineComponent,ref } from 'vue';
 >       //1.引入组件
@@ -856,7 +839,7 @@
 >               Two
 >           }
 >       })
->   	  
+>   	          
 >       const result = ref();
 >       //注意定义函数时也不要少了const
 >       //方法的参数就是子组件传递的数据（参数名可以随便写，可以写多个参数）
@@ -866,7 +849,6 @@
 >   </script>
 >   ```
 >
-> 
 
 > ==注: 上面几种传递方式前提组件具有父子关系，如果没有父子关系借助于路由来传递数据。==
 
@@ -899,7 +881,7 @@
 >       <!--注意双引号中要用单引号-->
 >       <button @click="msg='数据2'">改变数据</button>
 >   </template>
->     
+>             
 >   <!--老版钩子函数-->
 >   <!--老版钩子函数 和 methods 是同级的不能放在methods里面，会失效-->
 >   <script>
@@ -911,7 +893,7 @@
 >           },
 >           //普通函数的位置
 >           methods:{
->     
+>             
 >           },
 >           //钩子函数：随着生命周期的变化自动触发
 >           //页面刚刚加载 会根据生命周期阶段，执行下面4个函数
@@ -977,14 +959,14 @@
 >       onMounted(function(){
 >           console.log("我再次挂载了",msg.value);
 >       })
->         
+>                 
 >       onBeforeMount(function(){
 >           console.log("被挂载中");
 >       });
 >       onMounted(function(){
 >           console.log("挂载完成了");
 >       });
->     
+>             
 >       onBeforeUpdate(function(){
 >           console.log("被更新中");
 >       });
@@ -1090,10 +1072,10 @@
 >       //1.3 给1.2中导入的其他组件添加css样式
 >       import 'swiper/css/navigation';
 >       import 'swiper/css/pagination';
->     
+>             
 >       // 加入其他功能到数组变量中，给上面做双向绑定：
 >       const modules=[Autoplay,Navigation,Pagination];
->     
+>             
 >       //2.挂载组件(3.2 setup可以省略)
 >       defineComponent({
 >           components:{
@@ -1101,7 +1083,7 @@
 >           }
 >       })
 >   </script>
->     
+>             
 >   <style scoped>
 >       /* 居中 */
 >       div{
@@ -1117,7 +1099,7 @@
 > * 通过axios发送异步请求 底层就是对jQuery的ajax进一步的封装，非常适合
 >   前端分离的项目 它默认的传递数据格式就是json   推荐使用
 
-#### 9.1 axios组件的安装和使用
+#### 9.1 axios组件的安装
 
 > * 安装：==(在需要的项目中安装要先进入该项目的目录)==
 >
@@ -1131,212 +1113,355 @@
 >
 > * 引入axios
 >
->   > * 通过import axios from'axios' 这样使用的话
->   >   缺点：大型项目，每个组件都需要引入 比较多 繁琐 也容易忘了导入。
->   >
->   > * 全局导入：在vue项目入口(main.js) 添加一段配置 这样以后每个组件都无需导入axios
->   >
->   >   ```js
->   >   // 在main.js(vue项目入口)中进行全局配置
->   >   import { createApp } from 'vue'
->   >   import App from './App.vue'
->   >   import './registerServiceWorker'
->   >   // 1. 导入axios组件
->   >   import axios from 'axios'
->   >       
->   >   //createApp(App).mount('#app')
->   >   //2.创建App组件：
->   >   const app = createApp(App)
->   >   //3.在创建App组件后，挂载App组件前，进行全局引入
->   >   //app.config.globalProperties.任意别名=要导入的组件
->   >   //这样定义好了后，其他组件就可以通过这个 任意别名 直接使用axios
->   >   app.config.globalProperties.myAxios=axios
->   >   //4.挂载App组件
->   >   app.mount('#app')
->   >   ```
->
-> * 使用：
->
->   > * 老版本：直接在script中通过this直接使用
->   >
->   >   ```vue
->   >   <!-- 老版本 -->
->   >   <script>
->   >       export default{
->   >           methods:{
->   >               queryById(){
->   >                  this.myAxios.post('http://localhost:80/sel?id=' + this.id).then(res=>{
->   >                       console.log(res.data);
->   >                  })
->   >               }
->   >           }
->   >       }
->   >   </script>
->   >   ```
->   >
->   > * 新版本 setup语法糖：
->   >
->   >   ```vue
->   >   先通过getCurrentInstance()获取当前对象this，用{proxy}来接收，在后面通过proxy.myAxios.post来发送异步请求：
->   >   <script setup>
->   >       import { getCurrentInstance,ref } from 'vue';
->   >       //类似于老版本的this获取当前的实例
->   >       //{proxy}是固定返回的 要求不能改名字 需要添加括号
->   >       const {proxy}=getCurrentInstance()
->   >       const user=ref({})
->   >       const msg=ref()
->   >       const add= ()=>{
->   >           // post()函数参数1是地址，参数2是数据（会自动转化为json数据）
->   >           proxy.myAxios.post('http://localhost:80/add',user.value).then(res=>		   {
->   >               msg.value = res.data.msg
->   >           })
->   >       }
->   >   </script>
->   >   ```
+> * 使用axios
 
-#### ==9.3 请求的封装==
-> 虽然使用了单次导入axios和全局导入axios但是两种方式各有优缺点,全局导入缺点是：没有对请求的安全做限制 而且 发送请求的时候也会有很多相同的部分，如：
+#### 9.2 axios组件的使用
+
+##### a. 引入axios
+
+> * 通过`import axios from'axios' `导入
+>
+>   ```java
+>   缺点：在大型项目，每个组件都需要引入，比较繁琐，也容易忘了导入。
+>   ```
+>
+> * 全局导入：在vue项目入口(main.js) 添加一段配置 这样以后每个组件都无需导入axios
+>
+>   ```js
+>   // 在main.js(vue项目入口)中进行全局配置
+>   import { createApp } from 'vue'
+>   import App from './App.vue'
+>   import './registerServiceWorker'
+>     
+>   // 1. 导入axios组件
+>   import axios from 'axios'
+>   // 2.创建App组件：
+>   const app = createApp(App)
+>   // 3.在创建App组件后，挂载App组件前，进行全局引入
+>   //app.config.globalProperties.任意别名=要导入的组件
+>   //这样定义好了后，其他组件就可以通过这个 任意别名 直接使用axios
+>   app.config.globalProperties.myAxios=axios
+>   // 4.挂载App组件
+>   app.mount('#app')
+>   ```
+
+##### b. 局部导入使用axios
+
+> 就是创建一个发送异步请求的函数，在里面调用axios.get().then() 或 axios.post().then()来发送异步请求。
+
+> ```vue
+> <template>  
+>   <div>  
+>     <h1>Axios GET 请求示例</h1>  
+>     <button @click="fetchData">获取数据</button>  
+>     <div v-if="loading">加载中...</div>  
+>     <div v-if="error">{{ error }}</div>  
+>     <div v-if="data">  
+>       <h2>获取到的数据:</h2>  
+>       <pre>{{ data }}</pre>  
+>     </div>  
+>   </div>  
+> </template>  
+>   
+> <script>  
+> import axios from 'axios';  
+>   
+> export default {  
+>   data() {  
+>     return {  
+>       data: null,  
+>       loading: false,  
+>       error: null,  
+>     };  
+>   },  
+>   methods: {  
+>     // 创建一个发送异步请求的函数
+>     fetchData() {  
+>       this.loading = true;  
+>       this.error = null;  
+>         
+>       // 使用 axios 发起 GET 请求  
+>       axios.get('https://api.example.com/data').then(response => {  
+>           // 处理成功响应  
+>           this.data = response.data;  
+>         }).catch(error => {  
+>           // 处理错误响应  
+>           this.error = '请求失败: ' + error.message;  
+>         }).finally(() => {  
+>           // 无论成功还是失败，都会执行这里  
+>           this.loading = false;  
+>         });  
+>     },  
+>   },  
+>   // 你也可以在 created 钩子中自动发起请求  
+>   // created() {  
+>   //   this.fetchData();  
+>   // },  
+> };  
+> </script>  
+> ```
+>
+
+##### c. 全局导入使用axios
+
+> * 老版本：直接在script中通过this直接使用
+>
+>   ```vue
+>   <!-- 老版本 -->
+>   <script>
+>       export default{
+>           methods:{
+>               queryById(){
+>                  this.myAxios.post('http://localhost:80/sel?id='+this.id).then(res=>{
+>                       console.log(res.data);
+>                  })
+>               }
+>           }
+>       }
+>   </script>
+>   ```
+>
+> * 新版本 setup语法糖：
+>
+>   ```vue
+>   先通过getCurrentInstance()获取当前对象this，用{proxy}来接收，在后面通过proxy.myAxios.post来发送异步请求：
+>   <script setup>
+>       import { getCurrentInstance,ref } from 'vue';
+>       //类似于老版本的this获取当前的实例
+>       //{proxy}是固定返回的 要求不能改名字 需要添加括号
+>       const {proxy}=getCurrentInstance() //current instance 当前实例，就是this.
+>       const user=ref({})
+>       const msg=ref()
+>       const add= ()=>{
+>           // post()函数参数1是地址，参数2是数据（会自动转化为json数据）
+>           proxy.myAxios.post('http://localhost:80/add',user.value).then(res=>{
+>               msg.value = res.data.msg
+>           })
+>       }
+>   </script>
+>   ```
+
+#### ==9.3 封装axios对象 为 请求处理对象==
+
+##### a. 为什么要进行封装？
+
+> 虽然使用了单次导入axios和全局导入axios，但是两种方式各有优缺点，全局导入缺点是：没有对请求的安全做限制 而且 发送请求的时候也会有很多相同的部分，如：
 >
 > ```java
 > http://localhost:9999/add
 > http://localhost:9999/se1
 > http://localhost:9999 就属于相同的部分
 > ```
-
-> 封装方式：
 >
-> * 创建一个包util，创建一个request.js (或者http.js) 看公司心情
+> 提高安全性(封装时能添加拦截器)和减少代码冗余。
+
+##### b. 封装axios对象
+
+> 在Vue项目中创建一个util目录，在里面创建一个request.js (或者http.js) 看公司规范。
+> 将axios对象和请求进行封装，提高安全性。
 >
 > ```js
-> //这个文件的目的是将axios对象进行封装 提高安全性
+> //这个文件的目的是将axios对象进行封装 提高安全性(可以在里面添加拦截器)
 > // 1.导入axios
 > import axios from 'axios'
+> 
 > // 2.创建错误对象映射(参数status:状态码，参数info:错误信息)
-> const errorHandler=(status,info)=>{
->  //使用switch进行等值判断
->  switch(status) {
->      case 400: console.log('客户端参数有误');break;
->      case 404: console.log('地址错误');break;
->      case 500: console.log(info);break;
->      default : console.log(info);break;
->  }
+> //const errorHandler=(status, info)=>{ //js语法不需要带上参数类型
+> const errorHandler=(status:Number, info:String)=>{ //ts语法需要带上参数类型
+> //使用switch进行等值判断
+> switch(status) {
+>   case 400: console.log('客户端参数有误');break;
+>   case 404: console.log('地址错误');break;
+>   case 500: console.log(info);break;
+>   default : console.log(info);break;
+> }
 > }
 > 
 > // 3.通过axios创建请求实例
 > const instance = axios.create({
->  timeout:5000 //控制请求超时数据，单位ms
+> timeout:5000 //控制请求超时数据，单位ms
 > })
 > 
 > // 4.通过请求实例 配置 请求拦截器
 > //instance.interceptors.request.use(成功函数，失败函数)
 > instance.interceptors.request.use(
->  config=>{
->      if(config.method == "post") {
->          //处理所有的post请求 要看公司需求
->      } else if(config.method == "get") {
->          //处理所有get请求
->      }
->      // ... 可以写很多个
->      //一定要返回，不然白写
->      return config;
->  },
->  error=>{
->      //返回错误信息
->      return Promise.reject(error);
->  }
+> config=>{
+>   if(config.method == "post") {
+>       //处理所有的post请求 要看公司需求
+>   } else if(config.method == "get") {
+>       //处理所有get请求
+>   }
+>   // ... 可以写很多个请求处理
+>   return config;//一定要返回，不然白写
+> },
+> error=>{
+>   //返回错误信息
+>   return Promise.reject(error);
+> }
 > )
 > 
 > // 5.通过请求实例 配置 响应拦截器
 > instance.interceptors.response.use(
->  responce=>{
->      //根据状态码是否是200来控制返回的信息
->      return responce.status==200? Promise.resolve(response):Promise.reject(response)
->  },
->  eror=>{
->      //定义响应变量，因为常量不能改
->      const {response} = error;
->      //调用上面的错误映射传入状态码和错误信息
->      errorHandler(response.status,response.info);
->  }
+> response=>{
+>   //根据状态码是否是200来控制返回的信息
+>   return response.status==200? Promise.resolve(response):Promise.reject(response)
+> },
+> error=>{
+>   //定义响应变量，因为常量不能改
+>   const {response} = error;
+>   //调用上面的错误映射传入状态码和错误信息
+>   errorHandler(response.status,response.info);
+> }
 > )
 > // 6.导出请求实例
 > export default instance;
 > ```
 >
-> * 创建一个包(api包)（一般存放的是发送网络请求，文件可能会有很多），
->   比如：base.js(可以处理通用地址) index.js user.js bbs.js
+
+##### c. 封装axios对象的作用
+
+> 上面的代码是在封装一个axios实例，并为其添加了请求和响应拦截器。这样做的目的主要是为了更好地处理HTTP请求和响应，以及统一错误处理逻辑。
+> 下面是详细解释：
 >
->   * base.js
+> 1. **导入axios**：
+>    首先，代码从`axios`库中导入了axios对象。axios是一个基于Promise的HTTP客户端，用于浏览器和node.js。
 >
->     ```js
->     //创建公共地址，比如：http://localhost:9999
->     //这样其他请求 公共部分就无需编写了
->     const base={
->         baseUrl:"http://localhost:80" //写项目地址
->     }
+> 2. **创建错误处理函数**：
+>    `errorHandler`函数是一个错误处理函数，它根据HTTP状态码来输出不同的错误信息。这有助于开发者在调试时快速定位问题。
 >
->     //导出(这样别人就能通过import进行导入了，注意如果导出的名字带了{}，要求导入时也要带{})
->     export default base;
->     ```
+> 3. **创建axios实例**：
+>    使用`axios.create`方法创建了一个axios实例，并设置了超时时间（5000毫秒）。这个实例可以用于发送HTTP请求，并且它的配置（如超时时间）是独立的，不会影响全局的axios配置。
 >
->   * index.js : 不同的公司，名称可能不同，但目的是一样的（调用之前封装好的请求 和 定义好的地址）
+> 4. **配置请求拦截器**：
+>    请求拦截器是在请求被发送到服务器之前执行的函数。在这个例子中，拦截器根据请求方法（GET或POST）来执行不同的逻辑。虽然在这个代码片段中没有具体实现这些逻辑，但你可以在这里添加任何你需要在请求发送之前执行的代码，比如添加认证token、修改请求头等。
 >
->     ```js
->     //引入封装好的请求(当前文件是js 导入的也是js 后者是可以省略的)
->     import myRequest from '../util/request';
->     //引入封装好的公共地址
->     import myBase from 'base';
->         
->     // 创建公共api接口， 编写好了 以后发送不同模块网络请求
->     // 都是引入这个api接口 来实现的 公司业务不同 这个也是经常
->     const api={
->         //比如:post请求封装在一起
->         postReq(url,data){
->             return axios.post(base.baseUrl+url, data)
->         },
->         //比如:get请求封装在一起
->         getReq(url,data){
->             return axios.get(base.baseUrl+url, data)
->         }
->     }
->     export default api;
->     ```
+> 5. **配置响应拦截器**：
+>    响应拦截器是在服务器响应被处理之前执行的函数。在这个例子中，拦截器首先检查响应的状态码是否为200。如果是，则返回响应数据（`response.data`），否则将响应视为错误并拒绝Promise。在错误处理部分，如果服务器返回了状态码和响应体，则调用`errorHandler`函数来输出错误信息。如果请求没有响应（比如网络错误），则输出“网络错误”。
 >
-> * 如何使用封装好的api接口发送请求
+> 6. **导出axios实例**：
+>    最后，将配置好的axios实例导出，以便在其他文件中使用。这样，你就可以在其他文件中导入这个实例，并使用它来发送HTTP请求，同时享受统一的错误处理和配置。
 >
->   ```vue
->   <script>
->   import api from  '../api/index'
->   onMounted(()=>{
->       //由于没有参数传递 {} 来占个位置
->       api.postReq('/queryAll',{}).then(res=>{
->           console.log(res.data)
->           users.value=res.data.data
->       })
->   })
->   </script>
+> 总的来说，封装axios实例并添加拦截器的好处包括：
+>
+> - **统一配置**：你可以在一个地方配置axios实例，并在整个应用中重用它。
+> - **统一错误处理**：你可以在一个地方处理所有HTTP请求的错误，而不需要在每个请求中都写错误处理代码。
+> - **增强可维护性**：通过封装和抽象，你的代码变得更加简洁和可维护。
+> - **添加自定义逻辑**：你可以在拦截器中添加任何你需要的自定义逻辑，比如认证、日志记录等。
+
+##### d. 封装公共地址对象
+
+> 创建一个目录(api目录)（一般存放的是发送网络请求，文件可能会有很多），在目录中创建一个`base.js`(可以处理通用地址) 用来封装公共地址对象。（就是所有请求重复的前缀部分）
+>
+> ```js
+> //创建公共地址，比如：http://localhost:9999
+> //这样其他请求 公共部分就无需编写了
+> const base={
+>     baseUrl:"http://localhost:80" //写项目地址
+> }
+> 
+> //导出(这样别人就能通过import进行导入了，注意如果导出的名字带了{}，要求导入时也要带{})
+> export default base;
+> ```
+
+##### e. 将前面两个对象封装为请求处理对象
+
+> * index.js : 不同的公司，名称可能不同，但目的是一样的（调用之前封装好的请求 和 定义好的地址）
+>
+>   ```js
+>   //引入封装好的请求(当前文件是js 导入的也是js 所以后者的后缀.js是可以省略的)
+>   import myRequest from '../util/request';
+>   //引入封装好的公共地址
+>   import myBase from 'base';
+>     
+>   // 创建公共api接口， 编写好了 以后发送不同模块网络请求
+>   // 都是引入这个api接口 来实现的 公司业务不同 这个也是经常
+>   const api={
+>       //比如:post请求封装在一起
+>       postReq(url,data){
+>           return axios.post(base.baseUrl+url, data)
+>       },
+>       //比如:get请求封装在一起
+>       getReq(url,data){
+>           return axios.get(base.baseUrl+url, data)
+>       }
+>   }
+>   export default api;
 >   ```
 
+##### f. 使用请求处理对象发送请求
+
+> ```vue
+> <script>
+> import api from  '../api/index' //局部导入封装好的请求处理对象
+> onMounted(()=>{
+>     //由于没有参数传递 {} 来占个位置
+>     api.postReq('/queryAll',{}).then(res=>{
+>         console.log(res.data)
+>         users.value=res.data.data
+>     })
+> })
+> </script>
+> ```
+>
+> 使用封装好的请求处理对象发送异步请求来进行前后端分离项目的交互。
+
 ### 10.前端跨域
-> 前端跨域一般可以通过前端vue项目的配置文件vue.config.js,添加一段配置 添加一个proxy代理对象 配置好后端地址 代理对象帮我们转发到目标地址
+
+> 跨域问题：前端是一个项目，后端也是一个项目，不同项目之间想去访问必须写完整的url(协议://ip地址:端口号/项目），这三者如果有一个不同都会产生跨域问题。
+> 但是前后端分离后url就是不一样的，所以一定会产生跨域问题。
+
+> ==在Vue项目的配置文件vue.config.js， 配置一个proxy代理对象，然后重启服务器。==
+>
+> ```js
+> const { defineConfig } = require('@vue/cli-service')
+> module.exports = defineConfig({
+>   //将依赖进行转义，主要是增加代码在不同语言的兼容性。
+>   transpileDependencies: true,
+>   //生产服务器
+>   devServer:{
+>     //加一个proxy对象表示跨域代理对象,在里面配置跨域
+>     proxy:{
+>       //可以配置很多组跨域，每组跨域都是一个对象
+>       //'/跨域请求':{配置好跨域}
+>       //使用http://localhost:9999/任意写/show来启动跨域，
+> 	  //就是在请求的前面加一个跨域请求,如下面的/api
+>       '/api':{
+>         //配置后端的地址(即要跨域的目标地址)，proxy会转发到这里去
+>         target:'http://localhost:80',
+>         //路径重写(把跨域请求地址，重写为真正的请求地址)目的是去除请求地址中的api
+>         //让发给后端的请求不包括/api
+>         pathRewrite:{'^/api':''},
+>         //代理websocket 可以不写
+>         ws:true,
+>         //开启跨域
+>         changeOrigin:true
+>       }
+>     }
+>   }
+> })
+> // 更改该配置文件，必须重启服务器才能生效。
+> 
+> ```
+>
+> 前端跨域一般可以通过前端vue项目的配置文件vue.config.js,添加一段配置 添加一个proxy代理对象 配置好后端地址 代理对象帮我们转发到目标地址。
 >
 > ```
-> 配置前:http://localhost:9999/show  ==>  访问后端查询 但是会出现跨域问题
+>配置前:http://localhost:9999/show  ==>  访问后端查询 但是会出现跨域问题
 > 配置好之后: /api/show ==> http://localhost:9999/api/show
 > 	再进行路径重写去除多余/api ==> http://localhost:9999/show
 > ```
->
-> 如果请求封装了只需要修改base.js 其他内容都不需要修改
+> 
+> 如果请求封装了只需要修改base.js 其他内容都不需要修改。
 >
 > ```js
-> //创建公共地址的比如:http://localhost:9999
+>//创建公共地址的比如:http://localhost:9999
 > //这样其他请求 公共部分无需编写了
 > const base={
 > 	baseUrl:"/api"//等价于http://localhost:9999/api
 > }
 > export default base;
 > ```
->
+> 
 > ==注：修改了vue.config.js一定要重启服务器，否则不生效，就它最特殊，其他都不需要重启。==
 
 ### ==11.Vue路由组件==
@@ -1345,9 +1470,9 @@
 
 #### 11.1 vue路由安装
 
-> 注：不要通过cnpm来安装，虽然语法通过，但是路由都会失效。(因为国内的少了几个组件)，推荐使用vue ui图形界面方式安装依赖，或 创建vue项目时 选择路由插件
+> 注：不要通过cnpm来安装，虽然语法通过，但是路由都会失效。(因为国内的少了几个组件)，推荐使用vue ui图形界面方式安装依赖，或 创建vue项目时 选择路由插件。
 >
-> * 使用vue ui图形界面安装 `vue-router组件`（前期联系时使用）
+> * 使用vue ui图形界面安装 `vue-router组件`（前期联系时使用）。
 >
 >   在终端用vue ui打开图形化界面。
 >   <img src="D:\AppData\Typora\typora-user-images\image-20240826120918245.png" alt="image-20240826120918245" style="zoom:33%;" />
@@ -1368,9 +1493,9 @@
 > 3. 使用路由
 >    (路由显示入口， 通过链接标签来使用路由引入其他组件）
 
-> * 创建一个目录：router用来保存路由配置文件(index.js)通过路由管理所有vue组件
+> * 创建一个目录router，用来保存路由配置文件(index.js)通过路由管理所有vue组件
 >
-> * 再创建一个目录：views用来保存所有的被路由管理的vue组件，其他vue组件依然可以保存中原来的component目录下，但大多数组件都被路由管理。
+> * 再创建一个目录views，用来保存所有的被路由管理的vue组件，其他vue组件依然可以保存中原来的component目录下，但大多数组件都被路由管理。
 >
 >   * views: 创建组件的位置 比如: Home.vue\User.vue
 >
@@ -1381,20 +1506,35 @@
 >     import { createRouter, createWebHashHistory} from 'vue-router'
 >     import Home from '../views/Home.vue'
 >     
->     //2.创建路由对象(数组 因为vue组件有很多个)
+>     //2.创建路由规则对象(数组 因为vue组件有很多个)
 >     //注意创建路由规则时，名称不能改，必须是routes (routers是错误的)
 >     const routes = [
 >         {
+>             //注意关键字是全小写，错一个都不行
 >             path:'/', //访问的路径
->             //注意是全小写，错一个都不行
->             component:Home 
+>             component:Home //对应的组件
 >         },
 >         {
 >             // 这种写法 是属于异步加载 上面的方式属于同步加载
 >             // 般来说首页适合 同步加载 其他组件 都是异步加载
 >             path:'/user', //访问的路径;
->             component:( )=>import("../views/User.vue") 
->         }
+>             component:()=>import("../views/User.vue") 
+>         },
+>         {
+>             path:'/admin',
+>             component:()=>import("../views/admin/Index.vue"),
+>             redirect:'/admin/home',// 重定向配置，当访问/admin时，默认重定向到/admin/home 
+>             children:[ //二级路由
+>               {
+>                 path:'home', //二级路由不能加"/"
+>                 component:()=>import("../views/admin/Home.vue")
+>               },
+>               {
+>                 path:'myuser',
+>                 component:()=>import("../views/admin/MyUser.vue")
+>               }
+>             ]
+>       }
 >     ]
 >     
 >     // 3.创建路由组件
@@ -1411,20 +1551,20 @@
 >     //4.导出vue组件对象
 >     export default router;
 >     ```
->
+>   
 >   * main.js: 在vue项目的入口 启用vue路由组件
->
+>   
 >     ```js
 >     import { createApp } from 'vue'
 >     import App from './App.vue'
 >     import './registerServiceWorker'
 >     import axios from 'axios'
 >     //上面是其他配置可以不用看
->         
+>     
 >     //1.引入路由 如果格式是js 可以省略
 >     //如果包里面就一个文件 则都可以省略
 >     import router from './router'
->         
+>     
 >     //2.使用路由的时机：在vue项目创建之后，被挂载之前。位置一定不能换！
 >     createApp(App).use(router).mount('#app')
 >     ```
@@ -1502,8 +1642,8 @@
 > 路由配置和使用方式的总结：
 >
 > 1. 配置路由（在router/index.js中) 
->   (引入创建路由需要的组件  创建路由规则  创建路由对象  导出路由对象)
->   (注意创建路由规则时，名称不能改,必须是routes (routers是错误的)
+>     (引入创建路由需要的组件  创建路由规则  创建路由对象  导出路由对象)
+>     (注意创建路由规则时，名称不能改,必须是routes (routers是错误的)
 > 2. 启用路由 （在项目入口 - main.js中）
 > (引入路由，启用路由）
 > 3. 使用路由
@@ -1513,7 +1653,7 @@
 
 ##### a. 给被引用的组件传递参数
 
-> 类似于后端 根据id传递后端 会在同一个页面显示不同的内容 而vue路由肯定也需要这种需求
+> 类似于后端，根据id传递后端，会在同一个页面显示不同的内容，而vue路由肯定也需要这种需求
 >
 > * 路由配置地址的时候添加":要传递的参数名"表示 要传递参数 参数名可以任意编写
 >   （使用路由引用其他组件的组件按顺序传值，被引用的组件根据参数名取值）
@@ -1548,15 +1688,20 @@
 >   ```
 >
 > ![image-20240903080430977](D:\Desktop\gitee\java-learning\sc240601\前端\Vue3\img\使用路由传参.png)
+>
+> 被引用的组件在script中获取传递过来的参数：
+> ![image-20240919073523690](D:\Desktop\gitee\java-learning\sc240601\前端\Vue3\img\被引用的组件在script中获取传递过来的参数.png)
 
 ##### b.	给引用我的组件传递参数
 
-> 
+> ？
 
 #### 11.5 二级路由
+> ![image-20240919074438809](D:\Desktop\gitee\java-learning\sc240601\前端\Vue3\img\二级路由.png)  
+>
 > 如果项目中的功能特别复杂 设计很多组件 肯定会出现父级导航 和子级导航 每个导航 都有很多子级组件 对应 就要设计到二级路由或者多级路由。
 >
-> * 在路由配置文件的路由规则对象中添加属性 children
+> * 在路由配置文件的路由规则对象中添加属性children
 >
 > ```js
 > //1.导入路由组件对象
@@ -1572,26 +1717,11 @@
 >     {
 >         // 这种写法 是属于异步加载 上面的方式属于同步加载
 >         // 般来说首页适合 同步加载 其他组件 都是异步加载
->         path:'/user', //访问的路径;
->         component:()=>import("../views/User.vue") 
->     },
->     {
->         path:'/news',
->         component:() => import("../views/New.vue")
->     },
->     {
->         // ":"表示我要传递参数，类似于后端的？属性可以任意编写
->         // vue组件就需要根据属性名来取值
->         // /newContent/:属性1/:属性2/:属性3  来传递多个值
->         path:'/newContent/:type',
->         component: ()=> import("../views/NewsContent.vue")
->     },
->     {
 >         //一级路由
 >         path:'/article',
 >         component:()=>import("../views/Article.vue"),
 >         //二级路由:类似于一级路由的嵌套编写
->         //注意：二级路由开始 地址不要加/
+>         //注意：二级路由开始 路径path不要加/
 >         children:[
 >             {
 >                 path:'history',
@@ -1647,7 +1777,7 @@
 >
 > * 注：如果时三级路由，继续无限套娃 理论上是没有上限的。但是绝大部分功能二级路由已经足够使用了。
 
-> 创建项目时选中第四个组件，会帮我们自动在项目中创建router包和index.js文件和views包
+> 创建项目时选中第四个组件，会帮我们自动在项目中创建router包和index.js文件和views包。在路由模式选择时选择n就是选择哈希模式的路由。
 
 ### 12.Vue使用Elementplus(做后台)
 
@@ -1670,7 +1800,7 @@
 
 #### 12.2 elementplus引入
 
-> * 完整引入: 无论是否 需要 不用在乎打包项目的大小 优点在于使用很方便。
+> * 完整引入: 无论是否需要，不用在乎打包项目的大小，优点在于使用很方便。
 >
 >   ```js
 >   //在main.js或main.ts中
@@ -1678,17 +1808,17 @@
 >   import App from './App.vue'
 >   import './registerServiceWorker'
 >   import router from './router'
+>   
 >   //1. 导入elementplus
 >   import Elementplus from 'element-plus'
 >   //1.1 导入elementplus的样式index.css
 >   import 'element-plus/dist/index.css'
->       
 >   //2. 使用elementplus
 >   // elementplus一定要在路由前使用，否则会失效。
 >   createApp(App).use(Elementplus).use(router).mount('#app')
 >   ```
 >
->   
+> 
 >
 > * 按需引入: 应用场景比较广泛 会根据需要引入必要组件 比较节省空间 缺点再于需要做一个额外的配置。
 >
@@ -1700,6 +1830,8 @@
 >     cnpm install -D unplugin-vue-components@0.25.2 unplugin-auto-import@0.16.1
 >     ```
 >
+>     下图的版本可能不互相兼容，可以使用上面命令中的两个版本。
+>
 >     ![image-20240827114844016](D:\Desktop\gitee\java-learning\sc240601\前端\Vue3\img\按需引入elementplus.png)
 >
 >   * 修改vue.config.js配置文件 查看官网去修改
@@ -1710,14 +1842,14 @@
 >     const AutoImport = require('unplugin-auto-import/webpack')
 >     const Components = require('unplugin-vue-components/webpack')
 >     const { ElementPlusResolver } = require('unplugin-vue-components/resolvers')
->     
+>
 >     module.exports = defineConfig({
 >       transpileDependencies: true,
->       //按需引入添加的
+>       //按需引入在这里添加
 >       configureWebpack:{
 >         plugins: [
 >           AutoImport({
->             resolvers: [ElementPlusResolver()],
+>             resolvers: [ElementPlusResolver()], //添加Elementplus
 >           }),
 >           Components({
 >             resolvers: [ElementPlusResolver()],
@@ -1729,7 +1861,7 @@
 >
 >   * main.js 还原，把之前全局引入在main.js中的修改都删除掉。
 >
->   * 修改配置文件，一定要重启服务器。
+>   * 修改配置文件vue.config.js，一定要重启服务器。
 
 #### 12.3 vue使用Elementplus
 
@@ -1754,16 +1886,16 @@
 >   import App from './App.vue'
 >   import './registerServiceWorker'
 >   import router from './router'
->       
+>               
 >   //引入所有的Elementplus图标
 >   import * as ElementPlusIconsVue from '@element-plus/icons-vue'
->       
+>               
 >   //通过app组件遍历所有的Elementplus图标 遍历一个注册(挂载)一个
 >   const app = createApp(App)
 >   for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 >     app.component(key, component) //挂载组件
 >   }
->       
+>               
 >   app.use(router).mount('#app')
 >   ```
 
@@ -1791,75 +1923,77 @@
 > }
 > ```
 
+![image-20240920142407411](D:\AppData\Typora\typora-user-images\image-20240920142407411.png)
+
 ### 13.Vue使用Vant(做前台)
 
 > Vant是一个轻量级的 可以定制化移动端的组件库 使用方式类似于Elementplus区别在于Vant 适用于实现移动端 小程序端 实现前台展示界面。
 >
 > 官网地址：https://vant-ui.github.io/vant/#/zh-CN
 
-#### 13.1 Vant安装和使用
+#### 13.1 安装Vant
 
 > * 安装: 通过vue ui安装
 >   ![image-20240829113447925](D:\Desktop\gitee\java-learning\sc240601\前端\Vue3\img\安装vant.png)
 >   ![image-20240829113647599](D:\Desktop\gitee\java-learning\sc240601\前端\Vue3\img\成功安装vant.png)
+
+#### 13.2按需引入Vant插件
+
+> - 安装两个插件：（如果安装过就无需再次安装，在package.json中查看）
 >
-> * 引入: 推荐按需引入插件
+>   ```
+>    cnpm i @vant/auto-import-resolver unplugin-vue-components -D
+>    如果Elementplus组件安装过unplugin-vue-components 无需再次安装
+>    cnpm i @vant/auto-import-resolver -D
+>   ```
 >
->   * 安装两个场景：（如果安装过就无需再次安装）
+>   ![image-20240829114602469](file://D:/Desktop/gitee/java-learning/sc240601/%E5%89%8D%E7%AB%AF/Vue3/img/%E5%AE%89%E8%A3%85Vant%E5%BF%85%E8%A6%81%E7%9A%84%E6%8F%92%E4%BB%B6.png?lastModify=1726965309)
 >
->     ```shell
->     cnpm i @vant/auto-import-resolver unplugin-vue-components -D
->     如果Elementplus组件安装过unplugin-vue-components 无需再次安装
->     cnpm i @vant/auto-import-resolver -D
->     ```
+> - 修改vue的配置文件
 >
->     ![image-20240829114602469](D:\Desktop\gitee\java-learning\sc240601\前端\Vue3\img\安装Vant必要的插件.png)
+>   ```
+>    //如果在Elementplus组件导入过就不要再导入
+>    const AutoImport = require('unplugin-auto-import/webpack');
+>    const Components = require('unplugin-vue-components/webpack');
+>    //在elementplus基础上Vant额外导入
+>    const { VantResolver } = require('@vant/auto-import-resolver');
+>    
+>    module.exports = defineConfig({
+>      transpileDependencies: true,
+>      //生产服务器
+>      devServer: {
+>        //加一个proxy对象表示跨域代理对象,在里面配置跨域
+>        proxy: {
+>          //可以配置很多组跨域，每组跨域都是一个对象
+>          //'/任意写':{配置好跨域}
+>          //使用http://localhost:9999/任意写/show来启动跨域，就是在写请求的前面加一个跨域请求
+>          '/api': {
+>            //配置后端的地址(即要跨域的目标地址)，proxy会转发到这里去
+>            target: 'http://localhost:80', //一定要和后端的端口号相同
+>            //路径重写(把跨域请求地址，重写为真正的请求地址)目的是去除请求地址中的api
+>            pathRewrite: { '^/api': '' },
+>            //代理websocket 可以不写
+>            ws: true,
+>            //开启跨域
+>            changeOrigin: true
+>          }
+>        }
+>      },
+>      //按需引入添加的这里是在ElementPlus基础上额外加了VantResolver()
+>      configureWebpack: {
+>        plugins: [
+>          AutoImport({
+>            resolvers: [ElementPlusResolver(),VantResolver()],
+>          }),
+>          Components({
+>            resolvers: [ElementPlusResolver(),VantResolver()],
+>          }),
+>        ],
+>      }
+>    })
+>   ```
 >
->   * 1
->
->     ```js
->     //如果在Elementplus组件导入过就不要再导入
->     const AutoImport = require('unplugin-auto-import/webpack');
->     const Components = require('unplugin-vue-components/webpack');
->     //在elementplus基础上Vant额外导入
->     const { VantResolver } = require('@vant/auto-import-resolver');
->         
->     module.exports = defineConfig({
->       transpileDependencies: true,
->       //生产服务器
->       devServer: {
->         //加一个proxy对象表示跨域代理对象,在里面配置跨域
->         proxy: {
->           //可以配置很多组跨域，每组跨域都是一个对象
->           //'/任意写':{配置好跨域}
->           //使用http://localhost:9999/任意写/show来启动跨域，就是在写请求的前面加一个跨域请求
->           '/api': {
->             //配置后端的地址(即要跨域的目标地址)，proxy会转发到这里去
->             target: 'http://localhost:80', //一定要和后端的端口号相同
->             //路径重写(把跨域请求地址，重写为真正的请求地址)目的是去除请求地址中的api
->             pathRewrite: { '^/api': '' },
->             //代理websocket 可以不写
->             ws: true,
->             //开启跨域
->             changeOrigin: true
->           }
->         }
->       },
->       //按需引入添加的这里是在ElementPlus基础上额外加了VantResolver()
->       configureWebpack: {
->         plugins: [
->           AutoImport({
->             resolvers: [ElementPlusResolver(),VantResolver()],
->           }),
->           Components({
->             resolvers: [ElementPlusResolver(),VantResolver()],
->           }),
->         ],
->       }
->     })
->     ```
->
-> * 使用: 在vant官网复制粘贴代码
+> - 使用: 在vant官网复制粘贴代码
 
 ### 14.JWT
 
@@ -1895,8 +2029,9 @@
 >   iat(...): 签发时间
 >   ......
 >   
->   { //如何编写一个载荷：
->   	//上面的默认字段
+>   //如何编写一个载荷：
+>   { 
+>   	//对应上面的默认字段
 >       sub:"admin",
 >       // 可以自定义字段，用来表示和存储用户信息
 >       username:"admin",
@@ -2079,7 +2214,7 @@
 >
 > <hr>
 >
-> 错误2:
+> 错误2: 父子组件传递参数时要注意的问题
 >
 > ![image-20240822141608781](D:\Desktop\gitee\java-learning\sc240601\前端\Vue3\img\组件传递时要注意的问题.png)
 >
@@ -2100,8 +2235,8 @@
 > ![image-20240826162747926](D:\Desktop\gitee\java-learning\sc240601\前端\Vue3\img\错误5路由的信息无法传递给前端.png)
 >
 > <hr>
->
 > 错误6：后端数据为什么前端无法读取？
+> 要对应，别写错了字母。
 >
 > ![image-20240828172829063](D:\Desktop\gitee\java-learning\sc240601\前端\Vue3\img\image-20240828172829063.png)
 >
@@ -2111,14 +2246,15 @@
 > sm(Springboot+mybatis)项目：
 >
 > ```xml
->         <!--SpringBoot - mybatis专用分页插件-->
->         <dependency>
->             <groupId>com.github.pagehelper</groupId>
->             <artifactId>pagehelper-spring-boot-starter</artifactId>
->             <version>1.2.12</version>
->         </dependency>
+>      <!--SpringBoot - mybatis专用分页插件-->
+>      <dependency>
+>          <groupId>com.github.pagehelper</groupId>
+>          <artifactId>pagehelper-spring-boot-starter</artifactId>
+>          <version>1.2.12</version>
+>      </dependency>
 > ```
 >
-> 
+> <hr>
 >
-> 
+> 错误8：跨域问题
+> ![image-20240918215253850](D:\Desktop\gitee\java-learning\sc240601\前端\Vue3\img\image-20240918215253850.png)
