@@ -6,6 +6,9 @@
 > ![image-20240928210103091](D:\Desktop\MyBatis\img\对框架的理解.png)
 >
 > 为什么？--好处
+> MyBatis封装了JDBC，是一个增强版的JDBC。JDBC的sql语句写在JAVA代码中，违背了开闭原则，每次修改，都需要重新编译，重新部署，特别麻烦。
+> ![image-20240929073511223](D:\Desktop\MyBatis\img\JDBC的不足.png)
+>
 > 怎么用？
 
 > > 怎么学框架？ -- 看官网[MyBatis 中文网 官网 (p2hp.com)](https://mybatis.p2hp.com/)
@@ -15,15 +18,30 @@
 ### 1. 什么是Mybatis框架？
 
 > MyBatis是==基于sql开发的ORM==，是一个持久层框架，其内部封装了jdbc，它能使开发者只关注于sql语句本身不用像jdbc一样反复的编写繁琐的 加载驱动 创建连接  参数处理 结果集处理等操作，mybatis全部都处理好了 其前身是ibatis(底层包名字还是它)
+>
+> MyBatis是一个半自动化的ORM,
+> 因为MyBatis框架中SQL语句是需要
+> 程序员自己编写的。
+>
+> Hibernate框架就是一个全自动化的ORM。
+> 使用Hibernate框架的时候，不需要程序员
+> 手动编写SQL语句，SQL语句可以自动生成。
+> 所以Hibernate是一个完全的全自动化的ORM框架
+>
+> ![image-20240929075249781](D:\Desktop\MyBatis\img\Mybatis框架的特点.png)
+> 定制化的sql语句，方便编程人员进行性能调优，不像Hibernate全部写死。
 
 #### 1.1 ORM
 
-> ORM(Object Relation Mapping)：对象关系映射
+> ORM(Object Relational Mapping)：对象关系映射
 > 对象--java中的对象
-> 关系--指和数据库中的数据之间的关系
+> 关系--指关系型数据库
 > 映射--java中的对象和数据库中的数据之间的映射
 >
 > ORM就是实现java中的对象和关系型数据库中的数据之间的映射，这样就可以把对于数据库中数据的操作转换为对于java中对象的操作，比如：新增一条数据，就可以通过新增一个对象来实现。
+> ![image-20240929074625462](D:\Desktop\MyBatis\img\ORM.png)
+>
+> ![image-20240929074943393](D:\AppData\Typora\typora-user-images\image-20240929074943393.png)
 
 > 如何实现ORM：对象关系映射
 >
@@ -42,12 +60,14 @@
 > * 创建`maven项目` : MyBatis是基于Maven的项目
 > * 在pom.xml中导入相关依赖（mybatis、mybatis-ehcache、ehcache、maven-plugin-api、mybatis-generator-core）
 > * 创建表和实体类（注意实体类中`一定要有无参构造和set方法`，mabtis用他们来操作实体类）
-> * 创建MyBatis核心配置文件。（加载jdbc参数、创建连接池、事务(有两种)、关联映射文件、设置插件、设置日志）
+> * 创建MyBatis核心配置文件，一般放在resource目录下，命名为mybatis-config.xml。（加载jdbc参数、创建连接池、事务(有两种)、关联映射文件、设置插件、设置日志）
 > * 通过反向生成插件generator来生成实体类、映射文件、mapper接口。
 >   * 原来的dao层改成mapper层 为每张表提供一个对应的Mapper接口(不用实现类)
 >   * 为每个Mapper接口提供一个映射文件。接口中的每个方法和规定的 操作标签 联系起来（如新增操作要用到insert语句就使用<insert>标签。用标签的id属性来联系。（==在里面写sql语句，sql一定不能加;==)
 > * 在核心配置文件中添加映射文件的配置(mappers 下加 mapper)
 > * 搭建完毕，可以开始测试MyBatis工作流程。
+>
+> ![image-20240929081123649](D:\Desktop\MyBatis\img\搭建MyBatis环境.png)
 
 #### 搭建mybatis环境需要在web.xml中配置吗？
 
@@ -1045,14 +1065,14 @@
 >         …… 
 >         <!--如果是1:1:1，即三表一对一关联，就可以在这里继续嵌套</association>-->
 >     </association>
->                                                                         
+>                                                                             
 >     <!-- 描述集合 -->
 >     <collection property="关联的属性名" ofType="集合泛型">
 >         <id column="?" property="?"/>
 >         <result column="?" property= "?"/>
 >         ……
 >     </collection>
->     			                                                                     
+>     			                                                                         
 >     ```
 >
 >     
@@ -1064,7 +1084,7 @@
 >     <association property="关联属性名" 
 >                  column="其他mapper接口需要的参数" 
 >                  select="其他mapper接口的全类名+方法名"/>
->                                                                         
+>                                                                             
 >     <!-- 描述集合 -->
 >     <collection  property="关联属性名" 
 >                  ofType="集合泛型"
