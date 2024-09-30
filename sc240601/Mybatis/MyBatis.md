@@ -39,9 +39,9 @@
 > 映射--java中的对象和数据库中的数据之间的映射
 >
 > ORM就是实现java中的对象和关系型数据库中的数据之间的映射，这样就可以把对于数据库中数据的操作转换为对于java中对象的操作，比如：新增一条数据，就可以通过新增一个对象来实现。
-> ![image-20240929074625462](D:\Desktop\MyBatis\img\ORM.png)
+> <img src="D:\Desktop\MyBatis\img\ORM.png" alt="image-20240929074625462" style="zoom: 40%;" />
 >
-> ![image-20240929074943393](D:\AppData\Typora\typora-user-images\image-20240929074943393.png)
+> <img src="D:\AppData\Typora\typora-user-images\image-20240929074943393.png" alt="image-20240929074943393" style="zoom:80%;"/>
 
 > 如何实现ORM：对象关系映射
 >
